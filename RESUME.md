@@ -25,3 +25,8 @@ Repo: github.com/miketaz100/project-scratch (branch main). Cloud session working
 - Bare floating weight margin 2 g (90.1 g vs 92 g); kitchen scale decides (L1); fallbacks in mechanical.md §6.5.
 - Tip edge radius: safety ≥ 0.4 mm; A45 (0.3 mm) gated behind forearm + tape test; tip P needs two nested nails to reach R 0.4.
 - Michael's plan: self-build in his apartment (outsourcing considered and declined 2026-10-01).
+
+## PAUSED 2026-10-01 (Michael asked to stop spending cloud credits until the limit resets)
+- CAD agent was stopped mid-run. Partial output: 05-engineering/cad/frame/gen_frame_stl.py (in progress; its last self-report: "P3 has a stray placeholder cylinder at the origin and the P4 vent code is muddled"). No .scad files, no STLs, no README or CONFLICTS yet. On resume, relaunch the CAD agent with the same brief (DIRECTOR-LOG 2026-10-01 cloud entry) and tell it to start from the existing generator.
+- bom.md and tips follow-up are complete and committed. Integrator and gates not started.
+- Say "resume Project Scratch" to continue.
