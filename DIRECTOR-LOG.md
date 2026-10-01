@@ -1,0 +1,41 @@
+# PROJECT SCRATCH — Director's Log
+
+## Program structure
+- Phase 1  Foundations (parallel, independent): scratch-model, prior-art, hair-interaction, safety-requirements, tip-interface, component-landscape → 01-foundations/
+- Phase 2  Independent mechanism teams (parallel, firewalled from each other; each seeded with a different physical principle + a wildcard) → 02-mechanisms/
+- Phase 3  Tournament: independent judges score all candidates against the foundations; simplicity/value engineer looks for a radically simpler winner → 03-tournament/
+- Phase 4  Red team on the top 2 → 04-redteam/
+- Phase 5  Director convergence decision → 03-tournament/DECISION.md
+- Phase 6  Full engineering of the winner by subsystem (mechanical, tips, electronics+control, BOM+sourcing, test protocols) → 05-engineering/
+- Phase 7  Package integration → 07-package/SP1-PACKAGE.md
+- Phase 8  Gates: Build review, Sensation gate, Safety gate → 06-gates/; fix; re-review as needed
+- Phase 9  Final handoff
+
+## Log
+- 2026-10-01: Brief received (completion criteria truncated after item 9; items 10–12 inferred). Workspace created. Phase 1 launched: 6 agents.
+- 2026-10-01: tip-interface.md delivered (tip family A–H, SP1-TM1 magnetic quick-change mount, scratch window 0.2–0.6 mm edge radius, 0.3–0.9 N).
+- 2026-10-01: hair-interaction.md delivered (9 failure modes, H-4/5/6 rules, 18-item checklist; key: prevent bent→tensioned transition; lift-off before reversal; no gaps 40µm–3mm near scalp; no rotation within 30 mm).
+- 2026-10-01: component-landscape.md delivered (XL330 / STS3215 / gimbal BLDC+SimpleFOC / N20+DRV8871; Stack A ≈$214; hard-hat ratchet suspension as head interface).
+- 2026-10-01: safety-requirements.md delivered (25-row hazard table; mechanical force cap F_max = preload + k·x_max; caps ≤2.5 N/element, ≤12 N total, ≤2 N tangential, tip ≤0.4 m/s, head-borne ≤500 g; 13 red lines).
+- CONFLICT TO RESOLVE in engineering: safety red line 11 forbids tip edge radius <0.4 mm; tip-interface baseline is 0.3 mm (window 0.2–0.6). Resolution path: SP1 default tip = 0.4–0.5 mm radius + UL 1439 tape test; 0.3 mm only as an experimental variant after forearm screening.
+- 2026-10-01: scratch-model.md delivered (4 fingers, 0.15–0.3 N/nail, 8 cm/s, 2 Hz, irregularity by design, 12-item massager-vs-scratcher checklist). Phase 2 launched: 7 firewalled mechanism teams (A–G); prior-art withheld from them.
+- 2026-10-01: prior-art.md delivered (152 URLs; nobody sells a scratcher; borrow: Serix constant-force pins, Panasonic tine-spacing/five-bar press+sweep, Garcia 1975 simulated-fingernail tip, Dancer RTS tangential entry; avoid dome tips, rotation near hair, auto direction reversal). Phase 1 complete.
+- 2026-10-01: Team E delivered: LH-1 'Listening Hand' (2× GM3506 gimbal BLDC + SimpleFOC impedance control, 3-nail rake, monitor-arm frame, ≈$390).
+- 2026-10-01: Team D delivered: CRADLE (counterbalanced C-arm yoke about head centre, dead-weight 3-nail hand, 2× XL430, forehead-bar dead-man, ≈$470–535); wildcard W1 'Resting Hand' tendon-curled glove.
+- 2026-10-01: Team C delivered: LEAFHAND (head-worn motor-free spring-steel leaf hand on TPU hinges, 2 Bowden tendons to desk-box STS3215s, ≈$340).
+- 2026-10-01: Team G delivered: ARC-RAKE (head-worn 2× XL330 shoulder/elbow planar arm, passive 3-nail leaf hand, non-concentric arc for passive lift, ≈$290).
+- 2026-10-01: Team B delivered: B-2 'Pendulum Hand' (4 pendulum fingers on XL330s + 5th XL330 palm lift, head-worn, ≈$390–415, 450 g head-borne).
+- 2026-10-01: Team F delivered: WR-1 'Walking Rake' (one N20 + double-eccentric scotch yokes, elliptical nail path with geometric lift-off, 3 sprung nails, ≈$85–148, 12 build hours; also serves as the periodic control condition).
+- 2026-10-01: Team A delivered: FEED-DOG CCR-3 (one N20 crank-coupler-rocker rake, AS5600 crank sensing for time-jitter, ≈$270). Phase 2 complete: 7 candidates. Phase 3 tournament launched: 3 judges + simplicity engineer.
+- 2026-10-01: hybrid-and-simplicity.md delivered: convergence list; hybrid LEAF-ARM (G's 2× XL330 planar arm + G/C leaf hand + F dip stage w/ B solenoid latch + B pattern engine + D bench instrumentation; ≈$300–315; week-1 hand wand then single-servo swing-rake).
+- 2026-10-01: judge-3-experiment.md: D 275 · E 272 · F 257 · G 247 · B 233 · C 227 · A 209. Key finding: head-worn force = k × depth vs ±3 mm headband slop → ±0.45–1.2 N/nail, bigger than the force window; only D (dead weight + load cell) and E (torque control) make force repeatable. Rules frame-mounted, 2-DOF + mechanical cap, both passive+active.
+- 2026-10-01: judge-1-sensation.md: E 265 · D 264 · G 248 · C 234 · B 230 · F 230 · A 214. Frame-mounted; 2-DOF with normal axis in force mode; both passive+active. Hybrid CRADLE-LH (D cage/yoke/float/load cell + E GM3506 torque mode on the float). Findings: attack-angle swings are flat-plane artefacts (±2–3° vs local tangent); C's leaf orientation makes drag dig — reverse it; bidirectional modes scoop unless symmetric tips.
+- 2026-10-01: judge-2-engineering.md: D 270 · E 262 · G 248 · F 239 · B 235 · C 223 · A 221. Combined (3 judges): D 809 · E 799 · G 743 · F 726 · B 698 · C 684 · A 644. Unanimous: frame-mounted; 2-DOF with force-mode normal axis; passive cap + active modulation. Findings: single-motor closed paths rigid at BDC (no force protection); G's elbow arc geometry wrong (hang nail under elbow); B fail-safe spring too weak; E cap unverified until Kt/R measured.
+- 2026-10-01: LEADING-ARCHITECTURE-v0 'SP1 FLOAT-ARM' drafted (monitor arm + face cradle dead-man, XL330 elbow stroke, dead-weight parallelogram float + load cell, lift-only tendon XL330, 3-nail feeler-leaf hand, Stack A, pattern engine, WR-1 wand as control). Phase 4 red team launched: 3 attackers.
+- 2026-10-01: redteam-3-simplicity: verdict v0 SIMPLIFIED → 'SP1-S': one XL330 swing, float with 3–4 mm down-stop + ±25° over-swing = geometric lift (no lift servo), 3-leaf hand, pots + PERIODIC toggle, e-stop + hold-to-run; ≈$245, ~17 h. Cut forehead dead-man, OLED, WR-1 side build. Defer lift servo/load cell/INA219. Second servo → YAW (wander) before lift. Must supply STL/OpenSCAD (abandonment point #1). Posture: prone on bed, face cradle cushion. P(finish+use): v0 20–25%, SP1-S 55–60%.
+- 2026-10-01: redteam-1-sensation: P(first-session 'yes') ≈15% as drafted. Attacks: (1) one-way lifted strokes = 'sweeps not rakes' → bidirectional with symmetric wedge tip + lift-dip at both ends + against-grain ≤25 mm (P→~30%); (2) inclined float turns friction into normal force (N = mg/(1−0.577µ) = 1.4–2.4×) and must reverse mid-stroke (stiction) → VERTICAL flexure-leaf float, hand ≤60 g; (3) tip B at 0.2–0.3 N over 6 mm edge is a glide → R0.4 mm on 4 mm loaded edge, ≥0.3 N/nail; (4) single-patch habituation → yaw servo. Attack angle fine.
+- 2026-10-01: CAD tooling: no OpenSCAD/brew on machine; venv at scratchpad/cadenv with trimesh+manifold3d generates STLs (boolean test passed). Engineering must deliver OpenSCAD sources + Python-generated STLs.
+- 2026-10-01: redteam-2-mechanical: inclined float = friction amplifier (N = W/(1−0.577µ)); limp fail-safe wrong-way (neck extension moves crown into hand); hand open (hair 27/36). Rulings: LIFTED fail-safe via 5 V electromagnet latch + 25 mm spring lift; float = vertical MGN9 rail (N = W for any µ). Phase 4 complete. DECISION made → DESIGN-FREEZE.
+- 2026-10-01: DESIGN-FREEZE written (frame-mounted FLOAT-ARM; radial MGN9 float on XL330 elbow arm; geometric bidirectional lift-off; electromagnet-latched spring-lift fail-safe; enclosed 3-leaf hand; TM1 tips W/B45/A45/E/H/P; trimmed Stack A; pattern spec v1; stages 0–3). Phase 5 engineering launched: MECH, TIP, ELEC, TEST in parallel.
+- 2026-10-01: test-protocols.md delivered (K–P + session log; 20-session matrix; H0–H7 gates; §Q testability requests forwarded to MECH and ELEC leads).
+- 2026-10-01: electronics-firmware.md + firmware/sp1_scratch/sp1_scratch.ino (533 lines) + firmware/README.md delivered. Goal current 300 mA (≈1.26 N at tip), current limit 450 mA. [VERIFY] OpenRB-150 MCU stays on USB when VIN cut (bench test B3 is a hard gate). SESSION PAUSED: usage limit reached. MECH lead and TIP lead still running in background and will write mechanical.md and tips.md + cad/tips/.
