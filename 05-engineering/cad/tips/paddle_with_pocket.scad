@@ -9,10 +9,14 @@
 //  -Z toward the scalp.  The LEAF runs along Y through the root block.
 //  Geometry, bottom to top:
 //    z = 0 .. PADDLE_LEN      drafted body: nose 14 x 9 (R1) growing at DRAFT_X / DRAFT_Y
-//                             per side (10 deg / 5 deg) to 22.8 x 13.4 at z = 25
-//    z = 25 .. 28             transition to the root block (above the knuckle plate)
-//    z = 28 .. 35             root block 28 x 14: clamp WINDOW 24.2 x 8.4 x 3.5 deep from
-//                             the top; the leaf lies on the window floor (z = 31.5),
+//                             per side (10 deg / 10 deg) to 22.8 x 17.8 at z = 25
+//    z = 25 .. 25+RISER       RISER: straight (constant 22.8 x 17.8) extension; 0 for the
+//                             outer paddles and the wand, 9 for the SP1 centre paddle
+//    (z0 = 25 + RISER below)
+//    z = z0 .. z0+3           transition to the root block (above the knuckle plate); with
+//                             DRAFT_Y = 10 it NARROWS in Y from 17.8 to the 14 mm root
+//    z = z0+3 .. z0+10        root block 28 x 14: clamp WINDOW 24.2 x 8.4 x 3.5 deep from
+//                             the top; the leaf lies on the window floor (z = 31.5 + RISER),
 //                             passes out through 12.9 x 1.0 slots in the Y walls, and is
 //                             pressed down by the CLAMP BAR (24 x 8 x 3.2, with a
 //                             12.9 x 0.25 locating groove) via 2x M3x8 screws at x = +/-9.5
@@ -20,8 +24,14 @@
 //                             of the bar ends by 0.2 mm)
 //                             (2.6 mm holes, thread-forming in PETG; or 4.0 mm for inserts)
 //  Pocket: tm1_pocket() — 10.3 x 4.3 x 12.5, mouth chamfer 0.6, N52 6x2 magnet recess
-//  (magnet dropped in at a PRINT PAUSE at model z = 11.9, see README).
-//  Print: PETG, NOSE UP (root on the bed), 0.2 mm layers, 4 perimeters. The window
+//  (magnet dropped in at a PRINT PAUSE at model z = 11.9, i.e. print height 23.1 mm
+//  for RISER = 0 and 32.1 mm for RISER = 9; see README).
+//  rev 2026-10-01 (post DESIGN-FREEZE-ADDENDUM-1, D2/D3): DRAFT_Y 5 -> 10 (24 mm pitch),
+//  new RISER parameter.  SP1 hand: 2x RISER = 0 (L, R), 1x RISER = 9 (C, its leaf crosses
+//  one level above L's).  Leaf floor to W/B45 edge: 44.0 mm (RISER 0), 53.0 mm (RISER 9).
+//  Print: PETG, NOSE UP (root on the bed), 0.2 mm layers, 4 perimeters (wand); SP1 hand
+//  paddles 2 perimeters / 10 % gyroid with 4 perimeters around the screw holes
+//  (mechanical.md 8.9, float mass budget).  The window
 //  floor is an 8.4 mm bridge — fine for PETG; or paint supports in the window only.
 //  TPU seam SLEEVE (PART = "sleeve"): TPU 90A, 0.6-1.0 mm wall, stretched over the nose
 //  (0.4 mm interference) covering z = +3 .. -5.5 so the tip/pocket seam is enclosed.
@@ -36,9 +46,12 @@ NOSE_X     = TM1_SH_X;  // 14
 NOSE_Y     = TM1_SH_Y;  // 9
 NOSE_R     = TM1_SH_R;  // 1
 DRAFT_X    = 10;        // deg per side, stroke-facing faces (H-4.3: >= 10)
-DRAFT_Y    = 5;         // deg per side, across-stroke faces (kept at 5 so two paddles at
-                        // 20 mm pitch stay >= 3 mm apart at the root: 13.4 -> 6.6 mm gap)
+DRAFT_Y    = 10;        // deg per side, across-stroke faces (H-4.3: >= 10).  Was 5 at the
+                        // freeze's 20 mm pitch; 10 since ADDENDUM-1 D2/D3 (24 mm pitch:
+                        // 24 - 17.8 = 6.2 mm between paddles at z = 25, free state)
 PADDLE_LEN = 25;        // protrusion below the knuckle plate (H-4.5 design basis)
+RISER      = 0;         // straight extension of the z = 25 section before the transition
+                        // (ADDENDUM-1 D3): 0 = outer paddles / wand, 9 = SP1 centre paddle
 POCKET_TILT = 0;        // deg about Y: attack-angle holder variants (0 for SP1 — angle lives in the tip)
 BOLT_VARIANT = false;   // TM1-B: M3 cross-bolt through nose + tang (heavy tips); widens nose Y to 12
 
@@ -75,8 +88,9 @@ SLEEVE_BOT   = TM1_SH_BOT;  // -5.5: covers the whole shoulder band of the tip
 nose_y   = BOLT_VARIANT ? 12 : NOSE_Y;
 top_x    = NOSE_X + 2 * PADDLE_LEN * tan(DRAFT_X);
 top_y    = nose_y + 2 * PADDLE_LEN * tan(DRAFT_Y);
-z_root0  = PADDLE_LEN;
-z_root1  = PADDLE_LEN + ROOT_TRANS;
+z_drafted = PADDLE_LEN;               // top of the drafted body
+z_root0  = PADDLE_LEN + RISER;        // top of the riser = start of the transition
+z_root1  = z_root0 + ROOT_TRANS;
 z_top    = z_root1 + ROOT_H;
 z_floor  = z_top - WINDOW_D;          // leaf rests here
 
@@ -85,7 +99,9 @@ module slab(x, y, r, z, h = 0.02) {
 }
 
 module paddle_body() {
-    hull() { slab(NOSE_X, nose_y, NOSE_R, 0.01); slab(top_x, top_y, NOSE_R, z_root0); }
+    hull() { slab(NOSE_X, nose_y, NOSE_R, 0.01); slab(top_x, top_y, NOSE_R, z_drafted); }
+    if (RISER > 0)
+        translate([0, 0, z_drafted - 0.01]) linear_extrude(height = RISER + 0.02) tm1_rrect(top_x, top_y, NOSE_R);
     hull() { slab(top_x, top_y, NOSE_R, z_root0); slab(ROOT_X, ROOT_Y, ROOT_R, z_root1); }
     translate([0, 0, z_root1 - 0.01]) linear_extrude(height = ROOT_H + 0.01) tm1_rrect(ROOT_X, ROOT_Y, ROOT_R);
 }

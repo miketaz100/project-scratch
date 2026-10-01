@@ -10,6 +10,8 @@ CAD: `05-engineering/cad/tips/` (OpenSCAD sources, `gen_tips_stl.py`, `stl/`, `R
 
 This document describes, as built, the SP1 scratching tips, the SP1-TM1 mount, the paddle that carries a TM1 pocket on each hand leaf, and the motorless Stage-0 hand wand. It covers DESIGN-FREEZE §1.8, the tip side of §1.7 and Stage 0 of §3. The tip set is the frozen one: W (symmetric wedge, default), B45 (45° nail-mimic plate), B45-12 (width), A45 (R 0.3 mm, gated), E (pulp-backed), H (3 mm ball control) and P (press-on nail reference). Every tip shares one tang and one pocket, so a result found on the wand transfers to the rig unchanged. Out of scope: hand clamshell, knuckle plate, float, wrist (MECH LEAD); electronics; test procedures (owned by `test-protocols.md`, referenced here). The audit of the delivered SCAD files is summarised in §10.1.
 
+**Post-addendum changes (2026-10-01, tip lead follow-up, after `DESIGN-FREEZE-ADDENDUM-1.md`).** The mechanical lead's hand (mechanical.md §8) changed the paddle's context, and the addendum's rulings D2 to D5 are binding. In `paddle_with_pocket.scad` and `gen_tips_stl.py` I changed two things. `DRAFT_Y` went from 5 to 10, so all four paddle faces now carry the ≥ 10° of freeze §1.7 and H-4.3; the 24 mm pitch (D2) leaves room for it. I added a `RISER` parameter (D3): `RISER = 9` gives the centre paddle, whose leaf clamps 9 mm higher. Every other dimension is unchanged. The STLs were regenerated, with a new `paddle_with_pocket_riser9.stl`. The seam sleeve follows the 10° nose and is 0.56 mm wider in Y at its top. The hand now uses three paddles of two kinds. The knuckle-plate exits are one shared slot with a bonded slack membrane (D4), and leaf travel to the stop is 5.0 mm (D5). Sections changed: §1 (this note), §2.5 (sleeve size), §8 (rewritten), §9 (paddle parts table), §10.1 and new §10.9. The tips, the TM1 mount, the wand and their STLs are unchanged.
+
 ---
 
 ## 2. The TM1 mount as built
@@ -68,7 +70,7 @@ Seat: align the key chamfer with the chamfered pocket corner (a 45° tip cannot 
 
 ### 2.5 Seam sleeving against hair
 
-The cone between the tang and the band leaves a V-shaped gap between the paddle nose face (z 0) and the tip shoulder that grows from 0.15 mm at the pocket mouth to 2.5 mm at the band. That is exactly the 0.04 to 3 mm gap range forbidden near hair (DESIGN-FREEZE §1.4, test-protocols K1.8). The TPU 90A seam sleeve (`paddle_with_pocket.scad`, `PART = "sleeve"`, 0.8 mm wall) is stretched over the drafted nose with 0.2 mm interference per side and covers z +3.0 down to z -5.5, the bottom of the tip band, so the whole seam is enclosed and the hair only ever sees the sleeve's smooth outside and the tip's working part below it. The sleeve outline is 15.2 x 10.2 mm at the bottom, 15.9 x 10.3 mm at the top. Probe it with 100 µm monofilament (K1.10) at every tip change.
+The cone between the tang and the band leaves a V-shaped gap between the paddle nose face (z 0) and the tip shoulder that grows from 0.15 mm at the pocket mouth to 2.5 mm at the band. That is exactly the 0.04 to 3 mm gap range forbidden near hair (DESIGN-FREEZE §1.4, test-protocols K1.8). The TPU 90A seam sleeve (`paddle_with_pocket.scad`, `PART = "sleeve"`, 0.8 mm wall) is stretched over the drafted nose with 0.2 mm interference per side and covers z +3.0 down to z -5.5, the bottom of the tip band, so the whole seam is enclosed and the hair only ever sees the sleeve's smooth outside and the tip's working part below it. The sleeve outline is 15.2 x 10.2 mm at the bottom, 15.9 x 10.9 mm at the top (post-addendum 10° nose; the 5° version was 10.3 mm at the top and does not fit the new paddles). Probe it with 100 µm monofilament (K1.10) at every tip change.
 
 ---
 
@@ -210,29 +212,48 @@ From DESIGN-FREEZE §3 Stage 0 and test-protocols H0: GO to Stage 1 when the nai
 
 ## 8. The paddle interface to the hand
 
-`paddle_with_pocket.scad` is the part the mechanical lead puts at the free end of each of the three hand leaves. Geometry in the TM1 frame (z 0 = pocket mouth):
+`paddle_with_pocket.scad` is the part the mechanical lead puts at the free end of each of the three hand leaves. Since DESIGN-FREEZE-ADDENDUM-1 (D2 to D5) the hand has 24 mm nail pitch in Y, 10° draft on every paddle face, a centre paddle with a 9 mm riser, one shared knuckle-plate slot sealed by a bonded slack membrane, and 5.0 mm leaf travel to the hard stop (mechanical.md §8). There are now two paddles, built from the same file:
+
+| STL | Setting | Qty on the SP1 hand | Where | Leaf floor | Leaf floor to W/B45 edge |
+|---|---|---|---|---|---|
+| `paddle_with_pocket.stl` | `RISER = 0` | 2 | outer nails L (−8, −24) and R (+8, +24); also the wand | z 31.5 | 44.0 mm |
+| `paddle_with_pocket_riser9.stl` | `RISER = 9` | 1 | centre nail C (0, 0); its leaf crosses one level above L's | z 40.5 | 53.0 mm |
+
+Geometry in the TM1 frame (z 0 = pocket mouth; z0 = 25 + `RISER`):
 
 | Zone | Geometry |
 |---|---|
 | Nose, z 0 | 14 x 9 mm, R 1 mm corners, equal to the tip band so the sleeve spans the joint |
-| Drafted body, z 0 to 25 | grows at 10° per side on the X (stroke-facing) faces and 5° per side on the Y faces, to 22.8 x 13.4 mm at z 25; no steps, no fastener heads |
-| Transition, z 25 to 28 | drafted to the 28 x 14 mm (R 2 mm) root block |
-| Root block, z 28 to 35 | clamp window 24.2 x 8.4 x 3.5 mm deep from the top; leaf floor at z 31.5; leaf slots 12.9 x 1.0 mm through both Y walls; clamp bar 24 x 8 x 3.2 mm with a 12.9 x 0.25 mm groove; 2 x M3 x 8 at x ±9.5 into 2.6 mm thread-forming holes 5 mm deep (4.0 mm for heat-set inserts) |
-| Pocket | `tm1_pocket()`: 10.3 x 4.3 x 12.5 mm, 0.6 mm lead-in, N52 6 x 2 recess at z 11.9 to 14.0 |
-| Seam sleeve | TPU 90A, z +3 to -5.5 |
+| Drafted body, z 0 to 25 | grows at 10° per side on all four faces (`DRAFT_X = DRAFT_Y = 10`), to 22.8 x 17.8 mm at z 25 (the section in the knuckle plate); no steps, no fastener heads. Identical on both paddles |
+| Riser, z 25 to z0 | `RISER = 9` paddle only: straight 22.8 x 17.8 mm section, z 25 to 34 |
+| Transition, z0 to z0 + 3 | to the 28 x 14 mm (R 2 mm) root block: widens in X, and narrows in Y from 17.8 to 14 mm (above the plate, inside the boot) |
+| Root block, z0 + 3 to z0 + 10 | clamp window 24.2 x 8.4 x 3.5 mm deep from the top; leaf floor at z 31.5 (`RISER = 0`) or 40.5 (`RISER = 9`); leaf slots 12.9 x 1.0 mm through both Y walls; clamp bar 24 x 8 x 3.2 mm with a 12.9 x 0.25 mm groove; 2 x M3 x 8 at x ±9.5 into 2.6 mm thread-forming holes 5 mm deep (4.0 mm for heat-set inserts) |
+| Pocket | `tm1_pocket()`: 10.3 x 4.3 x 12.5 mm, 0.6 mm lead-in, N52 6 x 2 recess at z 11.9 to 14.0 (print pause at 23.1 mm print height, or 32.1 mm on the riser paddle) |
+| Seam sleeve | TPU 90A, z +3 to −5.5, now drawn for the 10° nose: 15.2 x 10.2 mm at the bottom, 15.9 x 10.9 mm at the top |
 
-**How it clamps to the leaf.** The 0.30 x 12.7 mm leaf runs along Y over the window floor and out through the wall slots; the bar's 0.25 mm groove locates it in X and, being shallower than the leaf, makes the bar press the leaf rather than the floor. No hole is drilled in the leaf, so there is no stress raiser and the free length can be trimmed at will. The screws sit 1.85 mm clear of the leaf edges with 0.8 mm of bar outboard of each hole (the delivered 23 mm bar with screws at ±10 mm broke the holes out of the bar ends; fixed).
+**How it clamps to the leaf (checked against mechanical.md §8.6).** The 0.30 x 12.7 mm leaf runs along Y over the window floor and out through both wall slots (`LEAF_THROUGH = true`); the bar's 0.25 mm groove locates it in X and, being shallower than the leaf, makes the bar press the leaf rather than the floor. No hole is drilled in the leaf, so there is no stress raiser and the free length can be trimmed at will. The screws sit 1.85 mm clear of the leaf edges with 0.8 mm of bar outboard of each hole. Screw length works out: an M3 x 8 through the 3.2 mm bar (bar underside 0.05 mm above the floor once the leaf is under it) reaches 4.75 mm into the 5 mm hole. The paddle clamp uses M3 (aluminium on the hand, 0.3 N·m, mechanical.md §8.6 and §12); the M2 screws in mechanical.md belong to the palm-side root clamp bars (P34, 2 x M2 at ±8.6 mm) and the plate and lid, not to the paddle. The draft and riser changes do not touch the clamp: window, slots, bar and screw positions are the same on both paddles, only 9 mm higher on the riser one. The leaf roots are pre-tilted on the palm side (P32: L 4.4°, C 4.7°, R 5.0°), so the paddle clamp stays square to the paddle and each paddle hangs vertical at the nominal 2.67 mm deflection.
 
-**Clearance holes.** DESIGN-FREEZE §1.7 asks for ≥ 4 mm clearance holes in the knuckle plate covered by a TPU boot or slit silicone sheet, and ≥ 25 mm of protrusion below the plate. The paddle section where it crosses the plate (z 25) is 22.8 x 13.4 mm; with 4 mm per side the hole is 30.8 x 21.4 mm. At 20 mm Y pitch and ±8 mm X stagger, three such holes overlap, so the practical answer is one common opening per hand covered by a single slit silicone sheet, or a reading of "4 mm" as diametral clearance. When the leaf deflects the paddle rises, the section at the plate shrinks and the clearance only grows.
+**Knuckle plate: shared slot and membrane (ADDENDUM-1 D4).** The freeze's individual ≥ 4 mm clearance holes cannot be made: with the 17.8 mm section at z 25 they would need 26.8 mm at 24 mm pitch. The hand uses one shared slot (≥ 4.5 mm clear of L and R, 6.0 mm of C) sealed by one slack 0.25 mm Shore 40A silicone membrane bonded to each paddle at z 26 to 28 with silicone adhesive, with no sliding contact (mechanical.md §8.7). On the paddle side that needs only a clean, bondable band at z 26 to 28: no CA, varnish or slicer seam there (put the seam on an X corner). When the leaf deflects the paddle rises, the plate crosses a narrower part of the body, and the clearance to the slot edge grows.
+
+**Gap between paddles at the knuckle plate (24 mm pitch, 10° draft), from the SCAD parameters.** Section at z 25: 9 + 2 x 25 x tan 10° = 17.82 mm, so the static gap is 24 − 17.82 = **6.18 mm** (mechanical.md: 6.2 mm). For the worst case the paddle rolls about X as its leaf bends (1.63, 1.76, 1.87° per mm for L, C, R, zero at 2.67 mm by the pre-tilt), pivoting at the root-side bar edge on the leaf floor. The plate section is 6.5 mm below the leaf floor on the outer paddles and 15.5 mm on the riser paddle. Every combination of 0 to 5.0 mm on each leaf (D5) was swept:
+
+| Model | L–C | C–R | Rule |
+|---|---|---|---|
+| Section at z 25 shifted sideways by roll only (the §8.7 method, levers 6.5 / 15.5 mm) | 4.48 mm worst | 4.58 mm worst | ≥ 3 mm |
+| Rigid paddle in the 1.6 mm R 90 mm plate shell: roll, rise of the paddle with the leaf, spherical plate, transition narrowing | 4.72 mm worst (L on its stop, C unloaded); 5.15 mm in normal use (±2 mm of nominal) | 5.34 mm worst | ≥ 3 mm |
+
+Both models meet mechanical.md §8.7's ≥ 4.2 mm. Its 4.2 mm figure matches the §8.7 method with a 19.5 mm centre lever (a 13 mm level step), so it is conservative for the 9 mm riser as built. Hair-exposed gaps below the plate, same sweep: paddle bodies ≥ 5.1 mm, seam sleeves ≥ 7.6 mm (the 10° sleeve is 0.56 mm wider in Y at its top than the old one, and this is included). Tip-edge gaps are mechanical.md's (W ≥ 8.4 mm, B45-12 ≥ 4.4 mm). No gap within 25 mm of the scalp falls in the 0.04 to 3 mm band.
 
 **What the mechanical lead must match.**
 
-1. The pocket exactly as `tm1_pocket()` (do not re-draw it) and a 14 x 9 mm nose, so every tip and the sleeve fit.
-2. Edge position: the W, B45, B45-12 and A45 edge is 12.5 mm below the pocket mouth, 37.5 mm below the knuckle plate at 25 mm protrusion, and 44.0 mm below the leaf floor. H is 0.3 mm lower, P 1.8 to 2.5 mm lower, E 4.0 mm lower.
-3. Leaf: 0.30 x 12.7 mm feeler stock along Y; free length measured from bar edge to bar edge (add 6 mm to the face-to-face length) and the tip 4 mm beyond the paddle bar edge, as in §7.2, or the hand leaves will be 1.75 times softer than intended.
-4. Mass per nail station on the float: paddle 9.6 g solid (about 6 to 7 g at 4 perimeters and 30 % infill [EST]), bar 0.7 g, 2 screws 1.2 g, magnet 0.4 g, sleeve 0.4 g, tip 1.6 to 2.2 g, so 11 to 14 g, and 33 to 43 g for three nails out of the 92 g bare floating budget (test-protocols §Q2).
-5. Two deviations to resolve, flagged and not silently fixed: DESIGN-FREEZE §1.7 calls the paddles "1 mm thick", but a TM1 pocket needs a body at least 9 mm thick; and the Y faces carry 5° of draft, not the ≥ 10° of §1.7 and hair-interaction H-4.3, because 10° at 20 mm pitch would leave a 2.2 mm gap between neighbouring paddle roots, inside the forbidden 0.04 to 3 mm band. Either keep 5° or widen the pitch to 23 mm or more.
+1. The pocket exactly as `tm1_pocket()` (do not re-draw it) and a 14 x 9 mm nose, so every tip and the sleeve fit both paddles.
+2. Edge position: the W, B45, B45-12 and A45 edge is 12.5 mm below the pocket mouth, 37.5 mm below the knuckle plate at 25 mm protrusion, and 44.0 mm below the leaf floor (53.0 mm on the riser paddle). H is 0.3 mm lower, P 1.8 to 2.5 mm lower, E 4.0 mm lower.
+3. Leaf: 0.30 x 12.7 mm feeler stock along Y; free length measured from bar edge to bar edge (add 6 mm to the face-to-face length) and the tip 4 mm beyond the paddle bar edge, as in §7.2, or the leaves come out about half as stiff as intended: the naive 3EI/L³ overstates k by 1.9 to 2.1 times at the hand's lengths. mechanical.md §8.3 applies the correction.
+4. Mass per nail station on the float [EST, the scale decides, mechanical.md §6.5]: outer paddle 11.2 g solid, about 4.5 to 5.5 g at 2 perimeters and 10 % gyroid; riser paddle 15.8 g solid, about 5.7 to 6.7 g. Bar 0.7 g, 2 aluminium screws 0.4 g, magnet 0.4 g, sleeve 0.4 g, tip 1.6 to 2.2 g. mechanical.md budgets 5.0 / 6.5 g per paddle. Wand paddles are printed at 4 perimeters and 30 % (mass does not matter there).
+5. Deviations from the freeze, both now ruled on in DESIGN-FREEZE-ADDENDUM-1. DESIGN-FREEZE §1.7 calls the paddles "1 mm thick", but a TM1 pocket needs a body at least 9 mm thick (14 x 9 mm nose, 2.35 mm walls around the 4.3 mm pocket); accepted as D1. The Y faces carried 5° of draft at the freeze's 20 mm pitch, because 10° there would leave 2.2 mm between neighbouring paddles, inside the forbidden 0.04 to 3 mm band. At the 24 mm pitch of D2 they carry the full 10° (D3), and the gaps above hold.
 6. Attack angle lives in the tip (`POCKET_TILT = 0`), as DESIGN-FREEZE §1.8 implies; tip-interface §5.2's 35° / 45° / 55° holder variants are not used in SP1.
+7. Leaf travel to the hard stop is 5.0 mm (4.5 to 5.5 mm, D5). At the stop the paddle rises 5 mm in the slot and rolls 3.8 to 4.4° past vertical. Both are inside the gaps above, and the pocket mouth is still 20 mm below the plate.
+8. `ROOT_Y` stays 14 mm. mechanical.md §8.9 offers `ROOT_Y = 18` to remove the Y-narrowing transition (+0.6 g per paddle). It is not needed: the narrowing is above the plate, inside the boot, and only widens the gaps. The parameter is there if MECH wants it.
 
 ---
 
@@ -242,8 +263,8 @@ Approximate single-unit retail prices in USD, 2026. Printed parts are costed pro
 
 | # | Item | Specification | Qty | Use | Price (USD) |
 |---|---|---|---|---|---|
-| 1 | PETG filament, one bright colour | 1.75 mm; about 120 g used | 120 g | all tips, carriers, paddles, bars, handle | 3 |
-| 2 | TPU 90A filament | 1.75 mm; about 10 g used | 10 g | seam sleeves x 4, E pads x 2 | 1 (spool 29 if not owned) |
+| 1 | PETG filament, one bright colour | 1.75 mm; about 130 g used | 130 g | all tips, carriers, paddles (hand and wand, table below), bars, handle | 3 |
+| 2 | TPU 90A filament | 1.75 mm; about 10 g used | 10 g | seam sleeves x 6 (hand 3, wand 1, 2 spares), E pads x 2 | 1 (spool 29 if not owned) |
 | 3 | Neodymium magnets | N52, 6 x 2 mm disc, axial | 50 pack | one per pocket | 9 |
 | 4 | Neodymium magnets | N52, 6 x 3 mm disc, axial | 20 pack | breakaway tuning (§2.3) | 6 |
 | 5 | Steel keeper discs | mild steel 6 x 1 mm (or 1 mm sheet 100 x 100 mm) | 50 pack | tang keepers, flats filed to 3.9 mm | 7 |
@@ -252,7 +273,7 @@ Approximate single-unit retail prices in USD, 2026. Printed parts are costed pro
 | 8 | Nylon picks | Dunlop nylon 0.88 mm | 12 pack | A45 blades | 5 |
 | 9 | Nylon picks or sheet | Dunlop nylon 1.0 mm, or nylon 6/6 sheet 1.0 mm | 12 pack | E blades, B45 slot blades | 5 |
 | 10 | Steel balls | G25 chrome steel, 3.0 mm | 100 pack | H tips | 5 |
-| 11 | Screws | M3 x 8 socket or button head | 50 pack | wand bar 4, paddle bars 2 each | 5 |
+| 11 | Screws | M3 x 8 socket or button head | 50 pack | wand bar 4, wand paddle bar 2 (the SP1 hand's 6 aluminium M3 x 8 paddle-clamp screws are on the mechanical BOM, mechanical.md §12) | 5 |
 | 12 | Cyanoacrylate | thin and gel, 20 g each | 2 | blades, nails, balls, sleeve rim | 8 |
 | 13 | Epoxy | 5-minute, twin syringe | 1 | keepers, P fill (alternative) | 6 |
 | 14 | Abrasive paper | wet-and-dry 400, 600, 1000, 2000 grit | 1 sheet each | edge radius (§6) | 8 |
@@ -262,6 +283,17 @@ Approximate single-unit retail prices in USD, 2026. Printed parts are costed pro
 | 18 | Tip box | printed block (30 g PETG) or pill organiser with foam | 1 | coded tip storage | 1 |
 | | **Total** | | | | **103** |
 | | Test kit (not totalled) | 10x loupe 8, 50 µm polyester tape 6, 10 mm rod 2, kitchen scale | | L9, §6 | (16) |
+
+**Printed paddle parts (from `cad/tips/stl/`, PETG unless stated; mechanical.md §11 T1 to T4).**
+
+| Ref | STL | Setting | Qty SP1 hand | Qty wand | Mass each [EST] | Print |
+|---|---|---|---|---|---|---|
+| T1 | `paddle_with_pocket.stl` | `RISER = 0`, outer paddle | 2 (L, R) | 1 + 1 spare | 4.5 to 5.5 g (hand), about 8 g (wand) | nose up, magnet pause at 23.1 mm |
+| T2 | `paddle_with_pocket_riser9.stl` | `RISER = 9`, centre paddle | 1 (C), print a spare | 0 | 5.7 to 6.7 g | nose up, magnet pause at 32.1 mm; mark "C" |
+| T3 | `paddle_clamp_bar.stl` | | 3 | 1 | 0.7 g | groove up |
+| T4 | `tm1_seam_sleeve.stl` (TPU 90A) | 10° nose | 3 + 2 spares | 1 | 0.4 g | standing |
+
+Hand paddles print at 2 perimeters and 10 % gyroid, with 4 perimeters around the screw holes (mechanical.md §8.9). Wand paddles print at 4 perimeters and 30 %. Each paddle takes one N52 6 x 2 magnet (item 3) and is clamped with 2 x M3 x 8. The boot membrane and Sil-Poxy that bond to the hand paddles (D4) are on the mechanical BOM.
 
 The tip subsystem costs about $103 with filament costed pro rata, about $132 if a TPU 90A spool has to be bought. The Stage-0 wand alone needs items 1, 3, 5, 6, 7 and 10 plus screws, glue and abrasives: about $39 cash if screws, CA, abrasives and a marker are already in the shop, against the DESIGN-FREEZE estimate of about $30.
 
@@ -273,7 +305,9 @@ The tip subsystem costs about $103 with filament costed pro rata, about $132 if 
 
 Fixed in the SCAD files and mirrored in `gen_tips_stl.py`: (1) slot-mode bonding face was about 36°, now a true 45° face; (2) B45-12 plate ends rose 0.7 mm into the seam sleeve, now clipped at the band plane; (3) clamp-bar screw holes broke out of the bar ends, now bar 24 mm and screws at ±9.5 mm (paddle and wand); (4) wand stiffness table overstated k 1.75 times, now corrected with a 38 mm default; (5) "tang down" orientation made the edge a layer staircase, now W, B45 and B45-12 print on their side at 0.10 mm; (6) single press-on cannot reach R 0.4 mm, nested nails now required; (7) E edge height and down-stop advice corrected; (8) W face angle and B45-12 crown comments corrected; (9) B45 hair-behaviour comment corrected.
 
-Kept as deliberate deviations: steel slug instead of a round disc; breakaway estimate at the low end of the band; H drafted cone with a glued ball; E pad 10 x 10 x 6 mm (8 mm blade); attack angle in the tip; TM1-B cross-bolt; paddle 5° Y draft and solid paddle body (to MECH); the freeze's "8 mm loaded edge" read as width, about 4 mm loaded at 0.3 N.
+Resolved after the addendum: the paddle Y draft is now 10° (was 5°, held back by the 20 mm pitch; D2 and D3), and the centre paddle has a 9 mm riser (§1, §8).
+
+Kept as deliberate deviations: steel slug instead of a round disc; breakaway estimate at the low end of the band; H drafted cone with a glued ball; E pad 10 x 10 x 6 mm (8 mm blade); attack angle in the tip; TM1-B cross-bolt; solid paddle body (freeze "1 mm" paddle, accepted as ADDENDUM-1 D1); the freeze's "8 mm loaded edge" read as width, about 4 mm loaded at 0.3 N.
 
 ### 10.2 Edge radius vs safety
 
@@ -304,4 +338,12 @@ FDM parts are porous (safety §8), so scalp-contacting printed tips are weekly c
 1. Loaded edge length at 0.3 N [UNKNOWN]: the §7.4 ink-mark test replaces the 4 mm estimate.
 2. E cannot test compliance in the tip (pad about 1,000 times stiffer than the leaf): decide after B45 whether E is a damping experiment or needs a softer design.
 3. The wand has no hard stop; force comes from scale practice and the visible leaf bend (15.5 mm at 2.4 N). A printed stop finger under the leaf is a 20-minute addition if practice proves unreliable.
-4. Floating mass: three paddle and tip stations take 33 to 43 g of the 92 g float budget (MECH to confirm).
+4. Floating mass: three paddle and tip stations at mechanical.md's print settings take about 26 to 32 g [EST] (§8 item 5). mechanical.md §6.5 budgets 27.7 g for them, with 2 g of margin on the 92 g limit, so the scale (L1) decides. If the budget is over, the first fallback on the tip side is thinner paddle walls around the pocket, not a shorter paddle.
+
+### 10.9 Post-addendum risks (24 mm pitch, 10° draft, riser, shared slot, 5 mm travel)
+
+1. **Two paddle kinds.** The riser paddle is 9 mm taller and must sit on C only. Fitted on L or R, its leaf floor is at the wrong level and the edge 9 mm too low. Mark "C" on its root block. Its magnet pause height differs: 32.1 mm against 23.1 mm.
+2. **Old sleeves and old paddles.** A 5° paddle printed before the addendum is 4.4 mm narrower in Y at the plate and takes a 5° sleeve. Scrap the old ones: mixing them changes the gaps and the boot fit.
+3. **Gap margins.** Static 6.18 mm between paddles at the plate. Worst case 4.5 to 4.7 mm with any leaf at 0 to 5 mm (§8), against the ≥ 3 mm rule. Past the stop the margin goes quickly. With travel allowed to 6 mm the worst gap is 4.6 mm; at 7 mm it is 3.9 mm (C–R, falling about 0.7 mm per extra millimetre). So L2 must confirm the stop at 5.0 ± 0.3 mm before any hair test.
+4. **Membrane bond.** The D4 boot is bonded to each paddle at z 26 to 28. A PETG surface with seam zits or CA residue there bonds badly, and a peeled boot leaves a 0.04 to 3 mm gap at the plate. Keep that band clean, and inspect it with the K1.10 monofilament probe at every hand assembly.
+5. **Sensation.** The 24 mm pitch is for the SENSATION GATE to assess (D2). Nothing in the tips changes with pitch, so a tip result from the wand still transfers.

@@ -6,7 +6,9 @@ Generates into ./stl/ :
   tips      tip_W, tip_B45, tip_B45_12, tip_A45 (slot carrier), tip_H_ball,
             tip_E_carrier, tip_E_pad (TPU 90A), tip_E_blade (blank / template),
             tip_P_carrier
-  holder    paddle_with_pocket, paddle_clamp_bar, tm1_seam_sleeve (TPU 90A)
+  holder    paddle_with_pocket (RISER 0: SP1 outer paddles x 2, and the wand),
+            paddle_with_pocket_riser9 (RISER 9: SP1 centre paddle x 1),
+            paddle_clamp_bar, tm1_seam_sleeve (TPU 90A)
   wand      hand_wand_handle, hand_wand_clamp_bar
 using trimesh booleans (manifold3d engine) and manifold3d convex hulls (no scipy needed).
 
@@ -261,7 +263,8 @@ def tip_P_carrier(p=PC):
     return tm1_tip_base().union(body.difference(carve))
 
 # ---------------- paddle_with_pocket.scad ----------------
-P = dict(NOSE_X=14.0, NOSE_Y=9.0, NOSE_R=1.0, DRAFT_X=10.0, DRAFT_Y=5.0, PADDLE_LEN=25.0,
+# rev 2026-10-01 post DESIGN-FREEZE-ADDENDUM-1 (D2/D3): DRAFT_Y 5 -> 10, new RISER (0 / 9)
+P = dict(NOSE_X=14.0, NOSE_Y=9.0, NOSE_R=1.0, DRAFT_X=10.0, DRAFT_Y=10.0, PADDLE_LEN=25.0, RISER=0.0,
          ROOT_X=28.0, ROOT_Y=14.0, ROOT_TRANS=3.0, ROOT_H=7.0, ROOT_R=2.0,
          LEAF_W=12.7, LEAF_T=0.30, WINDOW_X=24.2, WINDOW_Y=8.4, WINDOW_D=3.5,
          WALL_SLOT_H=1.0, SCREW_X=9.5, SCREW_HOLE_D=2.6, SCREW_DEPTH=5.0,
@@ -271,11 +274,15 @@ P = dict(NOSE_X=14.0, NOSE_Y=9.0, NOSE_R=1.0, DRAFT_X=10.0, DRAFT_Y=5.0, PADDLE_
 def paddle(p=P):
     tx = p["NOSE_X"] + 2 * p["PADDLE_LEN"] * math.tan(math.radians(p["DRAFT_X"]))
     ty = p["NOSE_Y"] + 2 * p["PADDLE_LEN"] * math.tan(math.radians(p["DRAFT_Y"]))
-    z0, z1 = p["PADDLE_LEN"], p["PADDLE_LEN"] + p["ROOT_TRANS"]
+    zd = p["PADDLE_LEN"]                                  # top of the drafted body
+    z0 = zd + p["RISER"]                                  # top of the riser
+    z1 = z0 + p["ROOT_TRANS"]
     z_top = z1 + p["ROOT_H"]
     z_floor = z_top - p["WINDOW_D"]
     r = p["NOSE_R"]
-    body = hull(slab(p["NOSE_X"], p["NOSE_Y"], r, 0.01), slab(tx, ty, r, z0))
+    body = hull(slab(p["NOSE_X"], p["NOSE_Y"], r, 0.01), slab(tx, ty, r, zd))
+    if p["RISER"] > 0:
+        body = body.union(rrect_prism(tx, ty, r, zd - 0.01, z0 + 0.01))
     trans = hull(slab(tx, ty, r, z0), slab(p["ROOT_X"], p["ROOT_Y"], p["ROOT_R"], z1))
     root = rrect_prism(p["ROOT_X"], p["ROOT_Y"], p["ROOT_R"], z1 - 0.01, z_top)
     m = body.union(trans).union(root)
@@ -285,6 +292,9 @@ def paddle(p=P):
     for sx in (-p["SCREW_X"], p["SCREW_X"]):
         cuts.append(zcyl(p["SCREW_HOLE_D"] / 2, z_floor - p["SCREW_DEPTH"], z_floor + 0.01, x=sx, sections=24))
     return diff_all(m, cuts)
+
+def paddle_riser9(p=P):
+    return paddle(dict(p, RISER=9.0))
 
 def clamp_bar(p=P):
     m = box(p["BAR_X"], p["BAR_Y"], p["BAR_H"], cz=p["BAR_H"] / 2)
@@ -342,9 +352,12 @@ EXPECTED = {
     "tip_E_pad":           [-5, 5, -5, 5, -14.5, -6.65],
     "tip_E_blade":         [-4, 4, 0, 9, 0, 1.0],
     "tip_P_carrier":       [-7, 7, -4.5, 4.5, None, 12.0],
-    "paddle_with_pocket":  [-14, 14, -7, 7, 0, 35],
+    # paddle Y: drafted top 9 + 2*25*tan(10) = 17.816 (wider than the 14 mm root) -> +/-8.908
+    "paddle_with_pocket":  [-14, 14, -8.908, 8.908, 0, 35],
+    "paddle_with_pocket_riser9": [-14, 14, -8.908, 8.908, 0, 44],
     "paddle_clamp_bar":    [-12, 12, -4, 4, 0, 3.2],
-    "tm1_seam_sleeve":     [-7.93, 7.93, -5.16, 5.16, -5.5, 3.0],
+    # sleeve top Y: 9 + 2*3*tan(10) - 0.4 + 2*0.8*0.75 = 10.858 -> +/-5.429 (was 5.16 at 5 deg)
+    "tm1_seam_sleeve":     [-7.93, 7.93, -5.429, 5.429, -5.5, 3.0],
     "hand_wand_handle":    [-14, 14, -165, 15, 0, 16],
     "hand_wand_clamp_bar": [-12, 12, -12, 12, 0, 3.2],
 }
@@ -367,15 +380,39 @@ if __name__ == "__main__":
         "tip_W": tip_W, "tip_B45": tip_B45, "tip_B45_12": tip_B45_12, "tip_A45": tip_A45,
         "tip_H_ball": tip_H, "tip_E_carrier": tip_E_carrier, "tip_E_pad": tip_E_pad,
         "tip_E_blade": tip_E_blade, "tip_P_carrier": tip_P_carrier,
-        "paddle_with_pocket": paddle, "paddle_clamp_bar": clamp_bar, "tm1_seam_sleeve": seam_sleeve,
+        "paddle_with_pocket": paddle, "paddle_with_pocket_riser9": paddle_riser9,
+        "paddle_clamp_bar": clamp_bar, "tm1_seam_sleeve": seam_sleeve,
         "hand_wand_handle": hand_wand_handle, "hand_wand_clamp_bar": hand_wand_bar,
     }
     rows = []
     allok = all([report(k, f(), rows) for k, f in parts.items()])
-    print(f"{'file':26s} {'bbox X x Y x Z (mm)':25s} {'z range (mm)':17s} {'vol (mm3)':>9s}  watertight  bbox OK")
+    print(f"{'file':31s} {'bbox X x Y x Z (mm)':25s} {'z range (mm)':17s} {'vol (mm3)':>9s}  watertight  bbox OK")
     for name, size, b, vol, ok, bb_ok in rows:
-        print(f"{name + '.stl':26s} {size[0]:6.2f} x {size[1]:6.2f} x {size[2]:6.2f}  "
+        print(f"{name + '.stl':31s} {size[0]:6.2f} x {size[1]:6.2f} x {size[2]:6.2f}  "
               f"[{b[0][2]:7.2f},{b[1][2]:6.2f}]  {vol:9.1f}  {str(ok):10s}  {bb_ok}")
+    # paddle section checks: the knuckle-plate section (z = 25) and, on the riser paddle, the
+    # constant riser section (z 25..34); the leaf floor (31.5 / 40.5) via the window cut
+    secs_ok = True
+    for name, mk, zs, floor in (("paddle_with_pocket", paddle, (25.0,), 31.5),
+                                ("paddle_with_pocket_riser9", paddle_riser9, (25.0, 29.5, 33.9), 40.5)):
+        m = mk()
+        for z in zs:
+            seg = trimesh.intersections.mesh_plane(m, plane_normal=[0, 0, 1], plane_origin=[0, 0, z])
+            pts = seg.reshape(-1, 3)
+            ext = pts.max(axis=0) - pts.min(axis=0)
+            good = abs(ext[0] - 22.816) <= 0.06 and abs(ext[1] - 17.816) <= 0.06
+            secs_ok &= good
+            print(f"(check) {name}: section at z {z:5.2f} = {ext[0]:.2f} x {ext[1]:.2f} mm  {'OK' if good else 'FAIL'}")
+        # leaf floor: a 1 x 1 x 0.4 probe is empty just above the floor (window) and full just below
+        def probe(zc):
+            with np.errstate(invalid="ignore", divide="ignore"):
+                return m.intersection(box(1.0, 1.0, 0.4, cy=3.0, cz=zc)).volume
+        above, below_ = probe(floor + 0.25), probe(floor - 0.25)
+        good = above < 1e-6 and abs(below_ - 0.4) < 1e-3
+        secs_ok &= good
+        print(f"(check) {name}: leaf floor at z {floor:.2f} (edge {floor + 12.5:.1f} mm below the leaf)  {'OK' if good else 'FAIL'}")
+    print(f"(info) paddle gap at 24 mm pitch, z = 25, free state: {24 - 17.816:.2f} mm")
+    allok = allok and secs_ok
     eb = tip_E_blade_placed().bounds
     print(f"(info) E blade edge lowest point z = {eb[0][2]:.2f} mm (W apex -12.50)")
     print("ALL WATERTIGHT, ALL BBOXES AS EXPECTED" if allok else "WARNING: check the rows above")

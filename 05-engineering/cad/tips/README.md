@@ -18,10 +18,21 @@ The engineering write-up for everything in this folder is `05-engineering/tips.m
 | `tip_E_carrier.scad` | Tip E, B45 geometry on a TPU 90A pulp pad. `PART = "carrier" / "pad" / "blade" / "assembly"`. | PETG carrier, TPU pad, nylon blade |
 | `tip_H_ball.scad` | Tip H, 3 mm steel ball on a drafted cone: the massager CONTROL tip. | PETG part + 3 mm ball |
 | `tip_P_carrier.scad` | Tip P, carrier with a convex R 8.5 mm bed for a trimmed press-on nail. | PETG carrier + ABS nail(s) |
-| `paddle_with_pocket.scad` | 25 mm drafted paddle ending in a TM1 pocket, clamp for the 0.3 x 12.7 mm feeler leaf, clamp bar, TPU seam sleeve. `PART = "paddle" / "bar" / "sleeve" / "assembly"`. Shared by the SP1 hand (MECH LEAD may override) and the wand. | PETG paddle and bar, TPU sleeve |
+| `paddle_with_pocket.scad` | 25 mm drafted paddle (10° draft on all four faces, `DRAFT_Y = 10` since DESIGN-FREEZE-ADDENDUM-1 D3) ending in a TM1 pocket, clamp for the 0.3 x 12.7 mm feeler leaf, clamp bar, TPU seam sleeve. `PART = "paddle" / "bar" / "sleeve" / "assembly"`. `RISER` (default 0) inserts a straight 22.8 x 17.8 mm section above z = 25 before the root transition; the SP1 centre paddle is `RISER = 9` (its leaf clamps 9 mm higher and crosses over the left paddle, mechanical.md §8.2). Shared by the SP1 hand and the wand. | PETG paddle and bar, TPU sleeve |
 | `hand_wand_handle.scad` | Stage-0 hand wand: 150 mm grip + 30 mm clamp block for one end of the feeler leaf. `PART = "handle" / "bar" / "assembly"`. | PETG (or PLA) handle and bar |
 | `gen_tips_stl.py` | Python STL generator (no OpenSCAD needed). Mirrors the SCAD files; parameter names match. | `stl/*.stl` |
 | `stl/` | Generated meshes, in the MODEL frame (rotate in the slicer per §3). | |
+
+Paddle STLs and quantities for the SP1 hand (mechanical.md §11, T1 to T4) and the wand:
+
+| STL | SCAD setting | Qty SP1 hand | Qty wand | Leaf floor (z) | Leaf floor to W/B45 edge |
+|---|---|---|---|---|---|
+| `paddle_with_pocket.stl` | `RISER = 0` (default) | 2 (outer nails L, R) | 1 (+1 spare) | 31.5 mm | 44.0 mm |
+| `paddle_with_pocket_riser9.stl` | `RISER = 9` | 1 (centre nail C) | 0 | 40.5 mm | 53.0 mm |
+| `paddle_clamp_bar.stl` | `PART = "bar"` | 3 | 1 | | |
+| `tm1_seam_sleeve.stl` | `PART = "sleeve"` | 3 (+ spares) | 1 (+ spare) | | |
+
+The two paddles are identical below z = 25 (nose, pocket, magnet recess, drafted body, the section at the knuckle plate), so every tip and sleeve fits both.
 
 Frame used in every file: +Z into the pocket (toward the leaf), -Z toward the scalp, X = stroke, Y = across the stroke. Origin = centre of the pocket-mouth plane. The working edge of W, B45, B45-12 and A45 lies 12.5 mm below the mouth.
 
@@ -34,9 +45,9 @@ cd 05-engineering/cad/tips
 /tmp/claude-0/-home-user-ai-social/a9d4d996-bfe2-5b1b-8c54-ae462b273760/scratchpad/cadenv/bin/python gen_tips_stl.py
 ```
 
-Any Python 3.10+ with `numpy`, `trimesh` (5.x) and `manifold3d` works (`pip install numpy trimesh manifold3d`); scipy is not needed (hulls use manifold3d). The script writes 14 STLs, checks that each is watertight and that its bounding box matches a hand-derived expectation within 0.06 mm, prints the table below and exits non-zero on any failure. If you change a SCAD parameter, change the same-named constant in `gen_tips_stl.py` (and its `EXPECTED` row if the envelope moves). With OpenSCAD installed you can export directly instead, e.g. `openscad -o stl/tip_W.stl tip_W.scad` or `openscad -D 'PART="pad"' -o stl/tip_E_pad.stl tip_E_carrier.scad`.
+Any Python 3.10+ with `numpy`, `trimesh` (5.x) and `manifold3d` works (`pip install numpy trimesh manifold3d`); scipy is not needed (hulls use manifold3d). The script writes 15 STLs, checks that each is watertight and that its bounding box matches a hand-derived expectation within 0.06 mm, checks the paddle sections at z = 25 (and, on the riser paddle, at z 29.5 and 33.9) are 22.82 x 17.82 mm and that each leaf floor sits where it should (31.5 / 40.5 mm), prints the table below and exits non-zero on any failure. If you change a SCAD parameter, change the same-named constant in `gen_tips_stl.py` (and its `EXPECTED` row if the envelope moves). With OpenSCAD installed you can export directly instead, e.g. `openscad -o stl/tip_W.stl tip_W.scad` or `openscad -D 'PART="pad"' -o stl/tip_E_pad.stl tip_E_carrier.scad`, and for the centre paddle `openscad -D 'RISER=9' -o stl/paddle_with_pocket_riser9.stl paddle_with_pocket.scad`.
 
-Output of the 2026-10-01 run:
+Output of the 2026-10-01 run (regenerated after DESIGN-FREEZE-ADDENDUM-1: `DRAFT_Y` 5 to 10 changed the paddle and the seam sleeve, the riser paddle is new; every other STL has the same bounding box and volume as before):
 
 | File | bbox X x Y x Z (mm) | z range (mm) | volume (mm³) | watertight |
 |---|---|---|---|---|
@@ -49,9 +60,10 @@ Output of the 2026-10-01 run:
 | tip_E_pad.stl | 10.00 x 10.00 x 7.84 | -14.50 to -6.66 | 493.2 | yes |
 | tip_E_blade.stl (blank) | 8.00 x 9.00 x 1.00 | 0 to 1.00 | 68.2 | yes |
 | tip_P_carrier.stl | 14.00 x 9.00 x 23.50 | -11.50 to 12.00 | 1440.7 | yes |
-| paddle_with_pocket.stl | 28.00 x 14.00 x 35.00 | 0 to 35.00 | 7546.2 | yes |
+| paddle_with_pocket.stl | 28.00 x 17.82 x 35.00 | 0 to 35.00 | 8814.8 | yes |
+| paddle_with_pocket_riser9.stl | 28.00 x 17.82 x 44.00 | 0 to 44.00 | 12465.5 | yes |
 | paddle_clamp_bar.stl | 24.00 x 8.00 x 3.20 | 0 to 3.20 | 531.2 | yes |
-| tm1_seam_sleeve.stl | 15.86 x 10.32 x 8.50 | -5.50 to 3.00 | 325.4 | yes |
+| tm1_seam_sleeve.stl | 15.86 x 10.86 x 8.50 | -5.50 to 3.00 | 352.4 | yes |
 | hand_wand_handle.stl | 28.00 x 180.00 x 16.00 | 0 to 16.00 | 63237.3 | yes |
 | hand_wand_clamp_bar.stl | 24.00 x 24.00 x 3.20 | 0 to 3.20 | 1650.9 | yes |
 
@@ -65,12 +77,12 @@ All tips in ONE bright colour of PETG (orange or yellow): fragments must be visi
 | tip_A45, tip_P_carrier, tip_E_carrier, tip_H_ball | PETG | 0.10 mm | tang DOWN, working end up | 3 perimeters, 100 % | none (cone 39° and 45° overhangs, bonding faces face up) | carriers: the edge is sheet stock, so orientation does not shape it |
 | tip_E_pad | TPU 90A | 0.20 mm | lying on a Y face (the dovetail and 45° chamfer are then in the print plane) | 3 perimeters, 100 % | none | 15 to 20 mm/s, direct drive |
 | tip_E_blade | 1.0 mm nylon sheet or pick | | print the STL flat in any filament only as a scribing template | | | do not use a flat-printed blade at the scalp: its edge would be a layer staircase |
-| paddle_with_pocket | PETG | 0.20 mm (0.16 for a crisper pocket) | NOSE UP, root block on the bed | 4 perimeters, 30 % | none (window floor and leaf slots are 8.4 and 12.9 mm bridges) | PAUSE at print height 23.1 mm (model z 11.9) and drop the N52 6 x 2 magnet into the Ø 6.2 recess with a dot of CA, any polarity; check in the slicer preview that the next layer starts to roof the recess |
+| paddle_with_pocket, paddle_with_pocket_riser9 | PETG | 0.20 mm (0.16 for a crisper pocket) | NOSE UP, root block on the bed | SP1 hand: 2 perimeters, 10 % gyroid, with a slicer modifier giving 4 perimeters around the two screw holes (mechanical.md §8.9, float mass budget). Wand: 4 perimeters, 30 % | none (window floor and leaf slots are 8.4 and 12.9 mm bridges; going up the print the 3 mm transition flares out in Y by 1.9 mm per side, 32° from vertical, printable) | PAUSE at print height 23.1 mm (`RISER = 0`) or 32.1 mm (`RISER = 9`), model z 11.9 in both, and drop the N52 6 x 2 magnet into the Ø 6.2 recess with a dot of CA, any polarity; check in the slicer preview that the next layer starts to roof the recess. Mark the riser paddle (it is 9 mm taller) "C" on its root block |
 | paddle_clamp_bar, hand_wand_clamp_bar | PETG | 0.20 mm | groove side up, as modelled | 100 % | none | |
 | tm1_seam_sleeve | TPU 90A | 0.20 mm | standing, bottom (z -5.5) end on the bed | 2 perimeters (0.8 mm wall) | none | |
 | hand_wand_handle | PETG or PLA (never touches hair) | 0.20 to 0.28 mm | flat, window up, as modelled | 3 perimeters, 15 % | none (the leaf slot ceiling is a 12.9 mm bridge) | |
 
-Fasteners: M3 x 8 socket or button head, thread-forming into the 2.6 mm holes (set `SCREW_HOLE_D = 4.0` for heat-set inserts). Two per paddle bar, four per wand bar.
+Fasteners: M3 x 8 socket or button head, thread-forming into the 2.6 mm holes (set `SCREW_HOLE_D = 4.0` for heat-set inserts). Two per paddle bar, four per wand bar. On the SP1 hand use aluminium M3 x 8 at 0.3 N·m (mechanical.md §8.6, mass budget); the M2 screws in mechanical.md are for the palm-side root clamp bars (P34), not the paddle.
 
 ## 4. Post-processing: edge radius control
 
@@ -84,7 +96,7 @@ The red line is R 0.4 mm minimum for any tip used in a first human session (W 0.
 6. **UL 1439-style tape test (test-protocols L9).** 10 mm rod wrapped with 3 layers of 50 µm polyester or PTFE tape. Tip in the holder on the hand wand; press at 1.0 N, then 2.4 N (kitchen scale under the rod); slide 50 mm along the rod at about 50 mm/s, three passes each direction, both edge senses for the 45° tips, then across the corners. Inspect under the loupe. Pass: no cut through any layer at 2.4 N. A45 must pass at 2.4 N too or it stays gated. Re-test after 10 sessions or after any drop.
 7. **Record** the measured radius, test date and result against the tip's code on the key card (§5).
 
-Assembly notes per tip: steel keeper (6 x 1 mm disc with two flats filed to 3.9 mm, or a 6.0 x 3.9 x 1.0 mm slug from 1 mm mild steel) bonded with epoxy or gel CA into the tang-end notch, flush with the end. H: CA the 3 mm ball into the cup. A45: cut a Dunlop nylon 0.88 mm pick (or 0.8 mm nylon sheet) to 8 x 9 mm with a convex R 9 end, file the edge first, then CA the sheet onto the 45° carrier face with its top butted against the band. E: slide the TPU pad into the dovetail along Y with a drop of CA, bond the 1.0 mm nylon blade on the 45° face with 2 mm overhang. P: see tips.md §5.4 (two nested nails for R 0.4 or more). Seam sleeve: stretch over the paddle nose, bottom flush with the band bottom when a tip is seated; one dot of gel CA at the sleeve's top rim keeps it on the nose when a tip is pulled.
+Assembly notes per tip: steel keeper (6 x 1 mm disc with two flats filed to 3.9 mm, or a 6.0 x 3.9 x 1.0 mm slug from 1 mm mild steel) bonded with epoxy or gel CA into the tang-end notch, flush with the end. H: CA the 3 mm ball into the cup. A45: cut a Dunlop nylon 0.88 mm pick (or 0.8 mm nylon sheet) to 8 x 9 mm with a convex R 9 end, file the edge first, then CA the sheet onto the 45° carrier face with its top butted against the band. E: slide the TPU pad into the dovetail along Y with a drop of CA, bond the 1.0 mm nylon blade on the 45° face with 2 mm overhang. P: see tips.md §5.4 (two nested nails for R 0.4 or more). Seam sleeve: stretch over the paddle nose, bottom flush with the band bottom when a tip is seated; one dot of gel CA at the sleeve's top rim keeps it on the nose when a tip is pulled. The sleeve is now drawn for the 10° nose; a sleeve printed for the old 5° paddle is 0.5 mm narrower in Y at its top and must not be used on a new paddle (it would ride up). SP1 hand: after the paddles are clamped, the knuckle-plate boot (one slack 0.25 mm silicone membrane over the shared slot, mechanical.md §8.7, ADDENDUM-1 D4) is bonded to each paddle at z 26 to 28 with a 2 mm bead of silicone adhesive; keep that band of the paddle free of CA, varnish and slicer seam (put the seam on a +X or -X corner).
 
 ## 5. Blinding codes and the tip box (test-protocols §Q5)
 
