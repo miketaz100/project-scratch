@@ -10,7 +10,7 @@ Binding for the CAD agent, BOM agent, integrator and all three gates. Where this
 - **D5** Leaf travel to the hard stop 5.0 mm (range 4.5–5.5 mm), not 8–10 mm.
 - **D6** Servo beside the palm on the −Y side, horn facing +Y, driving a two-sided yoke with an idler bearing on +Y; MGN9 rail on the yoke's front mast. Lift-off geometry, L_max = 84 mm and all firmware constants unchanged. **The BUILD REVIEW must check the yoke's alignment procedure and the idler bearing's hair exposure.**
 - **D7** MGN9C carriage (16 g) instead of MGN9H; H allowed if the scale shows margin.
-- **D8** Module frame is 2020 extrusion: 270 mm elbow-carrier beam, 90 mm post, 80 mm spine.
+- **D8** Module frame is 2020 extrusion: 270 mm elbow-carrier beam, 104 mm post (mechanical.md §2, §5.1, §12; the 90 mm figure in the lead's summary was a typo), 80 mm spine.
 - **D9** Coordinate clarification: scalp sphere centre (0, 0, −86) mm, apex at Z = +4 mm, O = centre nail edge at mid-stroke with the float on its down-stop. All geometry uses freeze §1.5 numbers.
 - **D10** The leaf hard stop is a backstop, not the absolute force cap. While the float is free, the cap is the dead weight W ≤ 1.5 N. If the float reaches its up-stop (head rise > 24 mm) force can rise to about 9 N total before the hinge yields. **The SAFETY GATE must rule on D10**: the procedural cover is hold-to-run release; the bench test is L5 plus a deliberate float-jam test at the up-stop.
 - **D11** Two extension springs in parallel, 6.5 N each at working extension, acting through Dyneema cords over 623ZZ pulleys at a 64 mm lever; one spring alone must still lift the module (redundancy test in L5).
