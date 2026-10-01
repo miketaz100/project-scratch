@@ -1,0 +1,91 @@
+P21: 1 sealed internal cavity (box beam / closed shell): fine for printing
+
+=== PARTS ===
+id   file                             bbox X x Y x Z (mm)         volume mm3  mass g wt  s11 bbox           match frame
+P1   p01_vesa_adapter                   91.0 x  140.0 x  150.0        212263   269.6 yes    66 x   140 x   145 NO    global
+P2   p02_pulley_sheave                  16.0 x   16.0 x    5.0           533     0.7 yes    16 x    16 x     5 yes   local (axis Z)
+P3   p03_electronics_tray               32.0 x   36.0 x   92.0         24903    31.6 yes    32 x    36 x    92 yes   global
+P4   p04_electronics_tray_lid           11.8 x   36.0 x   92.0          6609     8.4 yes     2 x    36 x    92 NO    global
+P5   p05_frame_hinge_knuckle            24.0 x   48.0 x   30.0         26961    34.2 yes    24 x    48 x    30 yes   global
+P6   p06_keeper_lever                   27.0 x   30.0 x  115.0         26243    33.3 yes    12 x    30 x    60 NO    global
+P7   p07_cord_bar                       38.0 x  140.0 x   17.0         20968    26.6 yes    12 x   140 x    12 NO    global
+P8   p08_frame_yaw_plate                70.0 x   70.0 x    6.0         26890    34.1 yes    70 x    70 x     6 yes   global
+P9   p09_carrier_yaw_plate              70.0 x   70.0 x    6.0         26935    34.2 yes    70 x    70 x     6 yes   global
+P10  p10_reset_tab                      25.0 x   30.0 x   25.0         13905    17.7 yes    25 x    30 x    25 yes   global
+P11  p11_drop_leg_servo                 55.0 x   24.0 x  115.0         36586    46.5 yes    50 x    20 x   105 NO    global
+P12  p12_drop_leg_idler                 55.0 x   24.0 x  115.0         36711    46.6 yes    50 x    20 x   105 NO    global
+P13  p13_servo_cradle                   40.0 x   32.5 x   46.0         23441    29.8 yes    30 x    30 x    44 NO    global
+P14  p14_servo_strap                    30.0 x    5.2 x   18.0          2099     2.7 yes    30 x     4 x    10 NO    global
+P15  p15_idler_housing                  30.0 x   14.0 x   40.0         14207    18.0 yes    30 x    14 x    40 yes   global
+P16  p16_horn_adapter_disc              24.0 x    3.0 x   24.0          1117     1.4 yes    24 x     3 x    24 yes   global
+P17  p17_guard_cap_servo                60.0 x   32.0 x   30.0         10501    13.3 yes    60 x    40 x    30 NO    global
+P18  p18_guard_cap_idler                60.0 x   32.0 x   30.0         10501    13.3 yes    60 x    40 x    30 NO    global
+P19  p19_yoke_cheek_a                   75.0 x    8.0 x   40.0         13724    17.4 yes    75 x     5 x    40 NO    global
+P20  p20_yoke_cheek_b                   75.0 x    5.0 x   40.0         13709    17.4 yes    75 x     5 x    40 yes   global
+P21  p21_yoke_crossbar                  20.0 x  186.0 x  106.4         33647    42.7 yes    17 x   196 x   108 NO    global
+P22  p22_rail_shroud                    19.5 x   38.0 x   44.0          5343     6.8 yes    16 x    34 x    50 NO    global
+P23  p23_rail_down_stop                 12.0 x   20.0 x    8.0          1484     1.9 yes    12 x    20 x     8 yes   global
+P24  p24_rail_up_stop                   12.0 x   20.0 x    8.0           850     1.1 yes    12 x    20 x     8 yes   global
+P25  p25_scale_strip                     2.5 x    8.0 x   45.4           602     0.8 yes     2 x     8 x    45 yes   local (strip along Z)
+P26  p26_carriage_riser                 38.0 x   34.0 x   39.5          3111     4.0 yes    32 x    20 x    34 NO    global
+P27  p27_trim_cleat                     10.0 x   16.0 x   12.0          1562     2.0 yes    10 x    16 x    12 yes   global
+P28  p28_upper_wrist_seat               45.0 x   44.0 x   39.0         10066    12.8 yes    44 x    44 x    39 yes   global
+P29  p29_weight_cap                     15.9 x   15.9 x    4.0           741     0.9 yes    16 x    16 x     4 yes   local
+P30  p30_knuckle_plate                  64.0 x   90.0 x   17.4          4477     5.7 yes    64 x    90 x     8 NO    global
+P31  p31_boot_clamp_frame               60.0 x   86.0 x   15.3          3418     4.3 yes    60 x    86 x   1.2 NO    global
+P32  p32_palm_tray                      52.0 x  172.0 x   37.1         26582    33.8 yes    52 x   169 x    28 NO    global
+P33  p33_palm_lid                       54.4 x  174.4 x   11.9         18022    22.9 yes    52 x   169 x     9 NO    global
+P34  p34_root_clamp_bar                 24.0 x    8.0 x    3.0           524     0.7 yes    24 x     8 x     3 yes   local
+P35  p35_boot_cutting_template          76.0 x  104.0 x    1.0          7204     9.1 yes    76 x   104 x     1 yes   local
+P36  p36_cable_clip                     12.0 x   10.0 x   12.6           720     0.9 yes    12 x    10 x     8 NO    local
+P37  p37_control_panel_box             100.0 x   60.0 x   40.0         40058    50.9 yes   100 x    60 x    40 yes   local
+P38  p38_control_panel_lid             100.0 x   60.0 x    2.0         11588    14.7 yes   100 x    60 x     2 yes   local
+P39  p39_button_housing_half_a          18.0 x   36.0 x  110.0         11640    14.8 yes    18 x    36 x   110 yes   local (half, split plane X=0)
+P40  p40_button_housing_half_b          21.0 x   36.0 x  110.0         11865    15.1 yes    18 x    36 x   110 NO    local (half, split plane X=0)
+P41  p41_cradle_foot_cup                40.0 x   40.0 x   12.0          9042    11.5 yes    40 x    40 x    12 yes   local
+P42  p42_cradle_tilt_wedge             120.0 x   60.0 x   32.2        104035   132.1 yes   120 x    60 x    32 yes   local
+P43  p43_apex_height_gauge              12.0 x   12.0 x  120.0         16808    21.3 yes    12 x    12 x   120 yes   local (stick along Z)
+P44  p44_reset_cord_toggle              40.0 x   14.0 x   14.0          5944     7.5 yes    40 x    14 x    14 yes   local (axis X)
+P45  p45_reset_cord_guide               15.0 x   20.0 x   15.0          3873     4.9 yes    15 x    20 x    15 yes   global
+P46  p46_tip_pull_clip                  18.9 x   15.9 x   20.0           718     0.9 yes    18 x    13 x    20 NO    local (TM1 frame)
+P47  p47_load_cell_filler               40.0 x   12.0 x    6.0          2763     3.5 yes    40 x    12 x     6 yes   local
+P48  p48_tip_box                       120.0 x   60.0 x   25.0        173405   220.2 yes   120 x    60 x    25 yes   local
+
+48/48 watertight, 27/48 inside the section-11 bounding box (+/-1 mm)
+
+=== CHECKS (mechanical.md sections 2, 5.3, 6, 7.1, 8.6, 8.7, 11) ===
+P13 pocket 20.4 x 34.4 x 23.5 vs XL330 body 20 x 34 x 23 (verified): pocket contains body = True, clearance per side 0.2 (X,Z), floor gap 0.5 mm; cradle vs body interference volume 0.00 mm3; axis 9.5 from the body end: body Z 74.5..108.5; back-face M2 holes at X +/-8, Z 76.5 / 106.5 vs the leg screws at ((-14.0, 80.0), (14.0, 80.0), (-14.0, 104.0), (14.0, 104.0)): nearest centres 6.5 mm apart; connector windows Y -128.5..-117.0 in both side walls
+P21 rail inserts Z [78.0, 98.0, 118.0, 138.0, 158.0] vs MGN9 rail holes (10 + 20k from the rail end at Z 68) [78.0, 98.0, 118.0, 138.0, 158.0] [VERIFY]: match = True; top insert to mast top at X 40: 4.6 mm of wall
+P26 plate 20 x 34 carries the MGN9C 15 x 10 pattern [VERIFY]: holes at Z 88.5+/-7.5, Y +/-5; plate edge margins 3.3 (Y) / 5.3 (Z) mm; block face at X 30, plate X 27.0..30.0
+P28 recess diam 18.4/12.4 x 3.1 vs P33 cone diam 18.0/12.0 x 3.0: radial clearance 0.20 mm (section 7.1 states these numbers; brief's 0.4 mm is NOT in mechanical.md), axial 0.10 mm; seat-to-seat interference volume 0.00 mm3
+P30 slot vs paddle L section 22.82 x 17.82 at (-8, -24): to slot edge 4.49 mm (section 8.7: 4.5), to nearest paddle 6.18 mm (section 8.7: 6.2)
+P30 slot vs paddle C section 22.82 x 17.82 at (+0, +0): to slot edge 5.99 mm (section 8.7: 6.0), to nearest paddle 6.18 mm (section 8.7: 6.2)
+P30 slot vs paddle R section 22.82 x 17.82 at (+8, +24): to slot edge 4.49 mm (section 8.7: 4.5), to nearest paddle 6.18 mm (section 8.7: 6.2)
+P30 vs the three paddles (tip lead STLs placed at the section 8.1 nail positions, free state): interference 0.00 mm3, min gap 4.52 mm
+P31 vs the three paddles (tip lead STLs placed at the section 8.1 nail positions, free state): interference 0.00 mm3, min gap 1.90 mm
+P32 vs the three paddles (tip lead STLs placed at the section 8.1 nail positions, free state): interference 0.00 mm3, min gap 3.00 mm
+P33 vs the three paddles (tip lead STLs placed at the section 8.1 nail positions, free state): interference 0.00 mm3, min gap 7.90 mm
+paddle L vs the other paddles: min gap 6.71 mm (section 8.7 table: 6.2 at the plate, free state)
+paddle C vs the other paddles: min gap 6.71 mm (section 8.7 table: 6.2 at the plate, free state)
+paddle R vs the other paddles: min gap 6.71 mm (section 8.7 table: 6.2 at the plate, free state)
+P32 root-block leaf slots 12.9 x 1.0 vs leaf 12.7 x 0.30: clearance 0.10 per side (W), 0.70 (H, bar sets the height); clamp window 24.2 x 8.4 vs P34 bar 24 x 8: 0.1 / 0.2; P34 groove 12.9 x 0.25 < leaf 0.30 so the bar presses the leaf
+P39 button hole diam 30.2 (ream to 30.0) vs the uxcell 30 mm snap-in button (body 33 max diam, 26 tall, verified): cup ID = 32.0 mm vs body 33 -> the button body does NOT fit inside the cup below the deck (see CONFLICTS)
+P1 ears Y +/-25.0..35.0 vs P5 knuckle Y +/-24.0: 1.0 mm per side for a 0.5 mm PTFE washer; interference volume 0.00 mm3; pin bores coaxial at (X -60.0, Z 84.0)
+
+--- static assembly interference (installed parts, volume of overlap > 0.5 mm3 listed) ---
+  none
+  OVERLAP P7 x bought post: 2.4 mm3
+  P14 strap pad x servo: 0.0 mm3 = the intended 0.3 mm interference pad (section 11)
+
+--- swept-volume checks (section 2; >= 8 mm clearance asked) ---
+  arm at -32 deg vs carrier/legs/cradle/housing/caps: min gap 0.3 mm, overlap 0.0 mm3 [-]  (stop lug on the TPU bumper: intended contact)
+  arm at -31 deg vs carrier/legs/cradle/housing/caps: min gap 0.6 mm, overlap 0.0 mm3 [-]
+  arm at +0 deg vs carrier/legs/cradle/housing/caps: min gap 1.0 mm, overlap 0.0 mm3 [-]
+  arm at +31 deg vs carrier/legs/cradle/housing/caps: min gap 0.5 mm, overlap 0.0 mm3 [-]
+  arm at +32 deg vs carrier/legs/cradle/housing/caps: min gap 0.0 mm, overlap 12.2 mm3 [-]  (stop lug on the TPU bumper: intended contact)
+  arm at -28 deg with the float at its up-stop (+28.0) vs carrier + yaw plates + spine: min gap 1.0 mm, overlap 0.0 mm3 [- | float: -]
+  arm at +28 deg with the float at its up-stop (+28.0) vs carrier + yaw plates + spine: min gap 1.0 mm, overlap 0.0 mm3 [- | float: -]
+  float at its up-stop vs mast/shroud/up-stop/cleat/rail: overlap 0.0 mm3 [-] (carriage top meets the TPU pad: 131 vs pad 131)
+  highest arm-mounted point over +/-32 deg with the float up: Z 177.0 (section 2c: < 175; yaw plates from 184); largest radii about the elbow axis: rail 93.0, P21 90.0, P27 87.5 (section 2c asks <= 91)
+  module lifted 25 deg about the hinge vs adapter + tray + magnet: min gap 0.0 mm, overlap 1010.7 mm3 [P8xP3:456, P8xP4:131, P9xP3:205, P9xP4:219; -]
+  module latched vs adapter + tray + magnet: min gap 1.0 mm, overlap 0.0 mm3 (keeper on the magnet face is the intended contact)
