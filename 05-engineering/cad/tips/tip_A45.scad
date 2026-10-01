@@ -7,7 +7,9 @@
 //  (or a Dunlop nylon .88 pick) cut to 8 x 9 mm with a convex R 9 end, then file
 //  the edge to R 0.3 (two 0.3 mm chamfers blended; 0.2 mm flats remain).
 //  "printed" mode makes a 0.8 mm PETG plate (2 perimeters) — fragile; carrier preferred.
-//  Scratch direction +X.
+//  Slot mode (rev 2026-10-01): the carrier now has a true 45 deg bonding face in the
+//  plane of the sheet's upper face; butt the sheet's top end against the band.
+//  Loaded sense +X.  Print the carrier tang down, 0.10 mm layers.
 // =====================================================================
 include <tm1_tang_lib.scad>
 $fn = TM1_FN;

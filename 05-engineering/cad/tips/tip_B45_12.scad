@@ -4,8 +4,9 @@
 //  The 12 mm plate is wider than the 9 mm shoulder band; the pulp lump stays
 //  9 mm wide, so the outer 1.5 mm of each plate end is a free 1 mm plate.
 //  Round those ends to R 1.5 in plan after printing.  Crown R 9 raises the
-//  edge ends 2.0 mm, so the loaded edge grows with force (≈7 -> 9 mm).
-//  Scratch direction +X. Print as tip_B45.
+//  edge ends 2.3 mm (0.94 mm on the 8 mm tips), so the loaded edge grows with
+//  force.  The plate ends are clipped at the band plane (tm1_nail_blade) so the
+//  TPU seam sleeve seats.  Loaded sense +X. Print as tip_B45 (on its side).
 // =====================================================================
 include <tm1_tang_lib.scad>
 $fn = TM1_FN;

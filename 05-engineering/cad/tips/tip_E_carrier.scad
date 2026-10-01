@@ -10,8 +10,11 @@
 //               (print as a cutting template, or print in PETG 0.12 mm layers)
 //    "assembly" preview of all three
 //  Scratch direction +X.  Pad slides in along Y; fix with a drop of CA.
-//  Edge lowest point about z = -15.9 (3.4 mm lower than W: lower the rig's
-//  down-stop by that amount when running E).
+//  Edge lowest point about z = -16.5 after radiusing (-16.6 for the square
+//  blank; 4.0 mm lower than W's -12.5).  For the same engagement, set the float
+//  down-stop 4.0 mm HIGHER (or read E 4 mm lower on the pointer) when running E.
+//  Print: carrier PETG tang down, 0.10 mm; pad TPU 90A lying on its Y face;
+//  blade: cut from 1.0 mm nylon sheet (use the printed blank as a template).
 // =====================================================================
 include <tm1_tang_lib.scad>
 $fn = TM1_FN;

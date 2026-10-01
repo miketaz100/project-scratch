@@ -4,7 +4,8 @@
 //  8 mm edge along Y, two 45 deg faces (90 deg included), edge R 0.4 mm,
 //  transverse crown R 9 (edge ends rise 0.9 mm so the centre loads first).
 //  Lowest point of the edge: z = -12.5 (7.0 mm below the shoulder band).
-//  Print: PETG, tang down / edge up, 0.12 mm layers, 3 perimeters, 100 % infill.
+//  Print: PETG, ON ITS SIDE (model Y vertical, edge line running up the print),
+//  supports under the tang only, 0.10 mm layers, 3 perimeters, 100 % infill.
 //  Finish: sand the apex 400 -> 1000 -> 2000 wet to R 0.4; hand-round the two
 //  edge-end corners to R 1.5; optional 1 s flame pass (PETG only).
 // =====================================================================
@@ -13,7 +14,8 @@ $fn = TM1_FN;
 
 W_EDGE_W   = 8.0;    // edge length along Y
 W_EDGE_R   = 0.4;    // modelled apex radius (sand to this after printing)
-W_HEIGHT   = 7.0;    // shoulder band bottom to apex. 7.0 = TM1_SH_X/2 gives exactly 45 deg faces
+W_HEIGHT   = 7.0;    // shoulder band bottom to apex. Faces are 45.7 deg to the scalp plane
+                     // (tangent from the band corner to the R 0.4 apex; 6.83 would give 45.0)
 W_CROWN_R  = 9.0;    // transverse crown radius (index-nail value)
 CROSS_HOLE = false;  // true adds the 3.2 mm TM1-B cross-bolt hole in the tang
 

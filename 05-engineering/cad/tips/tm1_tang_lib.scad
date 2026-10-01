@@ -19,8 +19,16 @@
 //    tm1_nail_blade(...)     B45-family nail-mimic blade body
 //  Nothing is rendered when this file is included (TM1_DEMO = false).
 // ---------------------------------------------------------------------
-//  PRINT ORIENTATION OF TIPS: tang DOWN on the bed, working edge UP.
-//  The cone (tang -> shoulder) is a 45 deg / 39 deg overhang: printable.
+//  PRINT ORIENTATION OF TIPS (rev 2026-10-01, tip lead):
+//    W, B45, B45-12 (printed edge): ON THE SIDE, model Y vertical, so the edge
+//      line runs up the print and its XZ profile is traced by the perimeters
+//      (no layer staircase across the edge; plate bends in-plane, not across
+//      layers).  Supports under the tang/shoulder only.  0.10 mm layers.
+//    Carriers (A45 slot, E, P) and H: tang DOWN on the bed, working end UP
+//      (the cone is a 45 / 39 deg overhang: printable without supports).
+//  STEEL KEEPER: the spec's 6 x 1 disc (or an M3 washer, 7 mm OD) is wider than
+//  the 4.0 mm tang; use a 6 x 1 disc with two flats filed to 3.9 mm, or a
+//  6.0 x 3.9 x 1.0 mm slug cut from 1 mm mild-steel sheet (TM1_SLUG_* below).
 // =====================================================================
 
 // ---------------- TANG (on every tip) ----------------
@@ -152,17 +160,24 @@ module tm1_pocket(clear = TM1_POCKET_CLEAR, depth = TM1_POCKET_DEPTH,
 
 // ============================ NAIL-MIMIC BLADE (B45 family) ============================
 // A plate of thickness 2r rising at `attack` degrees toward +X from an edge whose
-// lowest point is at z = TM1_SH_BOT - drop.  The 45 deg leading face faces +X and
-// down: SCRATCH DIRECTION IS +X (the face pushes hair up and over the top).
+// lowest point is at z = TM1_SH_BOT - drop.  LOADED SENSE (test notation) = +X:
+// the leading face is the plate underside, a 45 deg face like W's (+X) face, and
+// hair ahead of it is pressed down and passed under the edge ("plate-first").
+// The -X stroke is "edge-first" (plate trailing, tip-interface 1.4); it meets
+// the open ~68 deg V between plate and lump (see tips.md 4.2 / 10).
 // Behind the plate (-X) a drafted "pulp" lump fills the space up to the band.
-//   mode = "printed" : plate is printed as part of the tip (PETG, 0.12 mm layers)
-//   mode = "slot"    : plate omitted; the lump face is set back by 2r so a sheet
-//                      blade (nylon/PETG, thickness 2r) is CA-bonded onto it.
+//   mode = "printed" : plate is printed as part of the tip (PETG, 0.10 mm layers)
+//   mode = "slot"    : plate omitted; the lump is cut back to the plane of the
+//                      plate's upper face, giving a true `attack`-degree bonding
+//                      face; CA-bond a sheet blade (thickness 2r) onto it with its
+//                      top end butted against the band (sheet + carrier = printed).
+//                      (rev 2026-10-01: the earlier 2r X-shift left a ~36 deg face.)
+// The working part is clipped at the band-bottom plane (B45-12 plate ends would
+// otherwise rise 0.7 mm beside the band, into the TPU seam sleeve).
 //   w       edge width (Y);  r = half plate thickness = modelled edge radius
 //   crown_r transverse crown radius (9 = index nail)
 module tm1_nail_blade(w = 8, r = 0.5, attack = 45, drop = 7.0, x0 = -0.35,
                       d_root = 9.5, s_lump = 3.6, crown_r = 9, mode = "printed") {
-    xs = (mode == "slot") ? x0 - 2 * r : x0;
     ux = cos(attack);
     uz = sin(attack);
     z0 = TM1_SH_BOT - drop + r;              // edge cylinder centre
@@ -170,15 +185,21 @@ module tm1_nail_blade(w = 8, r = 0.5, attack = 45, drop = 7.0, x0 = -0.35,
         union() {
             if (mode == "printed")
                 hull() {
-                    tm1_ycyl(r, w, xs, z0);
-                    tm1_ycyl(r, w, xs + d_root * ux, z0 + d_root * uz);
+                    tm1_ycyl(r, w, x0, z0);
+                    tm1_ycyl(r, w, x0 + d_root * ux, z0 + d_root * uz);
                 }
-            hull() {                           // pulp lump (drafted, behind the plate)
-                tm1_band_slab();
-                tm1_ycyl(r, min(w, TM1_SH_Y), xs + s_lump * ux, z0 + s_lump * uz);
+            difference() {
+                hull() {                       // pulp lump (drafted, behind the plate)
+                    tm1_band_slab();
+                    tm1_ycyl(r, min(w, TM1_SH_Y), x0 + s_lump * ux, z0 + s_lump * uz);
+                }
+                if (mode == "slot")            // remove all lump in front of the plate's upper face
+                    translate([x0 - r * uz, 0, z0 + r * ux]) rotate([0, -attack, 0])
+                        translate([-50, -50, -100]) cube([100, 100, 100]);
             }
         }
         tm1_crown(crown_r, TM1_SH_BOT - drop);
+        translate([0, 0, TM1_SH_BOT + 0.01 - 50]) cube(100, center = true);   // band-plane clip
     }
 }
 

@@ -11,11 +11,13 @@
 //    z = 0 .. PADDLE_LEN      drafted body: nose 14 x 9 (R1) growing at DRAFT_X / DRAFT_Y
 //                             per side (10 deg / 5 deg) to 22.8 x 13.4 at z = 25
 //    z = 25 .. 28             transition to the root block (above the knuckle plate)
-//    z = 28 .. 35             root block 28 x 14: clamp WINDOW 23.2 x 8.4 x 3.5 deep from
+//    z = 28 .. 35             root block 28 x 14: clamp WINDOW 24.2 x 8.4 x 3.5 deep from
 //                             the top; the leaf lies on the window floor (z = 31.5),
 //                             passes out through 12.9 x 1.0 slots in the Y walls, and is
-//                             pressed down by the CLAMP BAR (23 x 8 x 3.2, with a
-//                             12.9 x 0.25 locating groove) via 2x M3x8 screws at x = +/-10
+//                             pressed down by the CLAMP BAR (24 x 8 x 3.2, with a
+//                             12.9 x 0.25 locating groove) via 2x M3x8 screws at x = +/-9.5
+//                             (rev 2026-10-01: bar 23 / screws +/-10 broke the 3.4 holes out
+//                             of the bar ends by 0.2 mm)
 //                             (2.6 mm holes, thread-forming in PETG; or 4.0 mm for inserts)
 //  Pocket: tm1_pocket() — 10.3 x 4.3 x 12.5, mouth chamfer 0.6, N52 6x2 magnet recess
 //  (magnet dropped in at a PRINT PAUSE at model z = 11.9, see README).
@@ -48,16 +50,16 @@ ROOT_H     = 7;         // straight block height
 ROOT_R     = 2;
 LEAF_W     = 12.7;      // feeler stock width (1/2")
 LEAF_T     = 0.30;      // feeler stock thickness (0.012")
-WINDOW_X   = 23.2;
+WINDOW_X   = 24.2;
 WINDOW_Y   = 8.4;
 WINDOW_D   = 3.5;       // depth from the root top
 WALL_SLOT_W = LEAF_W + 0.2;
 WALL_SLOT_H = 1.0;      // tall slot in the Y walls: the bar sets the leaf height, not the slot
 LEAF_THROUGH = true;    // slots in both Y walls (false: only -Y, leaf ends blind in the +Y wall)
-SCREW_X    = 10;        // screws at (+/-SCREW_X, 0)
+SCREW_X    = 9.5;       // screws at (+/-SCREW_X, 0): 0.8 mm bar wall outboard, 1.85 mm clear of the leaf
 SCREW_HOLE_D = 2.6;     // 2.6 = M3 thread-forming in PETG; 4.0 = M3 heat-set insert
 SCREW_DEPTH  = 5;
-BAR_X      = 23;
+BAR_X      = 24;
 BAR_Y      = 8;
 BAR_H      = 3.2;
 BAR_GROOVE_D = 0.25;    // < LEAF_T so the bar presses the leaf, not the floor

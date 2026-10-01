@@ -3,11 +3,17 @@
 //  PROJECT SCRATCH · 05-engineering/cad/tips · units: mm
 //  A 180 mm printed handle (150 mm grip + 30 mm clamp block) that clamps one end
 //  of a 0.3 x 12.7 mm feeler-stock leaf (no holes in the leaf: window + clamp bar
-//  + 4x M3x8).  The leaf runs out along +Y; its free end carries
+//  + 4x M3x8, bar 24 x 24).  The leaf runs out along +Y; its free end carries
 //  paddle_with_pocket.scad (same clamp design) with a TM1 pocket, 25 mm drafted
-//  paddle and any SP1 tip.  Leaf free length (handle face to paddle root) sets the
-//  normal stiffness:  40 mm 0.27 N/mm · 45 mm 0.19 · 48 mm 0.155 (default) ·
-//  55 mm 0.10 · 60 mm 0.08 N/mm   (E = 200 GPa, I = 12.7 x 0.3^3 / 12).
+//  paddle and any SP1 tip.  Leaf free length LEAF_FREE (handle face to paddle -Y
+//  face) sets the normal stiffness AT THE TIP.  The leaf also flexes 3 mm inside each
+//  wall slot (bar edge to wall) and the tip sits 4 mm past the paddle bar edge, so
+//  k = EI / (a^3/3 + a^2 b + a b^2), a = LEAF_FREE + 6, b = 4, EI = 5715 N mm^2
+//  (E = 200 GPa, I = 12.7 x 0.3^3 / 12):
+//    30 mm 0.27 N/mm · 35 mm 0.19 · 38 mm 0.155 (default) · 40 mm 0.14 · 45 mm 0.10
+//  (rev 2026-10-01: the old table used 3EI/L^3 on LEAF_FREE and overstated k 1.75x;
+//  48 mm actually gives 0.09 N/mm, below the DESIGN-FREEZE 0.1-0.25 band).
+//  Calibrate on the kitchen scale (tips.md 7.3) and trim the leaf to suit.
 //  Print flat as modelled (window up), PETG or PLA (handle never touches hair),
 //  0.2 mm layers, 15 % infill, 3 perimeters.  No bridges.
 //  PART = "handle" | "bar" | "assembly"
@@ -27,20 +33,20 @@ BLOCK_H    = 16;
 BLOCK_R    = 2;
 LEAF_W     = 12.7;
 LEAF_T     = 0.30;
-WINDOW_X   = 23.2;
+WINDOW_X   = 24.2;
 WINDOW_Y   = 24.4;
 WINDOW_D   = 3.5;   // leaf floor at BLOCK_H - WINDOW_D = 12.5
 WALL_SLOT_W = LEAF_W + 0.2;
 WALL_SLOT_H = 1.0;
-SCREWS     = [[-10, -7], [10, -7], [-10, 7], [10, 7]];
+SCREWS     = [[-9.5, -7], [9.5, -7], [-9.5, 7], [9.5, 7]];   // rev: was +/-10 (holes broke out of the bar)
 SCREW_HOLE_D = 2.6; // M3 thread-forming in PETG/PLA (4.0 for inserts)
 SCREW_DEPTH  = 6;
-BAR_X      = 23;
+BAR_X      = 24;
 BAR_Y      = 24;
 BAR_H      = 3.2;
 BAR_GROOVE_D = 0.25;
 BAR_HOLE_D = 3.4;
-LEAF_FREE  = 48;    // documentation only: leaf free length to the paddle root (-Y face)
+LEAF_FREE  = 38;    // documentation only: leaf free length to the paddle root (-Y face); 0.155 N/mm
 
 z_floor = BLOCK_H - WINDOW_D;
 
