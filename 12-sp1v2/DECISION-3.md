@@ -15,5 +15,5 @@ Builds on DECISION-2.md (+ its NORTH STAR AMENDMENT: an on-par scratching sensat
 10. NOT adopted: skyhook (rejected); scratch-quality leaps of leap4-B (parked).
 
 ## Still open
-- Who builds: DIY vs hired engineer + local builder (13-outsourcing/outsourcing-options.md). Needs from Michael: budget ceiling, target date, drive distance, whether a builder can work in his apartment.
+- Who builds: DECIDED 2026-10-02: Michael builds it himself (budget). Staged spending; S0 bench tests first; affordable pre-session safety check.
 - Safety ruling on the dish gate.
