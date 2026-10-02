@@ -23,3 +23,7 @@ Leap round 1 (11-leaps/leap-*.md) → Michael picked the PRESSURE-GATED ORBIT (a
 
 ## Hypothesis SP1 tests
 "Air-pin nails with constant force, hovering and biting along a slowly precessing straight scrub (with circle and straight-line alternatives), on a small pad that drifts over the scalp under a κ-grammar score, feel like a person's fingernails scratching the head, on a helmet light and quiet enough to want to wear every evening."
+
+## NORTH STAR AMENDMENT (Michael, 2026-10-02)
+"It doesn't have to feel like actual fingernails, it just has to deliver an on-par scratching sensation."
+The success criterion is now: a scratching sensation as satisfying as being scratched well by a person (crisp edge reaching the scalp, right force and speed, coverage, no habituation), NOT the illusion that a human hand is doing it. Person-illusion features (human-likeness of timing, "attention", social cues) drop from requirements to nice-to-haves; anti-habituation variation stays a requirement because habituation kills satisfaction regardless. The massager-vs-scratcher distinction still applies: it must be a SCRATCH, not a massage, vibration or brush.

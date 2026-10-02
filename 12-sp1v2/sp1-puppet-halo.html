@@ -1,0 +1,321 @@
+<title>SP1 Puppet Halo</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600&family=Source+Sans+3:wght@400;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: one column. Status first, then the three drawings in reading order (whole device, pad, one pin), numbers, the engineering block diagram, and links. */
+:root {
+  --bg:#f6f4ee; --fg:#1f2320; --muted:#5d645e; --rule:#d9d4c7; --panel:#fdfcf8; --soft:#8b918a;
+  --accent:#8a4a1f; --skin:#e7dccd; --hair:#b9a993; --chair:#c9c1b2; --carbon:#2b2f2c; --air:#2f6b8a; --pad:#8a4a1f; --on:#b5512a; --warn:#9a6a12;
+  --display:"Fraunces", Georgia, serif; --body:"Source Sans 3", "Helvetica Neue", Arial, sans-serif; --mono:"IBM Plex Mono", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg:#191b19; --fg:#e8e6df; --muted:#a6aba3; --rule:#3a3e39; --panel:#222522; --soft:#7d837b;
+  --accent:#d99b63; --skin:#3a3631; --hair:#6a5f52; --chair:#4a463f; --carbon:#d8d6cf; --air:#7fb6d4; --pad:#e0a06c; --on:#e98a5f; --warn:#e0b55a; color-scheme:dark } }
+:root[data-theme="dark"] {
+  --bg:#191b19; --fg:#e8e6df; --muted:#a6aba3; --rule:#3a3e39; --panel:#222522; --soft:#7d837b;
+  --accent:#d99b63; --skin:#3a3631; --hair:#6a5f52; --chair:#4a463f; --carbon:#d8d6cf; --air:#7fb6d4; --pad:#e0a06c; --on:#e98a5f; --warn:#e0b55a; color-scheme:dark }
+body { background:var(--bg); color:var(--fg); font-family:var(--body); font-size:17px; line-height:1.55; }
+.wrap { max-width:960px; margin:0 auto; padding-inline:20px; padding-block:32px 72px; }
+.col { max-width:68ch; }
+h1,h2 { font-family:var(--display); font-weight:600; line-height:1.15; text-wrap:balance; margin:0; }
+h1 { font-size:2.3rem; } h2 { font-size:1.45rem; margin-top:2.6rem; }
+p { margin:.7rem 0 0; }
+.eyebrow { font-family:var(--mono); font-size:.74rem; letter-spacing:.08em; text-transform:uppercase; color:var(--accent); }
+.lede { color:var(--muted); font-size:1.06rem; }
+.status { margin-top:1.2rem; padding:.9rem 1.1rem; border:1px solid var(--warn); background:var(--panel); max-width:72ch; font-size:.95rem; }
+.status strong { color:var(--warn); }
+figure { margin:1.2rem 0 0; }
+.draw { background:var(--panel); border:1px solid var(--rule); padding:12px; overflow-x:auto; }
+.draw svg { display:block; width:100%; height:auto; min-width:320px; }
+.white { background:#fff; border:1px solid var(--rule); padding:8px; overflow-x:auto; }
+.white svg { display:block; width:100%; height:auto; min-width:640px; }
+figcaption { color:var(--muted); font-size:.92rem; margin-top:.5rem; max-width:72ch; }
+.two { display:grid; grid-template-columns:1fr 1.4fr; gap:16px; align-items:start; }
+@media (max-width:760px) { .two { grid-template-columns:1fr; } }
+.two > * { min-width:0; }
+table { border-collapse:collapse; width:100%; font-size:.95rem; font-variant-numeric:tabular-nums; }
+.tablewrap { overflow-x:auto; margin-top:1rem; }
+th,td { text-align:left; padding:8px 10px; border-bottom:1px solid var(--rule); vertical-align:top; }
+th { font-family:var(--mono); font-size:.72rem; text-transform:uppercase; letter-spacing:.06em; color:var(--muted); font-weight:500; }
+td:first-child { color:var(--muted); }
+ul.links { padding-left:1.2rem; } ul.links li { margin:.35rem 0; }
+a { color:var(--accent); }
+code { font-family:var(--mono); font-size:.88em; }
+.lbl { font-family:var(--mono); font-size:10px; fill:var(--muted); }
+.boxlbl { font-family:var(--mono); font-size:10px; fill:var(--bg); }
+.head { fill:var(--skin); stroke:var(--soft); } .body { fill:var(--skin); stroke:var(--soft); }
+.chair { fill:var(--chair); }
+.band { fill:none; stroke:var(--soft); stroke-width:6; stroke-linecap:round; }
+.hub { fill:var(--soft); }
+.bail { fill:none; stroke:var(--carbon); stroke-width:4; }
+.carriage { fill:var(--carbon); } .float { fill:var(--soft); }
+.pad { fill:var(--pad); } .nails line { stroke:var(--pad); stroke-width:2; }
+.tube { fill:none; stroke:var(--air); stroke-width:5; stroke-linecap:round; }
+.box { fill:var(--air); }
+.cord { fill:none; stroke:var(--soft); stroke-width:1.5; stroke-dasharray:3 3; }
+.egg { fill:var(--soft); }
+.deck { fill:var(--panel); stroke:var(--soft); stroke-width:1.5; }
+.field { fill:none; stroke:var(--rule); stroke-dasharray:4 4; }
+.skid { fill:var(--rule); stroke:var(--soft); }
+.pin-off { fill:var(--bg); stroke:var(--pad); stroke-width:2; }
+.pin-on { fill:var(--on); }
+.dim { stroke:var(--fg); stroke-width:1.5; }
+.scalp { fill:var(--skin); } .hair path { fill:none; stroke:var(--hair); stroke-width:1.4; }
+.bore { fill:var(--panel); stroke:var(--soft); } .air { fill:var(--air); opacity:.35; }
+.shaft { stroke:var(--fg); stroke-width:2; } .nail { fill:var(--pad); }
+</style>
+
+<div class="wrap">
+  <span class="eyebrow">Project Scratch · SP1 · design freeze v2</span>
+  <h1>SP1 Puppet Halo</h1>
+  <p class="lede col">A light skeleton helmet carries one hand-sized pad of 12 air-driven nails. The pad drifts over your scalp on a carbon arc that pivots at your ears, and scrubs in a slowly turning line, a straight line or a circle. All the motors, pumps and valves sit in a portable box nearby; only air lines and a thin cable reach the helmet.</p>
+
+  <div class="status"><strong>Status: first full draft, under review.</strong> This is the spec as the system architect wrote it. Three red teams have since found fixes, and the pin count may drop from 12 to make the second pad fit under the weight limit. A decision analysis is running now; this page will be updated once you choose a direction.</div>
+
+  <h2>The whole device</h2>
+  <figure>
+    <div class="draw"><svg viewBox="0 0 640 360" role="img" aria-label="Side view: seated person wearing the skeleton halo; a carbon bail arcs over the head carrying the pad; a tube bundle runs from the ear hub down to a drive box hanging on a chair back">
+  <rect class="chair" x="300" y="70" width="18" height="230" rx="5"/>
+  <rect class="chair" x="200" y="290" width="118" height="16" rx="5"/>
+  <ellipse class="head" cx="230" cy="130" rx="62" ry="72"/>
+  <path class="body" d="M180 196 Q230 182 282 196 L292 300 L168 300 Z"/>
+  <path class="band" d="M172 128 Q182 92 230 86 Q262 88 284 112"/>
+  <path class="band" d="M284 112 Q296 150 280 178"/>
+  <circle class="hub" cx="240" cy="128" r="13"/>
+  <text class="lbl" x="20" y="150">ear-axis hub</text><line class="cord" x1="92" y1="146" x2="226" y2="128"/>
+  <text class="lbl" x="20" y="162">(travel motors)</text>
+  <path class="bail" d="M240 128 m-120 0 a120 120 0 0 1 240 0"/>
+  <text class="lbl" x="372" y="60">carbon bail,</text><text class="lbl" x="372" y="72">swings front to back</text>
+  <g transform="rotate(-25 240 128)">
+    <rect class="carriage" x="226" y="8" width="28" height="16" rx="3"/>
+    <rect class="float" x="235" y="24" width="10" height="24"/>
+    <rect class="pad" x="214" y="48" width="52" height="11" rx="4"/>
+    <g class="nails"><line x1="222" y1="59" x2="222" y2="66"/><line x1="234" y1="59" x2="234" y2="66"/><line x1="246" y1="59" x2="246" y2="66"/><line x1="258" y1="59" x2="258" y2="66"/></g>
+  </g>
+  <text class="lbl" x="20" y="40">pad: 12 air pins,</text>
+  <text class="lbl" x="20" y="52">no motors or wires</text>
+  <path class="tube" d="M252 136 Q310 170 330 150 Q360 120 372 150"/>
+  <rect class="box" x="330" y="150" width="96" height="74" rx="8"/>
+  <text class="boxlbl" x="378" y="184" text-anchor="middle">drive box</text>
+  <text class="boxlbl" x="378" y="198" text-anchor="middle">30 × 22 × 11 cm</text>
+  <text class="lbl" x="440" y="168">hangs on the chair back,</text>
+  <text class="lbl" x="440" y="180">sits on a desk, or rests</text>
+  <text class="lbl" x="440" y="192">on a couch back</text>
+  <text class="lbl" x="440" y="216">1.4 m bundle: 12 pin lines,</text>
+  <text class="lbl" x="440" y="228">3 drive lines, 6 wires</text>
+  <path class="cord" d="M170 250 Q120 300 90 330"/>
+  <rect class="egg" x="70" y="326" width="38" height="20" rx="10"/>
+  <text class="lbl" x="116" y="342">hand controller: hold-to-run + squeeze egg</text>
+</svg></div>
+    <figcaption>Side view, schematic, not to scale. The halo grips under the back of the skull with a dial, like a bike helmet, with no chin strap. The arc carries the pad over about 90 % of the scalp, including the back of the head. Pulling the plug or letting go of the hand controller lifts the pad off your head by spring.</figcaption>
+  </figure>
+
+  <div class="two">
+    <figure>
+      <div class="draw"><svg viewBox="0 0 320 300" role="img" aria-label="Underside of the pad: twelve pins on an 18 mm grid inside a ring of three skids">
+<circle class="deck" cx="160" cy="150" r="110"/>
+<rect class="field" x="92" y="82" width="136" height="136" rx="10"/>
+<circle class="skid" cx="160.0" cy="55.0" r="12"/><circle class="skid" cx="77.7" cy="197.5" r="12"/><circle class="skid" cx="242.3" cy="197.5" r="12"/>
+<circle class="pin-off" cx="143.0" cy="99.0" r="7"/><circle class="pin-off" cx="177.0" cy="99.0" r="7"/><circle class="pin-on" cx="109.0" cy="133.0" r="7"/><circle class="pin-on" cx="143.0" cy="133.0" r="7"/><circle class="pin-on" cx="177.0" cy="133.0" r="7"/><circle class="pin-off" cx="211.0" cy="133.0" r="7"/><circle class="pin-off" cx="109.0" cy="167.0" r="7"/><circle class="pin-off" cx="143.0" cy="167.0" r="7"/><circle class="pin-off" cx="177.0" cy="167.0" r="7"/><circle class="pin-off" cx="211.0" cy="167.0" r="7"/><circle class="pin-off" cx="143.0" cy="201.0" r="7"/><circle class="pin-off" cx="177.0" cy="201.0" r="7"/>
+<line class="dim" x1="143.0" y1="231.6" x2="177.0" y2="231.6"/>
+<text class="lbl" x="160" y="245.6" text-anchor="middle">18 mm pitch</text>
+<text class="lbl" x="160" y="20" text-anchor="middle">skid</text>
+<text class="lbl" x="12" y="292">pad about 110 mm across</text>
+</svg></div>
+      <figcaption>Underside of the pad. The three skids rest on your scalp and keep the pad square to it. The filled pins are one example of a row biting; any pins can be chosen on any stroke.</figcaption>
+    </figure>
+    <figure>
+      <div class="draw"><svg viewBox="0 0 560 220" role="img" aria-label="One pin in three states: parked high, hovering 5 mm above the scalp, and biting onto the scalp">
+  <rect class="scalp" x="10" y="180" width="540" height="16"/>
+  <g class="hair"><path d="M30 180 q4 -16 12 -26"/><path d="M80 180 q4 -16 12 -26"/><path d="M130 180 q4 -16 12 -26"/><path d="M200 180 q4 -16 12 -26"/><path d="M260 180 q4 -16 12 -26"/><path d="M330 180 q4 -16 12 -26"/><path d="M400 180 q4 -16 12 -26"/><path d="M460 180 q4 -16 12 -26"/><path d="M520 180 q4 -16 12 -26"/></g>
+  <g transform="translate(100,0)"><rect class="bore" x="-10" y="20" width="20" height="60" rx="3"/><line class="shaft" x1="0" y1="60" x2="0" y2="118"/><path class="nail" d="M-7 118 L7 118 L2 128 L-2 128 Z"/><text class="lbl" x="0" y="212" text-anchor="middle">parked: 20 mm clear</text></g>
+  <g transform="translate(280,0)"><rect class="bore" x="-10" y="20" width="20" height="60" rx="3"/><line class="shaft" x1="0" y1="60" x2="0" y2="150"/><path class="nail" d="M-7 150 L7 150 L2 160 L-2 160 Z"/><text class="lbl" x="0" y="212" text-anchor="middle">hover: 5 mm above</text></g>
+  <g transform="translate(460,0)"><rect class="bore" x="-10" y="20" width="20" height="60" rx="3"/><rect class="air" x="-8" y="22" width="16" height="30"/><line class="shaft" x1="0" y1="52" x2="2" y2="168"/><path class="nail" d="M-5 168 L9 168 L4 178 L0 178 Z"/><text class="lbl" x="0" y="212" text-anchor="middle">bite: air pushes, 0.08–0.50 N</text></g>
+</svg></div>
+      <figcaption>One pin, three states. Parked pins sit high, out of the hair. Pins about to bite hover 5 mm above the scalp. To bite, a valve in the box sends air down that pin's tube and the nail presses down with a force set by the air pressure.</figcaption>
+    </figure>
+  </div>
+
+  <h2>Key numbers</h2>
+  <div class="tablewrap"><table>
+    <thead><tr><th>Item</th><th>Value</th></tr></thead>
+    <tbody>
+      <tr><td>Nails</td><td>12, on an 18 mm grid; force 0.08 to 0.50 N each, capped by a relief valve at 0.96 N</td></tr>
+      <tr><td>Nail tip</td><td>plastic cone with a 2 mm flat and 0.4 mm edge radius, on a thin flexible wire neck</td></tr>
+      <tr><td>Scrub modes</td><td>slowly turning 30 mm line (default, 1.4 strokes per second, 4.5° per stroke), straight line, circle up to 15 mm radius</td></tr>
+      <tr><td>Travel</td><td>front to back and side to side over the scalp; slow drift 2 to 5 cm/s, sweeps up to 8 cm/s</td></tr>
+      <tr><td>Weight on head</td><td>about 350 to 400 g with one pad; about 575 g with two, over the 500 g limit</td></tr>
+      <tr><td>Drive box</td><td>30 × 22 × 11 cm, under 2.5 kg, certified 12 V adapter</td></tr>
+      <tr><td>Connection</td><td>one 1.4 m bundle about 17 mm thick; latched at the box, magnetic breakaway at the helmet</td></tr>
+      <tr><td>Your controls</td><td>hold-to-run lever with a squeeze egg ("there", "go that way", hard squeeze to stop), plus an emergency-stop button</td></tr>
+      <tr><td>Cost</td><td>about $1,240 as drafted; the buildability red team puts it at $1,410 to $1,640 with its fixes, plus tools</td></tr>
+    </tbody>
+  </table></div>
+
+  <h2>Engineering block diagram</h2>
+  <figure>
+    <div class="white"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 700" font-family="Helvetica, Arial, sans-serif" font-size="11">
+  <defs>
+    <marker id="a" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#333"/></marker>
+    <marker id="ab" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#1f5fbf"/></marker>
+  </defs>
+  <rect width="1000" height="700" fill="#fff"/>
+  <text x="14" y="22" font-size="15" font-weight="bold">SP1 PUPPET HALO: system blocks (black = mechanical, blue = air, red = actuator rail, green = signal)</text>
+
+  <!-- HELMET -->
+  <rect x="14" y="40" width="430" height="400" fill="#f7f7f2" stroke="#555"/>
+  <text x="24" y="58" font-weight="bold" font-size="13">HELMET (head-borne, 352 g single / ≈479 g twin)</text>
+  <rect x="28" y="70" width="190" height="62" fill="#fff" stroke="#333"/>
+  <text x="36" y="86" font-weight="bold">Halo structure</text>
+  <text x="36" y="100">front half-band + forehead pad</text>
+  <text x="36" y="113">dial cradle under occiput (form lock)</text>
+  <text x="36" y="126">temple pads · no chin strap</text>
+  <rect x="232" y="70" width="198" height="62" fill="#fff" stroke="#333"/>
+  <text x="240" y="86" font-weight="bold">Bail (2 half-bails + splice)</text>
+  <text x="240" y="100">carbon 10×8, R 210 about O</text>
+  <text x="240" y="113">β ±62° arc, legs to hubs |Y| 120</text>
+  <text x="240" y="126">tendon in PTFE guide on top</text>
+  <rect x="28" y="144" width="190" height="88" fill="#fff" stroke="#333"/>
+  <text x="36" y="160" font-weight="bold">LEFT hub pod</text>
+  <text x="36" y="174">α motor STS3032 → 3:1 capstan</text>
+  <text x="36" y="187">2 × 6800-2RS on Ø10 shaft</text>
+  <text x="36" y="200">zero-length spring balancer</text>
+  <text x="36" y="213">inner face = parietal pad</text>
+  <text x="36" y="226">≥ 60 mm from ear canal</text>
+  <rect x="232" y="144" width="198" height="88" fill="#fff" stroke="#333"/>
+  <text x="240" y="160" font-weight="bold">RIGHT hub pod</text>
+  <text x="240" y="174">β motor STS3032 → Ø20 2-groove drum</text>
+  <text x="240" y="187">pitch bay #2 empty (twin α_R)</text>
+  <text x="240" y="200">bearings, balancer (twin-ready)</text>
+  <text x="240" y="213">servo bus daisy-chain socket</text>
+  <text x="240" y="226">inner face = parietal pad</text>
+  <rect x="28" y="244" width="190" height="62" fill="#fff" stroke="#333"/>
+  <text x="36" y="260" font-weight="bold">Carriage + radial float</text>
+  <text x="36" y="274">4 POM V-rollers, tendon clamp</text>
+  <text x="36" y="287">float Ø20 × 50, spring retract</text>
+  <text x="36" y="300">palm line + 0.3 mm bleed</text>
+  <rect x="232" y="244" width="198" height="182" fill="#eef4ff" stroke="#1f5fbf" stroke-width="1.5"/>
+  <text x="240" y="260" font-weight="bold">PAD (≈80 g, no wires)</text>
+  <text x="240" y="274">RCC struts 35° → virtual pivot</text>
+  <text x="240" y="287">   at the nail plane</text>
+  <text x="240" y="300">3 POM R15 skids, Ø100, 0.15 N</text>
+  <text x="240" y="313">deck: 3 Ø20 slave cylinders +</text>
+  <text x="240" y="326">   bell cranks (radial, concurrent)</text>
+  <text x="240" y="339">PP parallelogram (anti-rotation)</text>
+  <text x="240" y="352">PIN BLOCK ±15 mm (follower)</text>
+  <text x="240" y="365">12 pins, Ø7 bore, 24 mm stroke,</text>
+  <text x="240" y="378">   hover collar, restrictor, bleed</text>
+  <text x="240" y="391">omni-nails R0.4 on 0.38 necks</text>
+  <text x="240" y="404">underside ≥ 32 mm above skin</text>
+  <text x="240" y="417">kinematic 3-ball + magnets mount</text>
+  <rect x="28" y="318" width="190" height="108" fill="#fff" stroke="#333"/>
+  <text x="36" y="334" font-weight="bold">Rear node + helmet plug</text>
+  <text x="36" y="348">20-port face seal + 6 pogo</text>
+  <text x="36" y="361">4 × N52 Ø10×3: 12 ± 3 N</text>
+  <text x="36" y="374">open ports when pulled → vent</text>
+  <text x="36" y="387">loop wire → rail cut</text>
+  <text x="36" y="400">twin tee-manifold boss</text>
+  <text x="36" y="413">harness to both hub pods</text>
+  <line x1="123" y1="232" x2="123" y2="244" stroke="#333" stroke-width="2"/>
+  <line x1="218" y1="275" x2="232" y2="275" stroke="#333" stroke-width="2"/>
+  <line x1="331" y1="132" x2="331" y2="144" stroke="#333" stroke-width="2"/>
+
+  <!-- UMBILICAL -->
+  <rect x="460" y="300" width="130" height="140" fill="#fff8e8" stroke="#a57000"/>
+  <text x="468" y="318" font-weight="bold">UMBILICAL 1.4 m</text>
+  <text x="468" y="333">12 pin  PU 3×2</text>
+  <text x="468" y="346">1 palm (+1 spare)</text>
+  <text x="468" y="359">3 synchro PU 4×2.5</text>
+  <text x="468" y="372">6-core 26 AWG:</text>
+  <text x="468" y="385"> 6V, GND, DATA,</text>
+  <text x="468" y="398"> LOOP×2, spare</text>
+  <text x="468" y="411">loose knit sleeve Ø≈17</text>
+  <text x="468" y="424">hanger clip 3 N</text>
+  <line x1="218" y1="372" x2="460" y2="372" stroke="#1f5fbf" stroke-width="3"/>
+  <line x1="590" y1="372" x2="612" y2="372" stroke="#1f5fbf" stroke-width="3"/>
+  <rect x="460" y="246" width="130" height="44" fill="#fff" stroke="#a57000" stroke-dasharray="4 3"/>
+  <text x="468" y="263" font-weight="bold">Overhead hanger</text>
+  <text x="468" y="278">700 mm rod + clamp</text>
+
+  <!-- DRIVE BOX -->
+  <rect x="612" y="40" width="374" height="560" fill="#f2f6fb" stroke="#555"/>
+  <text x="622" y="58" font-weight="bold" font-size="13">DRIVE BOX 300×220×110, ≤2.5 kg</text>
+  <rect x="624" y="68" width="350" height="78" fill="#fff" stroke="#c33" stroke-width="1.5"/>
+  <text x="632" y="84" font-weight="bold" fill="#c33">POWER + HARDWARE SAFETY LOOP</text>
+  <text x="632" y="99">12 V 5 A certified brick → fuse 5 A → E-STOP (NC) → HOLD-TO-RUN (NO)</text>
+  <text x="632" y="113">→ EGG hard-squeeze switch (NC) → RAIL-ENABLE MOSFET (gated by</text>
+  <text x="632" y="127">watchdog charge pump AND helmet LOOP) → ACTUATOR RAIL 12 V</text>
+  <text x="632" y="141">logic: separate 5 V buck before the loop (MCU stays alive)</text>
+  <rect x="624" y="156" width="170" height="120" fill="#fff" stroke="#333"/>
+  <text x="632" y="172" font-weight="bold">MASTER synthesiser</text>
+  <text x="632" y="186">2 × NEMA17 pancake</text>
+  <text x="632" y="199">TMC2209 stealthChop</text>
+  <text x="632" y="212">stage 1 r₁ 7.5 · stage 2 r₂ 7.5</text>
+  <text x="632" y="225">Oldham to stage 2</text>
+  <text x="632" y="238">master plate: 3 cyl Ø20 +</text>
+  <text x="632" y="251">   3 spare mounts (twin)</text>
+  <text x="632" y="264">Hall home per crank</text>
+  <rect x="804" y="156" width="170" height="120" fill="#fff" stroke="#1f5fbf"/>
+  <text x="812" y="172" font-weight="bold">SYNCHRO circuit</text>
+  <text x="812" y="186">3 lines, p₀ 20 kPa</text>
+  <text x="812" y="199">relief +8 kPa per line</text>
+  <text x="812" y="212">3 × NO DUMP (fail = slack)</text>
+  <text x="812" y="225">CHARGE (NC) + 3 duckbills</text>
+  <text x="812" y="238">3 sensors = drag vector</text>
+  <text x="812" y="251">re-zero every rest / ≤60 s</text>
+  <rect x="624" y="286" width="350" height="150" fill="#fff" stroke="#1f5fbf"/>
+  <text x="632" y="302" font-weight="bold">PNEUMATICS</text>
+  <text x="632" y="317">P1 rail pump → 15 ml acc. → bleed Ø0.25 → RAIL 2–13 kPa</text>
+  <text x="632" y="331">   reliefs R1a 25 kPa + R1b 27 kPa · RAIL DUMP (NO)</text>
+  <text x="632" y="345">P2 vacuum pump → VAC −8 kPa (breaker −10)</text>
+  <text x="632" y="359">P3 palm pump → acc. → PALM RAIL 10–17 kPa, relief R2 20 kPa,</text>
+  <text x="632" y="373">   PALM DUMP (NO); PALM 3-way (de-energised = vent)</text>
+  <text x="632" y="387">12 × S070 pin valves: energised = rail, off = LIFT manifold</text>
+  <text x="632" y="401">LIFT SELECT 3-way: energised = VAC (park), off = air (hover)</text>
+  <text x="632" y="415">per pin: Ø0.5 sense orifice + sensor at box;</text>
+  <text x="632" y="429">   Ø0.22 restrictor + duckbill + Ø0.15 bleed at pin</text>
+  <rect x="624" y="446" width="350" height="96" fill="#fff" stroke="#2a8a2a"/>
+  <text x="632" y="462" font-weight="bold">CONTROLLER (ESP32-S3)</text>
+  <text x="632" y="477">core 1: 1 kHz valve scheduler + step gen + sensor scan</text>
+  <text x="632" y="491">core 0: score player, κ-grammar, ledger, scan, serial</text>
+  <text x="632" y="505">SPI: 3 × MCP3208 (24 ch) · 3 × TPIC6B595 (24 out)</text>
+  <text x="632" y="519">UART1: STS bus 1 Mbps · UART2: TMC2209 · microSD</text>
+  <text x="632" y="533">USB-C CDC 921600 ↔ PC · watchdog charge pump out</text>
+  <rect x="624" y="552" width="350" height="38" fill="#fff" stroke="#333"/>
+  <text x="632" y="568">enclosure: 6 mm ply/PETG, closed-cell foam, sorbothane</text>
+  <text x="632" y="582">feet, chair-back hook plate, strap slots, handle</text>
+  <line x1="794" y1="216" x2="804" y2="216" stroke="#1f5fbf" stroke-width="3"/>
+
+  <!-- INPUTS -->
+  <rect x="14" y="460" width="300" height="130" fill="#f3fbf3" stroke="#2a8a2a"/>
+  <text x="24" y="478" font-weight="bold" font-size="13">USER INPUTS</text>
+  <text x="24" y="496">Hand controller (1.5 m: 2 wires + 3 tubes)</text>
+  <text x="24" y="510">  palm lever = HOLD-TO-RUN (NO, 2.5 N)</text>
+  <text x="24" y="524">  3-chamber silicone egg → 3 sensors (yes / there / move)</text>
+  <text x="24" y="538">  hard squeeze > 40 kPa → NC pressure switch in rail</text>
+  <text x="24" y="556">E-stop puck (1.5 m): 22 mm NC latching mushroom</text>
+  <text x="24" y="570">  weighted, on the armrest / lap / side table</text>
+  <text x="24" y="584">Free hand always on the e-stop side</text>
+  <line x1="314" y1="520" x2="624" y2="110" stroke="#c33" stroke-width="1.5" marker-end="url(#a)"/>
+  <rect x="340" y="610" width="250" height="70" fill="#fff" stroke="#2a8a2a"/>
+  <text x="350" y="628" font-weight="bold">PC (laptop)</text>
+  <text x="350" y="643">serial console, score upload, live plots,</text>
+  <text x="350" y="657">session logs (CSV), blind A/B control</text>
+  <text x="350" y="671">nothing on the PC can energise the rail</text>
+  <line x1="590" y1="645" x2="700" y2="545" stroke="#2a8a2a" stroke-width="1.5" marker-end="url(#a)"/>
+  <text x="620" y="625" fill="#2a8a2a">USB-C</text>
+  <text x="24" y="612" font-size="10" fill="#555">Helmet side carries: 2 servos (6 V bus), the loop wire pair, pneumatics only on the pad.</text>
+  <text x="24" y="626" font-size="10" fill="#555">Everything that is fast, heavy, hot, noisy or switching lives in the box.</text>
+</svg>
+</div>
+    <figcaption>From the system spec, section 2.2. Black lines are mechanical, blue is air, red is the safety power rail, green is signal.</figcaption>
+  </figure>
+
+  <h2>The motion, animated</h2>
+  <ul class="links col">
+    <li><a href="https://claude.ai/artifact/7XTJGUwyXyB1pmvWaMy7mS">Circle-and-Line Drive</a>: the three scrub modes the box generates.</li>
+    <li><a href="https://claude.ai/artifact/TTSVibpYonMvTogD4XyZKD">Pressure-Gated Orbit</a>: how air pins choose when to press (from round 1; the circle has since become selectable).</li>
+    <li><a href="https://claude.ai/artifact/S3gCQ3dkrzj9nnKQqQtLpM">Where the Drive Lives</a>: why the motors are in a box, not on the helmet.</li>
+  </ul>
+  <h2>The full documents</h2>
+  <p class="col">In the project repo: <code>12-sp1v2/SYSTEM-SPEC.md</code> is the full spec. <code>DECISION-2.md</code> records your decisions, and the three <code>redteam-*.md</code> files are the reviews.</p>
+</div>
