@@ -75,3 +75,24 @@ module cyl_ab(d, a, b, fn=32) {             // cylinder of diameter d from point
 }
 module swept(path, d, z0, z1, fn=24)        // hull-chain of vertical cylinders along an XY polyline
     for (i = [0:len(path)-2]) hull() { cyl(d, z0, z1, path[i][0], path[i][1], fn=fn); cyl(d, z0, z1, path[i+1][0], path[i+1][1], fn=fn); }
+
+// ---------- V2: corrected (nail-plane) dish bench, Director ruling 2026-10-02 (dish_bench_v2.scad) ----------
+// Profile at the NAIL plane, scaled x K = 157/85 to the dish: sphere to 6.0; 30 deg +4.5 to 13.79;
+// 50 deg +4.5 to 17.57; turnaround 17.07 nail = 31.5 dish; 70 deg stop.  Generated pocket: pocket_cavity_v2.scad.
+V2_A_DOME = 44;
+V2_Z_DOME = sqrt(R_DC*R_DC - V2_A_DOME*V2_A_DOME);   // 150.73
+V2_POCKET_R = 37;
+V2_DECK_R = 84;  V2_FLAT_R = 66;            // deck radius; flat template seat (45 deg cone outside it)
+V2_UNDER_R = 155.5;                         // deck underside = sphere about C
+V2_DECK_ZTOP = 180.5;
+V2_LEG_R = 66;  V2_LEG_ANG = [30, 150, 270];
+V2_GRIP = [-70, -20, 14, 30];
+V2_TPL_PIN = [[38, -38], [-30, 38]];        // asymmetric: fits one way only
+V2_TPL_OUTLINE = [-45, 45, -45, 45, 8];
+V2_RIB = [22, 48, 8, NOSE_Z1, 134];          // r0, r1, width, z0, z1 of the ball-post ribs
+V2_POST_TOP = V2_Z_DOME - 0.6;
+V2_FOOT_Y = [28, 46];
+V2_CARM_LOW = [88, 94];
+V2_RISER_Y = 138;
+V2_TOP_Z0 = 204;  V2_TOP_H = 9;
+V2_GRIP_C = [14, 93, 16];

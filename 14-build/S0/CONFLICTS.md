@@ -47,13 +47,54 @@ Numbers come from `cad/dish_kinematics.py`, a rigid-body pose solver on the thre
 - It states the predicted FAILs of the chord and landing pass lines in advance (`S0-guide.md` §3).
 - It adds a **hand-rake comparison**: the same block, nails and force, stroked about 25 mm by hand on moving skids. Michael's blind ratings then show directly whether the short, steep dish rake costs sensation.
 
-**Decision needed (Director, then the PAD work package), before any Stage A pad CAD.** Choose one:
+**Decision needed (Director, then the PAD work package), before any Stage A pad CAD.** (Director, 2026-10-02: build and test both; see #1a.) Choose one:
 - **(a)** Accept a ≈ 10 mm scalp rake. This needs the Director's ruling that C5's ≤ 35° may be read at the dish, which I do not recommend.
 - **(b)** The scaled dish. This means a bigger pad (≈ Ø 165 deck), 11° tilt, and a different lift spring, such as three gravity-independent springs or a palm-line latch.
 - **(c)** Drop concentric motion: a translating block on a flat or slightly curved dish. Bench solver: rake 20–21 mm, but landing angle 31–52° depending on the nail, and turnaround clearance as low as 3.4 mm.
 - **(d)** Keep per-pin gating, which is what leap4-A L1/L2 do.
 
 The S0a sensation data (dish vs hand-rake) is the main input to this choice.
+
+### #1a Director ruling (2026-10-02) and the corrected geometry, for the PAD engineer to adopt
+
+**Ruling.** S0a builds **both** benches: the frozen dish (V1) and a corrected dish (V2). They are compared blind on the scalp, together with the hand rake and fingertips (`S0-guide.md` §7).
+
+**How V2 is defined.** Spec §4.2's numbers are read **at the nail plane** (frame S), then trimmed to the smallest variant that meets rake ≥ 17 mm, landing ≤ 35° and turnaround clearance ≥ 5 mm. It was picked from a 36-point grid (`cad/dish_kinematics.py`, `DISH_VARIANT=v2`).
+
+**V2 profile at the nail plane.** The dish is this profile × K = 157/85 = 1.847 in the lateral direction; the rise is unscaled.
+
+| Zone | Nail-plane offset | Angle | Rise |
+|---|---|---|---|
+| Concentric sphere | 0 → 6.0 mm | — | 0 |
+| Inner rim (landing band) | 6.0 → 13.79 mm | **30°** | +4.5 mm |
+| Outer rim | 13.79 → 17.57 mm | 50° | +4.5 mm (total +9.0) |
+| Turnaround | 17.07 mm (31.5 mm at the dish) | — | — |
+| Stop wall | to +1.5 mm beyond the rim at the dish | 70° | — |
+
+**V2 numbers** (solver, R 85 scalp, reserve 2.0, rise along the pad axis per ball, the #4 construction):
+
+| Quantity | Value |
+|---|---|
+| **Rake on the scalp, per nail** (line through the centre, 24 headings) | **18.5–18.9 mm** (frozen: 10.2–10.4) |
+| **Landing angle at the nail** | **29.2–32.9°** (frozen: 48–62) |
+| Clearance at the turnaround | 5.2–6.3 mm at reserve 2.0 (≈ 3.7–4.8 at reserve 3.5: see #2) |
+| **Block travel**, ball offset at the dish | **±31.5 mm**; the nails travel ±17.1 mm on the scalp |
+| Yoke / tendon travel, block level ≈ R 140 from C | ≈ ±28 mm (spec: ±17) |
+| **Block tilt / rise at the turnaround** | **13.1° / 9.0 mm**; 7.8° at a 20 mm ball offset |
+| Pockets | three, radius ≈ 37 mm (ball reach 34 + ball radius 3) |
+| Balls (domes) | on R ≥ 44 (spec M11: R 22) |
+| **Deck** | **≥ Ø 168 mm**; skids must sit at R ≥ 66 (Ø 132) to stay outside the block's reach (bench) |
+| Deck underside | a sphere R 155.5 about C, which clears the tilting block |
+| Central island | only Ø ≈ 14 |
+| Lift | **a centred lift spring is not possible**: at full travel it would run 49° off vertical and foul the nail bores. The bench lifts the block through its single template stylus instead: a rod resting on the groove floor, with a band to the C-arm. The pad needs its own answer (yoke-borne springs, or a palm-line latch, ruling §4). |
+| Mass impact | the bench deck alone is ≈ 150–180 g printed PLA; the real pad deck grows from the Ø 116 skid envelope to ≈ Ø 170 |
+
+**What the PAD engineer should take from this.**
+1. Specify the dish in nail-plane coordinates and scale it by R_dish / R_scalp.
+2. Budget about 2× the block travel and about 13° of tilt.
+3. Move the balls out to R ≥ 44.
+4. Re-solve the lift spring.
+5. Wait for the S0a blind result: frozen vs corrected vs hand rake. If the frozen dish rates within about 1 point of the corrected one, the smaller pad may be preferred (option a).
 
 ## #2 Spec §4.2 lift line is internally inconsistent
 

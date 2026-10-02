@@ -13,7 +13,7 @@ include <s0_lib.scad>
 include <pocket_cavity.scad>
 include <template_paths.scad>
 
-PART = "deck";   // deck | block | nose_plate | plunger | seat_disc | nail_N20 | nail_N30 | nail_N35 | c_arm |
+PART = "deck";   // deck | block | nose_plate | plunger | seat_disc | nail_N20 | nail_N30 | nail_N35 | nail_N45 | nail_N55 | c_arm |
                  // template_T1 | template_T2 | template_T3 | skid_ring | ball_cradle | side_mock | lift_gauge | assembly
 PRINT = false;
 
@@ -89,7 +89,7 @@ module seat_disc() cyl(SEAT_D, 0, SEAT_H);
 
 // ------------------------------------------------------------------ D06 / D07 nails
 // 90 deg tip cone from a 2.0 mm flat (rim R 0.4) to 4.5 mm at 1.25 mm, then a constant 4.5 stem
-// (safety ruling C2, "constant stem" option); steel pin hole in the top; ID rings (1 = reserve 2, 2 = reserve 3, 3 = reserve 3.5).
+// (safety ruling C2, "constant stem" option); steel pin hole in the top; ID rings (1 = reserve 2, 2 = 3, 3 = 3.5, 4 = 4.5, 5 = 5.5).
 function nail_prof(L) = let(r0 = NAIL_TIP_D/2, r1 = STEM_D/2, rf = NAIL_TIP_R, t = rf*tan(22.5), cx = r0 - t, cz = rf)
     concat([[0, 0], [r0 - t, 0]],
            [for (k = [1:7]) let(a = -90 + 45*k/7) [cx + rf*cos(a), cz + rf*sin(a)]],
@@ -186,6 +186,8 @@ module part(name) {
     else if (name == "nail_N20") nail(2.0, 1);
     else if (name == "nail_N30") nail(3.0, 2);
     else if (name == "nail_N35") nail(3.5, 3);
+    else if (name == "nail_N45") nail(4.5, 4);
+    else if (name == "nail_N55") nail(5.5, 5);
     else if (name == "c_arm") c_arm();
     else if (name == "template_T1") template(T1_line_star_S1, T1_line_star_S2, 1);
     else if (name == "template_T2") template(T2_dpath_S1, T2_dpath_S2, 2);
@@ -196,7 +198,7 @@ module part(name) {
     else if (name == "lift_gauge") lift_gauge();
 }
 // print orientation (the exporter then drops each part onto z = 0)
-PRINT_ROT = [["deck", [180, 0, 0]], ["nail_N20", [180, 0, 0]], ["nail_N30", [180, 0, 0]], ["nail_N35", [180, 0, 0]], ["c_arm", [0, 90, 0]], ["skid_ring", [180, 0, 0]]];
+PRINT_ROT = [["deck", [180, 0, 0]], ["nail_N20", [180, 0, 0]], ["nail_N30", [180, 0, 0]], ["nail_N35", [180, 0, 0]], ["nail_N45", [180, 0, 0]], ["nail_N55", [180, 0, 0]], ["c_arm", [0, 90, 0]], ["skid_ring", [180, 0, 0]]];
 function prot(n) = let(m = [for (r = PRINT_ROT) if (r[0] == n) r[1]]) len(m) ? m[0] : [0, 0, 0];
 
 if (PART == "assembly") {

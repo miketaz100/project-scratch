@@ -72,12 +72,31 @@ TPL_OUTLINE = (-26.0, 26.0, -57.0, 27.0, 6.0)
 # skid ring (hand-rake mode)
 SKID_Z0, SKID_T, SKID_FOOT_R = NOSE_Z0 - 3.0, 3.0, 28.0
 
-def load_geom():
-    with open(os.path.join(HERE, "pocket_mesh.json")) as f:
+def load_geom(suf=""):
+    with open(os.path.join(HERE, f"pocket_mesh{suf}.json")) as f:
         pm = json.load(f)
-    with open(os.path.join(HERE, "dish_geometry.json")) as f:
+    with open(os.path.join(HERE, f"dish_geometry{suf}.json")) as f:
         dg = json.load(f)
     return pm, dg
+
+# ---------- V2: corrected (nail-plane) dish bench, Director ruling 2026-10-02 (s0_lib.scad V2_*) ----------
+V2_A_DOME = 44.0
+V2_Z_DOME = math.sqrt(R_DC**2 - V2_A_DOME**2)      # 150.73
+V2_POCKET_R = 37.0
+V2_DECK_R, V2_FLAT_R = 84.0, 66.0                   # deck radius; flat template seat radius (45 deg cone outside)
+V2_UNDER_R = 155.5                                  # deck underside: sphere about C (clears block + rise everywhere)
+V2_DECK_ZTOP = 180.5
+V2_LEG_R, V2_LEG_ANG = 66.0, (30.0, 150.0, 270.0)  # legs between the pockets, outside the block's reach (body r 31 + 26 travel)
+V2_GRIP = (-70.0, -20.0, 14.0, 30.0)
+V2_TPL_PIN = ((38.0, -38.0), (-30.0, 38.0))          # asymmetric: the template fits one way only
+V2_TPL_OUTLINE = (-45.0, 45.0, -45.0, 45.0, 8.0)
+V2_RIB = (22.0, 48.0, 8.0, NOSE_Z1, 134.0)          # r0, r1, width, z0, z1 of the ball-post ribs
+V2_POST_TOP = V2_Z_DOME - 0.6
+V2_FOOT_Y = (28.0, 46.0)                            # C-arm foot under the 90 deg rib
+V2_CARM_LOW = (88.0, 94.0)                        # low enough to pass under the deck rim at full tilt
+V2_RISER_Y = 138.0
+V2_TOP_Z0, V2_TOP_H = 204.0, 9.0               # 4.5 mm above the template top: the axis point drops 3.5 mm at full tilt
+V2_GRIP_C = (14.0, 93.0, 16.0)
 
 # ============================ helpers ============================
 def U(*ms):
@@ -429,6 +448,95 @@ def pen_plate():
         cuts.append(cyl(M3_PILOT, PEN_PLATE_Z0 - 1, PEN_PLATE_Z1 + 1, x, y, fn=24))
     return D(U(plate, collar, *cups), *cuts)
 
+# ============================ DISH BENCH V2 (corrected geometry) ============================
+def deck_v2(pm):
+    top = V2_DECK_ZTOP
+    flat = cyl(2 * V2_FLAT_R, 100.0, top)
+    cone = Manifold.cylinder(top - 100.0, V2_FLAT_R + (top - 100.0), V2_FLAT_R, 128).translate([0, 0, 100.0]) ^ cyl(2 * V2_DECK_R, 99.0, top + 1)
+    lens = U(flat, cone) - Manifold.sphere(V2_UNDER_R, 256)
+    lens = lens ^ cyl(2 * V2_DECK_R, 100.0, top + 1)
+    cav = from_pts_faces(pm["points"], pm["faces"]).translate([0, V2_A_DOME, 0])
+    cavs = [cav.rotate([0, 0, a - 90.0]) for a in DOME_ANG]
+    body = D(lens, *cavs)
+    legs = []
+    for a in V2_LEG_ANG:
+        x, y = polar(V2_LEG_R, a)
+        zf = math.sqrt(FOOT_C_R**2 - V2_LEG_R**2)
+        ztop = math.sqrt(V2_UNDER_R**2 - V2_LEG_R**2) + 6.0
+        legs.append(U(cyl(LEG_D_BOT, zf, ztop, x, y, d2=LEG_D_TOP), sph(FOOT_D, (x, y, zf))))
+    gx, gy, gd, gh = V2_GRIP
+    grip = cyl(gd, top, top + gh, gx, gy, d2=gd - 2)
+    solid = U(body, grip, *legs)
+    cuts = [cyl(M3_PILOT, top - 8, top + 1, x, y, fn=24) for x, y in V2_TPL_PIN]
+    return D(solid, *cuts)
+
+def block_v2():
+    body = cyl(BODY_D, NOSE_Z1, BODY_Z1)
+    top = U(cyl(TOP_D, BODY_Z1, TOP_Z1), cyl(BODY_D, BODY_Z1 - 6, BODY_Z1, d2=TOP_D))
+    r0, r1, w, z0, z1 = V2_RIB
+    ribs, posts, cuts = [], [], []
+    for a in DOME_ANG:
+        ribs.append(box(r0, r1, -w / 2, w / 2, z0, z1).rotate([0, 0, a]))
+        x, y = polar(V2_A_DOME, a)
+        posts.append(cyl(POST_D0, z1 - 0.5, V2_POST_TOP, x, y, d2=POST_D1))
+        cuts.append(sph(BALL_SOCKET_D, (x, y, V2_Z_DOME), fn=48))
+    for a in NAIL_ANG:
+        x, y = polar(NAIL_R, a)
+        cuts.append(cyl(BORE_D, NOSE_Z1 - 1, BODY_Z1, x, y, fn=40))
+        cuts.append(cyl(M3_PILOT, BODY_Z1 - 0.5, TOP_Z1 + 1, x, y, fn=24))
+    for a in SCREW_ANG:
+        x, y = polar(SCREW_R, a)
+        cuts.append(cyl(M3_PILOT, NOSE_Z1 - 1, NOSE_Z1 + 11, x, y, fn=24))
+    for yy in (32.0, 42.0):                                                       # C-arm foot screws, from below into the 90 deg rib
+        cuts.append(cyl(M3_PILOT, NOSE_Z1 - 1, NOSE_Z1 + 9, 0, yy, fn=24))
+    return D(U(body, top, *ribs, *posts), *cuts)
+
+def carm_v2():
+    w = CARM_W / 2
+    lo0, lo1 = V2_CARM_LOW
+    f0, f1 = V2_FOOT_Y
+    foot = box(-w - 2, w + 2, f0, f1, lo0, NOSE_Z1)                                  # up against the rib underside
+    low = box(-w, w, f1 - 1, V2_RISER_Y + 5, lo0, lo1)
+    riser = box(-w, w, V2_RISER_Y - 5, V2_RISER_Y + 5, lo0, V2_TOP_Z0 + V2_TOP_H)
+    topb = box(-w, w, -8.0, V2_RISER_Y + 5, V2_TOP_Z0, V2_TOP_Z0 + V2_TOP_H)
+    cross = box(-15.0, 15.0, -5.0, 5.0, V2_TOP_Z0, V2_TOP_Z0 + V2_TOP_H)            # band anchor cross-piece at the lift rod
+    g1 = Manifold.batch_hull([box(-w, w, V2_RISER_Y - 6, V2_RISER_Y - 5, lo1, lo1 + 10), box(-w, w, V2_RISER_Y - 15, V2_RISER_Y - 5, lo1, lo1 + 1)])
+    g2 = Manifold.batch_hull([box(-w, w, V2_RISER_Y - 6, V2_RISER_Y - 5, V2_TOP_Z0 - 14, V2_TOP_Z0), box(-w, w, V2_RISER_Y - 19, V2_RISER_Y - 5, V2_TOP_Z0 - 1, V2_TOP_Z0)])
+    gd, gz, gl = V2_GRIP_C
+    grip = U(cyl_axis(gd, (0, V2_RISER_Y + 4, gz), (0, V2_RISER_Y + 5 + gl, gz), fn=40), sph(gd, (0, V2_RISER_Y + 5 + gl, gz), fn=40))
+    arm = U(foot, low, riser, topb, cross, g1, g2, grip)
+    cuts = [cyl(M3_CLEAR, V2_TOP_Z0 - 1, V2_TOP_Z0 + V2_TOP_H + 1, 0, 0, fn=24)]   # lift rod (M3 x 50) slides here
+    for x in (-13.0, 13.0):                                                         # band notches
+        cuts.append(box(x - 1.0, x + 1.0, -6, 6, V2_TOP_Z0 + V2_TOP_H - 3.0, V2_TOP_Z0 + V2_TOP_H + 1))
+    for yy in (32.0, 42.0):
+        cuts.append(cyl(M3_CLEAR, lo0 - 1, NOSE_Z1 + 1, 0, yy, fn=24))
+        cuts.append(cyl(M3_CB_D, lo0 - 1, NOSE_Z1 - 10.5, 0, yy, fn=24))            # deep counterbore: M3 x 20 from below
+    return D(arm, *cuts)
+
+def template_v2(dg, name, notches):
+    t = dg["templates"][name]
+    x0, x1, y0, y1, rr = V2_TPL_OUTLINE
+    base = Manifold.extrude(CrossSection.square([x1 - x0 - 2 * rr, y1 - y0 - 2 * rr]).translate([x0 + rr, y0 + rr]).offset(rr, m3.JoinType.Round), TPL_BASE)
+    walls = [swept([tuple(p) for p in path], WALL_D, 0.0, TPL_H) for path in t["stylus1"]]
+    grooves = [swept([tuple(p) for p in path], GROOVE_D, TPL_BASE, TPL_H + 1) for path in t["stylus1"]]
+    cuts = grooves + [cyl(M3_CLEAR, -1, TPL_BASE + 1, x, y, fn=24) for x, y in V2_TPL_PIN]
+    for k in range(notches):
+        cuts.append(box(x1 - 2.0, x1 + 1, 10.0 - 5.0 * k, 12.0 - 5.0 * k, -1, TPL_BASE + 1))
+    cuts.append(box(x0 - 1, x0 + 2.0, -14.0, 14.0, -1, TPL_BASE + 1))                 # "V2" mark: long slot on the -X edge
+    return D(U(base, *walls), *cuts)
+
+def rake_handle():
+    """hand-rake handle: bolts to the V1 block ear (2 x M3 x 12), 110 mm stick with a round grip."""
+    w = 6.0
+    foot = box(-w - 1, w + 1, EAR[2] - 6, EAR[2], 124.0, 139.0)
+    bar = box(-w, w, EAR[2] - 110, EAR[2] - 5, 128.0, 136.0)
+    knob = sph(16.0, (0, EAR[2] - 112, 132.0), fn=40)
+    cuts = []
+    for zz in (128.0, 135.0):
+        cuts.append(cyl_axis(M3_CLEAR, (0, EAR[2] - 7, zz), (0, EAR[2] + 1, zz), fn=24))
+        cuts.append(cyl_axis(M3_CB_D, (0, EAR[2] - 30, zz), (0, EAR[2] - 6 + 2.5, zz), fn=24))
+    return D(U(foot, bar, knob), *cuts)
+
 # ============================ HELMET TEST (S0a) ============================
 HB = (46.0, 5.0, 30.0)          # base X x Y x Z  (helmet_test.scad)
 HF = (46.0, 30.0, 5.0)          # flange X x Y x Z
@@ -452,16 +560,19 @@ def hinge_pad():
 # ============================ part table ============================
 def build_parts():
     pm, dg = load_geom()
+    pm2, dg2 = load_geom("_v2")
     P = []
     # (file, builder, print rotation list, material, qty, note)
     P.append(("D01_dish_deck", lambda: deck(pm), [[180, 0, 0]], "PLA/PETG", 1, "upside down, top plate on bed"))
-    P.append(("D02_dish_block", block, None, "PETG/PLA", 1, "upright, as modelled"))
-    P.append(("D03_nose_plate", nose_plate, None, "PETG or resin", 1, "flat"))
-    P.append(("D04_plunger", plunger, None, "resin or PETG", 4, "cup up"))
-    P.append(("D05_seat_disc", seat_disc, None, "any", 4, "flat"))
+    P.append(("D02_dish_block", block, None, "PETG/PLA", 2, "upright, as modelled (1 for the frozen bench, 1 for the hand rake)"))
+    P.append(("D03_nose_plate", nose_plate, None, "PETG or resin", 3, "flat"))
+    P.append(("D04_plunger", plunger, None, "resin or PETG", 10, "cup up"))
+    P.append(("D05_seat_disc", seat_disc, None, "any", 10, "flat"))
     P.append(("D06_nail_N20_reserve2", lambda: nail(2.0, 1), [[180, 0, 0]], "resin (SLA)", 4, "tip up"))
-    P.append(("D07_nail_N30_reserve3", lambda: nail(3.0, 2), [[180, 0, 0]], "resin (SLA)", 4, "tip up"))
-    P.append(("D16_nail_N35_reserve3p5", lambda: nail(3.5, 3), [[180, 0, 0]], "resin (SLA)", 3, "tip up"))
+    P.append(("D07_nail_N30_reserve3", lambda: nail(3.0, 2), [[180, 0, 0]], "resin (SLA)", 7, "tip up"))
+    P.append(("D16_nail_N35_reserve3p5", lambda: nail(3.5, 3), [[180, 0, 0]], "resin (SLA)", 7, "tip up"))
+    P.append(("D17_nail_N45_reserve4p5", lambda: nail(4.5, 4), [[180, 0, 0]], "resin (SLA)", 4, "tip up (flat crowns)"))
+    P.append(("D18_nail_N55_reserve5p5", lambda: nail(5.5, 5), [[180, 0, 0]], "resin (SLA)", 4, "tip up (flat crowns, V2 bench)"))
     P.append(("D08_c_arm", carm, [[0, 90, 0]], "PETG/PLA", 1, "on its side"))
     P.append(("D09_template_T1_line_star", lambda: template(dg, "T1_line_star", 1), None, "PLA", 1, "base down"))
     P.append(("D10_template_T2_dpath", lambda: template(dg, "T2_dpath", 2), None, "PLA", 1, "base down"))
@@ -470,6 +581,13 @@ def build_parts():
     P.append(("D13_ball_cradle", ball_cradle, None, "PLA", 1, "flat"))
     P.append(("D14_side_mock_70x150", side_mock, [[180, 0, 0]], "PLA", 1, "dome down? no: skirt on bed (see README)"))
     P.append(("D15_lift_gauge", lift_gauge, None, "PLA", 1, "flat"))
+    P.append(("D21_V2_dish_deck", lambda: deck_v2(pm2), [[180, 0, 0]], "PLA/PETG", 1, "upside down, flat top on bed"))
+    P.append(("D22_V2_block", block_v2, None, "PETG/PLA", 1, "upright"))
+    P.append(("D23_V2_c_arm", carm_v2, [[0, 90, 0]], "PETG/PLA", 1, "on its side"))
+    P.append(("D24_V2_template_T1_line_star", lambda: template_v2(dg2, "T1_line_star", 1), None, "PLA", 1, "base down"))
+    P.append(("D25_V2_template_T2_dpath", lambda: template_v2(dg2, "T2_dpath", 2), None, "PLA", 1, "base down (optional)"))
+    P.append(("D26_V2_template_T3_circle", lambda: template_v2(dg2, "T3_circle", 3), None, "PLA", 1, "base down (optional)"))
+    P.append(("D27_rake_handle", rake_handle, [[0, 90, 0]], "PETG/PLA", 1, "on its side"))
     P.append(("H01_hinge_pad", hinge_pad, [[180, 0, 0]], "PETG/PLA", 2, "flange top on the bed"))
     P.append(("T01_drum", drum, None, "resin (SLA) or PETG", 3, "hub down"))
     P.append(("T02_motor_table", motor_table, None, "PETG/PLA", 3, "feet down"))

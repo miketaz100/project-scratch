@@ -9,20 +9,28 @@ Units are mm. Every STL in `stl/` is already in its **print orientation**, sitti
 | File | What it is |
 |---|---|
 | `s0_lib.scad` | Shared constants and helpers. Names match `gen_s0_stl.py` one-for-one. |
-| `dish_bench.scad` | S0a dish bench, parts D01–D16. Set `PART = "..."`. `PART = "assembly"` shows the bench on the ball. |
+| `dish_bench.scad` | S0a **frozen** dish bench (V1), parts D01–D18. Set `PART = "..."`. `PART = "assembly"` shows the bench on the ball. |
+| `dish_bench_v2.scad` | S0a **corrected** dish bench (V2, Director ruling 2026-10-02), parts D21–D26, plus D27 hand-rake handle. Uses V1's nose plate, nails, plungers and seat discs. |
 | `helmet_test.scad` | H01 hinge pad for the helmet / hinge / coin-bag test |
 | `tendon_rig.scad` | S0b tendon ink rig, parts T01–T06 |
-| `pocket_cavity.scad`, `template_paths.scad` | **Generated** by `dish_kinematics.py`: the dish pocket ceiling as a polyhedron, and the corrected template stylus paths. Do not edit by hand. |
+| `pocket_cavity.scad`, `template_paths.scad` (+ `_v2` versions) | **Generated** by `dish_kinematics.py` (V2 with `DISH_VARIANT=v2`): the dish pocket ceiling as a polyhedron, and the corrected template stylus paths. Do not edit by hand. |
 | `dish_kinematics.py` | Dish profile, block pose solver, template paths, predicted chords, lifts and angles. Also writes `pocket_mesh.json` and `dish_geometry.json`. |
 | `gen_s0_stl.py` | Builds every STL with manifold3d (no OpenSCAD binary here), checks watertightness, prints sizes and volumes |
+| `check_s0_clearance_v2.py` | The same sweep for V2 (`DISH_VARIANT=v2`) |
+| `dish_variant_check.py` | First rough check of the nail-plane reading (CONFLICTS #1) |
 | `check_s0_clearance.py` | Interference sweep: block + nose plate + C-arm + balls + styli against the deck and templates, over 24 headings × full travel and every template path. Also checks the lift elastic through the well. |
-| `stl/` | 23 STLs, **all watertight** (checked 2026-10-02) |
+| `stl/` | 32 STLs, **all watertight** (checked 2026-10-02) |
 
-**Regenerate.** Run `python dish_kinematics.py`, then `python gen_s0_stl.py`, then `python check_s0_clearance.py`, using a Python environment with numpy, trimesh and manifold3d.
+**Regenerate.** Use a Python environment with numpy, trimesh and manifold3d. Run, in order:
+1. `python dish_kinematics.py`
+2. `DISH_VARIANT=v2 python dish_kinematics.py`
+3. `python gen_s0_stl.py`
+4. `python check_s0_clearance.py`
+5. `DISH_VARIANT=v2 python check_s0_clearance_v2.py`
 
 **Last run** (2026-10-02):
-- 23/23 STLs watertight.
-- Zero interference volume at every pose and on every template.
+- 32/32 STLs watertight.
+- V1 and V2: zero interference volume at every pose and on every template.
 - The 6 mm balls touch the dish ceiling at rest (raising them 0.3 mm cuts the deck: sanity check passed).
 - The elastic clears the well, apart from a 0.3 mm³ kiss of the rim at |d| = 16.5.
 
@@ -52,6 +60,39 @@ Units are mm. Every STL in `stl/` is already in its **print orientation**, sitti
 | Landing angle at the nail, relative to the ball | 48–62° | ≤ 35° | **expected FAIL: CONFLICTS #1** |
 | Stylus vertical travel | −1.6 … +10.2 mm | — | groove 17 deep, stylus engaged 14 at home |
 
+## The corrected bench (V2): what is different
+
+**Built to the Director's ruling on CONFLICTS #1.** The frozen §4.2 profile is read **at the nail plane** and scaled ×157/85 to the dish. It was then trimmed to the smallest grid point that meets **rake ≥ 17 mm, landing ≤ 35° and turnaround clearance ≥ 5 mm**.
+
+**Profile, at the nail plane:**
+- sphere to 6.0 mm;
+- inner rim 30°, +4.5 mm (to 13.8);
+- outer rim 50°, +4.5 mm (to 17.6);
+- turnaround at 17.1 mm.
+
+**Predicted (solver, on a true R 85 ball, reserve 2.0):**
+
+| Quantity | V1 frozen | **V2 corrected** |
+|---|---|---|
+| Ink rake on the scalp per nail | 10.2–10.4 mm | **18.5–18.9 mm** |
+| Landing angle at the nail | 48–62° | **29–33°** |
+| Clearance at the turnaround | 5.4–5.8 mm | **5.2–6.3 mm** |
+| Block travel at the dish (ball offset) | ±16.5 mm | **±31.5 mm** |
+| Nail travel on the scalp | ±8.9 mm | **±17.1 mm** |
+| Block tilt at the turnaround | 6.6° | **13.1°** |
+| Block rise at the turnaround | 7.8 mm | **9.0 mm** |
+| Ball circle radius / pocket radius | 26 / 21 mm | **44 / 37 mm** |
+| Deck diameter / leg circle | Ø 116 / Ø 110 | **Ø 168 / Ø 132** |
+| Template stylus span | ±20 mm | ±41 mm |
+| Lift | centre elastic through a Ø 3 island hole | **the stylus is a lift rod**: an M3 × 60 rests on the groove floor, and a rubber band from its head to the C-arm's top bar pulls the block up. A centred spring cannot work here (CONFLICTS #1 note). |
+| Printed mass on the head (est.) | ≈ 140 g | **≈ 300 g** (deck ≈ 180 g) |
+
+**V2 deck construction.**
+- The underside is a sphere R 155.5 about the ball centre, which clears the tilting block everywhere.
+- The flat template seat is Ø 132; outside it the top falls away in a 45° cone, so it prints upside down with no supports.
+
+**The V2 C-arm goes on before the deck** (guide step V5): its foot bolts from below into the ball-post rib.
+
 ## Parts, quantities, materials, settings
 
 **General FDM settings** (PLA or PETG): 0.4 mm nozzle, **0.2 mm layers**, **3 walls**, 4 top / 4 bottom layers, **15–20 % gyroid infill**, no supports unless the table says so.
@@ -59,18 +100,25 @@ Units are mm. Every STL in `stl/` is already in its **print orientation**, sitti
 | STL | Qty | Material | Print orientation (as exported) | Notes | Print service? |
 |---|---|---|---|---|---|
 | D01_dish_deck | 1 | PLA or PETG | upside down: top plate on the bed, legs up | The dish ceilings face up, so they print clean with no supports. **0.12 mm layers** if your slicer has variable layer height (smoother 34°/50° rims). Sand the pocket ceilings with 400 grit, then wax them or spray dry PTFE lube (guide step D7). The spec's PTFE film does not lie flat in these small curved pockets. | **OK** (FDM PLA). Rims are steps of 0.2 mm either way; the PTFE film covers them. |
-| D02_dish_block | 1 | PETG or PLA | upright | The 45° chamfer under the top plate prints without support. Ball sockets face up. | **OK** |
-| D03_nose_plate | 1 | PETG, or resin | flat | The nail guide bores are Ø 4.7. If a nail sticks, run a **3/16 in (4.76 mm) drill bit** through by hand. | **OK**. Resin is better: smoother bores. |
-| D04_plunger | 4 (1 spare) | resin (SLA), or PETG at 0.12 mm | cup up | Ø 3.1 magnet pocket in the bottom face | **Resin via service recommended** |
-| D05_seat_disc | 4 | any | flat | | OK |
+| D02_dish_block | **2** (frozen bench + hand rake) | PETG or PLA | upright | The 45° chamfer under the top plate prints without support. Ball sockets face up. | **OK** |
+| D03_nose_plate | **3** | PETG, or resin | flat | The nail guide bores are Ø 4.7. If a nail sticks, run a **3/16 in (4.76 mm) drill bit** through by hand. | **OK**. Resin is better: smoother bores. |
+| D04_plunger | 10 (1 spare) | resin (SLA), or PETG at 0.12 mm | cup up | Ø 3.1 magnet pocket in the bottom face | **Resin via service recommended** |
+| D05_seat_disc | 10 | any | flat | | OK |
 | D06_nail_N20_reserve2 | 4 | **resin (SLA)**, tough or standard grey or orange | tip up | **2.0 mm** reserve on a true R 85 ball. One ring near the top. | **Service: JLC3DP SLA** (see below) |
-| D07_nail_N30_reserve3 | 4 | resin | tip up | 3.0 mm reserve. Two rings. **Use these on the 7 in (R 89) ball**, where they behave like N20 on R 85. | Service |
-| D16_nail_N35_reserve3p5 | 3 | resin | tip up | 3.5 mm reserve, the spec's worst case. Three rings. **Use these on Michael's crown** if his crown is flatter than R 85. | Service |
+| D07_nail_N30_reserve3 | 7 | resin | tip up | 3.0 mm reserve. Two rings. **Use these on the 7 in (R 89) ball**, where they behave like N20 on R 85. | Service |
+| D16_nail_N35_reserve3p5 | 7 | resin | tip up | 3.5 mm reserve, the spec's worst case. Three rings. | Service |
+| D17_nail_N45 / D18_nail_N55 | 4 each | resin | tip up | 4.5 / 5.5 mm. Four / five rings. For flatter crowns, mainly on the V2 bench, whose legs stand wider (guide §7.2 table). | Service |
 | D08_c_arm | 1 | PETG (stiffer) or PLA | on its side | | **OK** |
 | D09 / D10 / D11 templates | 1 each | PLA | base down | Grooves are 3.4 wide × 17 deep. Use **0.16 mm layers** for cleaner groove walls. Notches on the +X edge: 1 = line star, 2 = D-path, 3 = circle. | **OK** |
 | D12_skid_ring_hand_rake | 1 | PETG or PLA | ring on the bed, legs up | Feet are Ø 8 balls | OK |
 | D13_ball_cradle | 1 | PLA | flat | | OK. Or use a roll of tape. |
 | D14_side_mock_70x150 | 1 | PLA | skirt on the bed, dome up | **Optional.** Only for the side-of-head geometry check. | OK |
+| D21_V2_dish_deck | 1 | PLA | **upside down: flat top on the bed**, legs up | Footprint 168 × 168 mm: fits a 180 mm bed (Bambu A1 mini). About 12 h. **2 walls, 6–8 % infill** keeps it ≈ 150–180 g. | OK (FDM) |
+| D22_V2_block | 1 | PETG or PLA | upright | Ribs carry the ball posts at R 44 | OK |
+| D23_V2_c_arm | 1 | PETG | on its side (174 mm long) | | OK |
+| D24_V2_template_T1_line_star | 1 | PLA | base down | Single stylus. Long slot on its −X edge = V2. | OK |
+| D25 / D26 V2 templates T2, T3 | 1 each | PLA | base down | **Optional**: not needed for the scalp session | OK |
+| D27_rake_handle | 1 | PETG or PLA | on its side | Bolts to the second V1 block's ear for the hand rake | OK |
 | D15_lift_gauge | 1 | PLA | flat | Steps of 2 / 3 / 4 / 5 / 6 / 7 mm. **Check them with calipers.** | OK |
 | H01_hinge_pad | 2 | PETG or PLA | flange top on the bed | L-bracket. The base goes on the helmet side; the flange takes the Southco E6 leaf studs (15.1 mm pitch, Ø 5.5 holes), so the hinge pin points ear-to-ear. | OK. Or a 1 × 1 in aluminum angle bracket |
 | T01_drum | 3 | resin (SLA) or PETG at 0.12 mm | hub down | Ø 12 drum with two helical grooves at 1 mm pitch. **CF Stage A**: reprint in SLA. D-bore for the 5 mm shaft, flat [VERIFY]. | Resin via service is better |
@@ -85,8 +133,8 @@ Units are mm. Every STL in `stl/` is already in its **print orientation**, sitti
 **JLC3DP** (jlc3dp.com): upload the STLs and choose the process and material per part.
 - **FDM PLA** for everything marked OK. Ask for 0.2 mm layers and 20 % infill.
 - **SLA resin** (their standard 9000R, or a tough resin) for:
-  - nails: D06 × 4, D07 × 4, D16 × 3;
-  - plungers: D04 × 4;
+  - nails: D06 × 4, D07 × 7, D16 × 7, D17 × 4, D18 × 4;
+  - plungers: D04 × 10;
   - drums: T01 × 3 (S0b).
 - **Orientation for resin parts.** Nails tip up, supports only on the top end. The R 0.4 tip edge must not carry support marks.
 - **Tolerances.** Note "holes as modelled; no shrink compensation" in the order remark. All fits were sized for normal printer tolerances:

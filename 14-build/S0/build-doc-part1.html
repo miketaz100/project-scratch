@@ -1,0 +1,358 @@
+<title>Scratch Build Part 1</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600&family=Source+Sans+3:wght@400;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: a workshop checklist. Sticky progress bar; sessions as numbered sections (they are a real sequence); each step is a checkbox row with a short "good looks like" line. Results fields feed a copy-to-Claude button. */
+:root {
+  --bg:#f6f4ee; --fg:#1f2320; --muted:#5d645e; --rule:#d9d4c7; --panel:#fdfcf8; --accent:#8a4a1f; --accent-ink:#5e3113;
+  --ok:#2f6b3a; --okbg:#e6efe3; --warn:#9a5a12; --warnbg:#f6ead6; --stop:#9b2d20; --stopbg:#f6e0dc;
+  --display:"Fraunces", Georgia, serif; --body:"Source Sans 3", "Helvetica Neue", Arial, sans-serif; --mono:"IBM Plex Mono", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg:#191b19; --fg:#e8e6df; --muted:#a6aba3; --rule:#3a3e39; --panel:#222522; --accent:#d99b63; --accent-ink:#f0c9a3;
+  --ok:#8fcf9a; --okbg:#1f2c21; --warn:#e0b55a; --warnbg:#2e2617; --stop:#ef8f80; --stopbg:#2f1c19; color-scheme:dark } }
+:root[data-theme="dark"] {
+  --bg:#191b19; --fg:#e8e6df; --muted:#a6aba3; --rule:#3a3e39; --panel:#222522; --accent:#d99b63; --accent-ink:#f0c9a3;
+  --ok:#8fcf9a; --okbg:#1f2c21; --warn:#e0b55a; --warnbg:#2e2617; --stop:#ef8f80; --stopbg:#2f1c19; color-scheme:dark }
+body { background:var(--bg); color:var(--fg); font-family:var(--body); font-size:17px; line-height:1.55; }
+.wrap { max-width:860px; margin:0 auto; padding-inline:18px; padding-block:24px 96px; }
+h1,h2,h3 { font-family:var(--display); font-weight:600; line-height:1.2; text-wrap:balance; margin:0; }
+h1 { font-size:2.1rem; } h2 { font-size:1.5rem; } h3 { font-size:1.12rem; margin-top:1.4rem; }
+p { margin:.6rem 0 0; }
+.eyebrow { font-family:var(--mono); font-size:.74rem; letter-spacing:.08em; text-transform:uppercase; color:var(--accent); }
+.lede { color:var(--muted); font-size:1.05rem; }
+.bar { position:sticky; top:env(safe-area-inset-top, 0px); z-index:5; background:var(--bg); border-bottom:1px solid var(--rule); padding:10px 0; margin-top:16px; display:flex; gap:12px; align-items:center; }
+.track { flex:1; height:8px; background:var(--rule); border-radius:99px; overflow:hidden; }
+.fill { height:100%; width:0; background:var(--accent); transition:width .3s; }
+.count { font-family:var(--mono); font-size:.82rem; color:var(--muted); font-variant-numeric:tabular-nums; white-space:nowrap; }
+.toc { display:flex; flex-wrap:wrap; gap:6px; margin-top:12px; }
+.toc a { font-size:.88rem; color:var(--fg); text-decoration:none; border:1px solid var(--rule); border-radius:999px; padding:3px 10px; background:var(--panel); }
+.toc a:focus-visible { outline:2px solid var(--accent); }
+section.sess { margin-top:2.4rem; padding-top:1rem; border-top:1px solid var(--rule); }
+.meta { font-family:var(--mono); font-size:.8rem; color:var(--muted); margin-top:4px; }
+.steps { list-style:none; padding:0; margin:.8rem 0 0; display:flex; flex-direction:column; gap:6px; }
+.steps li { display:grid; grid-template-columns:28px 1fr; gap:8px; align-items:start; padding:9px 10px; background:var(--panel); border:1px solid var(--rule); border-radius:8px; }
+.steps li.done { opacity:.6; }
+.steps input[type=checkbox] { width:20px; height:20px; margin-top:3px; accent-color:var(--accent); }
+.steps label { cursor:pointer; min-width:0; }
+.steps .good { display:block; color:var(--ok); font-size:.92rem; margin-top:2px; }
+.steps .fix { display:block; color:var(--warn); font-size:.92rem; margin-top:2px; }
+.box { margin-top:1rem; padding:.9rem 1.1rem; border-radius:8px; }
+.box.stop { background:var(--stopbg); border:1px solid var(--stop); }
+.box.stop strong { color:var(--stop); }
+.box.note { background:var(--warnbg); border:1px solid var(--warn); }
+.box.plain { background:var(--panel); border:1px solid var(--rule); }
+.box ul { margin:.4rem 0 0; padding-left:1.2rem; } .box li { margin:.25rem 0; }
+table { border-collapse:collapse; width:100%; font-size:.94rem; font-variant-numeric:tabular-nums; }
+.tw { overflow-x:auto; margin-top:.8rem; }
+th,td { text-align:left; padding:7px 8px; border-bottom:1px solid var(--rule); vertical-align:top; }
+th { font-family:var(--mono); font-size:.7rem; text-transform:uppercase; letter-spacing:.06em; color:var(--muted); font-weight:500; }
+td input[type=text], td select { width:100%; min-width:4.5rem; font:inherit; font-size:.92rem; padding:4px 6px; border:1px solid var(--rule); border-radius:4px; background:var(--bg); color:var(--fg); }
+td input[type=text]:focus-visible, td select:focus-visible { outline:2px solid var(--accent); }
+.cart td:nth-child(3) { white-space:nowrap; }
+a { color:var(--accent-ink); }
+.btn { font:inherit; font-size:.95rem; padding:8px 16px; border:1px solid var(--accent); background:var(--accent); color:var(--bg); border-radius:999px; cursor:pointer; }
+.btn.ghost { background:transparent; color:var(--accent-ink); }
+.btn:focus-visible { outline:2px solid var(--fg); outline-offset:2px; }
+textarea { width:100%; min-height:140px; font-family:var(--mono); font-size:.8rem; margin-top:10px; background:var(--panel); color:var(--fg); border:1px solid var(--rule); border-radius:6px; padding:8px; }
+.script { font-style:italic; border-left:3px solid var(--accent); padding-left:12px; margin-top:.6rem; }
+.q { display:grid; grid-template-columns:auto 1fr; gap:4px 10px; margin-top:.5rem; font-size:.95rem; }
+.q b { font-family:var(--mono); font-weight:500; color:var(--accent); }
+</style>
+
+<div class="wrap">
+  <span class="eyebrow">Project Scratch · SP1 · Build part 1 of 2</span>
+  <h1>Scratch Build Part 1: Does It Feel Good?</h1>
+  <p class="lede">The cheap first test. You build two small hand-driven versions of the scratching pad, try them on a ball, then a helper tries them on your head. If they feel like a good scratch, you buy the next round of parts. If not, you've spent about $127 and we fix the nail before building anything bigger.</p>
+
+  <div class="box plain">
+    <strong>What you need:</strong> about $127 in parts and printing if you have a 3D printer, one helper for a 30-minute session at the end, and about 12–14 hours spread over a long weekend or a few evenings.
+    <ul>
+      <li><strong>No printer?</strong> A Bambu Lab A1 mini is about $219 on sale and is worth it, because the later stages print a lot. Or order prints from a service for about $110–190.</li>
+      <li><strong>Two benches:</strong> "V1" is built exactly to the original spec. "V2" is the corrected version, with longer, gentler strokes. The test tells us which one to build for real.</li>
+    </ul>
+  </div>
+
+  <div class="bar" role="status"><div class="track"><div class="fill" id="fill"></div></div><span class="count" id="count">0 of 0 done</span></div>
+  <nav class="toc" aria-label="Sections">
+    <a href="#safety">Safety</a><a href="#shop">1 Shop</a><a href="#print">2 Print</a><a href="#measure">3 Measure</a><a href="#helmet">4 Helmet</a><a href="#v1">5 Build V1</a><a href="#v2">6 Build V2 + rake</a><a href="#ball">7 Ball tests</a><a href="#head">8 Head session</a><a href="#decide">9 Decide</a><a href="#send">10 Send me</a>
+  </nav>
+
+  <section class="sess" id="safety">
+    <h2>Safety first</h2>
+    <div class="box stop">
+      <strong>Stop and lift straight up</strong> (never drag sideways) if there is any pain, sting, tug, catch, heat, a missing nail, anything loose, or the bench rocks on your head.
+      <ul>
+        <li><strong>Glasses on</strong> for both of you during the head session, and at the bench when working with springs, magnets or cut wire.</li>
+        <li><strong>The helper never presses down.</strong> The bench rests on your head by its own weight.</li>
+        <li><strong>Count the nails before and after every bout: 3 in, 3 out.</strong> A missing nail is in your hair: stop and find it.</li>
+        <li><strong>Crown only</strong>, at least 3 cm from your hairline, ears and eyes. Clean, dry, combed hair. Not on irritated or sunburnt skin.</li>
+        <li><strong>Magnets are a swallowing hazard.</strong> Keep the bag sealed, away from children and pets. Count them out and back.</li>
+        <li><strong>Superglue:</strong> gloves and a damp cloth nearby.</li>
+        <li><strong>At most 20 minutes</strong> of head contact per day. Any redness should be gone 10 minutes later.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="sess" id="shop">
+    <h2>1 · Shop</h2>
+    <p class="meta">about $110 in parts plus about $7 tax · one Walmart order, one Amazon order, two small hinges from Bossard, Home Depot pickup</p>
+    <div class="tw"><table class="cart">
+      <thead><tr><th></th><th>Item</th><th>About</th><th>Where</th></tr></thead>
+      <tbody>
+        <tr><td><input type="checkbox" id="c-ball"></td><td>7 in rubber playground ball (stands in for your head)</td><td>$11</td><td><a href="https://www.walmart.com/ip/548592900">Walmart</a></td></tr>
+        <tr><td><input type="checkbox" id="c-scale"></td><td>Pocket scale, 100 g × 0.01 g (sets and checks nail force)</td><td>$14</td><td><a href="https://www.walmart.com/ip/658655000">Walmart</a></td></tr>
+        <tr><td><input type="checkbox" id="c-glasses"></td><td>Safety glasses, 2-pack</td><td>$4</td><td><a href="https://www.walmart.com/ip/571868188">Walmart</a></td></tr>
+        <tr><td><input type="checkbox" id="c-helmet"></td><td>Adult bike helmet with a rear dial (we reuse its dial later)</td><td>$17</td><td><a href="https://www.walmart.com/ip/499045540">Walmart</a></td></tr>
+        <tr><td><input type="checkbox" id="c-tape"></td><td>Soft tailor's tape measure</td><td>$3</td><td><a href="https://www.walmart.com/ip/708233721">Walmart</a></td></tr>
+        <tr><td><input type="checkbox" id="c-glue"></td><td>Superglue gel (skip if you have some)</td><td>$3</td><td>Walmart or any store</td></tr>
+        <tr><td><input type="checkbox" id="c-balls"></td><td>6 mm Delrin (acetal) balls, pack of 10</td><td>$7</td><td><a href="https://www.amazon.com/dp/B08F3Z75X3">Amazon</a></td></tr>
+        <tr><td><input type="checkbox" id="c-springs"></td><td>Small compression spring kit (0.3–0.5 mm wire, 4–6 mm wide)</td><td>$10</td><td><a href="https://www.amazon.com/dp/B0CMPQ2PQR">Amazon</a></td></tr>
+        <tr><td><input type="checkbox" id="c-magnets"></td><td>Neodymium magnets 3 × 2 mm, 100 pack</td><td>$11</td><td><a href="https://www.amazon.com/dp/B079P6X998">Amazon</a></td></tr>
+        <tr><td><input type="checkbox" id="c-m3"></td><td>M3 screw and nut kit with hex keys (must include M3 × 12 and × 16)</td><td>$9</td><td><a href="https://www.amazon.com/dp/B0C9SQXQX4">Amazon</a></td></tr>
+        <tr><td><input type="checkbox" id="c-grub"></td><td>M3 set screw (grub screw) assortment with 4 mm lengths</td><td>$7</td><td>Amazon, "M3 set screw assortment"</td></tr>
+        <tr><td><input type="checkbox" id="c-hinge"></td><td>2 × Southco E6-10-101-20 friction hinges</td><td>$15</td><td><a href="https://americas.bossard.com/products/e6-10-101-20-by-southco.html">Bossard</a> (or Southco's own shop, about $22 for two)</td></tr>
+        <tr><td><input type="checkbox" id="c-bar"></td><td>Aluminum flat bar, 1/2 in × 1/16 in × 36 in</td><td>$4</td><td><a href="https://www.homedepot.com/p/204604762">Home Depot</a> pickup</td></tr>
+        <tr><td><input type="checkbox" id="c-house"></td><td>From home: steel paper clips, rubber bands, a candle, masking tape, washable and permanent markers, coins (pennies 2.5 g, nickels 5 g, quarters), paper cup, zip ties, foam tape, a 3 mm bamboo skewer, scissors, side cutters, ruler, 400-grit sandpaper, a phone with slow-motion video</td><td>$0</td><td>—</td></tr>
+        <tr><td><input type="checkbox" id="c-caliper"></td><td>Recommended: digital caliper (you'll use it in every later stage)</td><td>$12</td><td>Harbor Freight 63586</td></tr>
+      </tbody>
+    </table></div>
+    <p class="meta">Prices checked 2 October 2026; Amazon prices are estimates, so check at checkout. About $77 of this carries into later stages.</p>
+  </section>
+
+  <section class="sess" id="print">
+    <h2>2 · Print</h2>
+    <p class="meta">about 0.5 kg of PLA or PETG · the big V2 deck is a 12-hour print and needs a bed at least 168 mm square</p>
+    <p>All print files are in the project folder <code>14-build/S0/cad/stl/</code>, already oriented to print. Open each in your slicer and print as-is.</p>
+    <ol class="steps">
+      <li><input type="checkbox" id="p-v1"><label for="p-v1"><b>V1 bench:</b> D01 deck, D02 block ×2 (one is for the hand rake), D03 nose plate ×3, D08 C-arm, D09–D11 templates, D12 skid ring, D13 ball cradle, D15 lift gauge.</label></li>
+      <li><input type="checkbox" id="p-v2"><label for="p-v2"><b>V2 bench:</b> D21 deck (the big one, print it first), D22 block, D23 C-arm, D24 template. D27 hand-rake handle.</label></li>
+      <li><input type="checkbox" id="p-small"><label for="p-small"><b>Small parts:</b> D04 plungers ×10, D05 seat discs ×10, nails: N20 ×4, N30 ×7, N35 ×7, N45 ×4, N55 ×4. The rings on top of each nail tell you its length (1 ring = N20, up to 5 rings = N55).<span class="good">Nails printed on a normal printer are fine once their tips are sanded (step 5.1). Resin nails are optional, about $20 more from a print service.</span></label></li>
+      <li><input type="checkbox" id="p-hinge"><label for="p-hinge"><b>Helmet test:</b> H01 hinge pad ×2.</label></li>
+    </ol>
+  </section>
+
+  <section class="sess" id="measure">
+    <h2>3 · Measure your head</h2>
+    <p class="meta">20 minutes, with your helper</p>
+    <ol class="steps">
+      <li><input type="checkbox" id="m-1"><label for="m-1">Head circumference: tape level, just above the eyebrows and round the widest part of the back.</label></li>
+      <li><input type="checkbox" id="m-2"><label for="m-2">Ear to ear over the top: from where one ear meets the head, over the crown, to the other.</label></li>
+      <li><input type="checkbox" id="m-3"><label for="m-3">Front to back: from between your eyebrows, over the crown, to the bony bump at the back of your skull.</label></li>
+      <li><input type="checkbox" id="m-4"><label for="m-4">Front hairline to the crown swirl.</label></li>
+      <li><input type="checkbox" id="m-5"><label for="m-5">Hair length at the crown (pull a few hairs straight up), and hair thickness: push a toothpick down through the hair to the scalp and note the depth.</label></li>
+      <li><input type="checkbox" id="m-6"><label for="m-6">Look at your crown in a mirror: which way does the hair lie there?</label></li>
+    </ol>
+    <div class="tw"><table><tbody>
+      <tr><td>Head circumference (mm)</td><td><input type="text" id="r-circ"></td><td>Ear to ear (mm)</td><td><input type="text" id="r-ear"></td></tr>
+      <tr><td>Front to back (mm)</td><td><input type="text" id="r-fb"></td><td>Hairline to swirl (mm)</td><td><input type="text" id="r-hs"></td></tr>
+      <tr><td>Hair length (mm)</td><td><input type="text" id="r-hl"></td><td>Hair thickness (mm)</td><td><input type="text" id="r-hp"></td></tr>
+      <tr><td>Hair lies toward</td><td colspan="3"><input type="text" id="r-hdir"></td></tr>
+    </tbody></table></div>
+  </section>
+
+  <section class="sess" id="helmet">
+    <h2>4 · Helmet and hinge test</h2>
+    <p class="meta">1.5 hours to build, then 20 minutes watching TV · tests whether moving the scratcher by hand between bouts is OK</p>
+    <ol class="steps">
+      <li><input type="checkbox" id="h-1"><label for="h-1">Put the helmet on, snug with the rear dial. Have your helper mark a dot on each side, 45 mm straight above your ear opening.</label></li>
+      <li><input type="checkbox" id="h-2"><label for="h-2">Fix one hinge to each printed pad (H01): one leaf on the pad's sticking-out flange, studs through, nuts underneath.<span class="good">Good: the hinge pin points straight out sideways from your head, ear to ear. If it points front-to-back, flip the leaf.</span></label></li>
+      <li><input type="checkbox" id="h-3"><label for="h-3">Stick each pad on its dot with foam tape, centred, and add two zip ties through the nearest vents.</label></li>
+      <li><input type="checkbox" id="h-4"><label for="h-4">Bend the aluminum bar by hand around a bucket into a hoop that runs from hinge to hinge over the helmet, 3–4 cm clear of it. Trim, drill two 7/32 in holes 15.1 mm apart in each end, and bolt the ends to the free hinge leaves.<span class="good">Good: the hoop swings forward and back and stays wherever you leave it.</span></label></li>
+      <li><input type="checkbox" id="h-5"><label for="h-5">Tape a bag of about 340 g of coins (about 60 quarters) to the top of the hoop.</label></li>
+      <li><input type="checkbox" id="h-6"><label for="h-6">Wear it with the hoop straight up for 20 minutes of TV without touching it. Then 5 minutes each with it tilted 45° back and 90° back.<span class="good">Pass: it creeps no more than 3°.</span><span class="fix">If it creeps: tighten the hinge's adjustment screw a quarter turn.</span></label></li>
+      <li><input type="checkbox" id="h-7"><label for="h-7">Eyes closed, move the hoop from straight up to 45° back, 10 times, while your helper times you.<span class="good">Pass: under 3 seconds in at least 8 of 10.</span></label></li>
+    </ol>
+    <div class="tw"><table><tbody>
+      <tr><td>Creep at 0° / 45° / 90° (degrees)</td><td><input type="text" id="r-creep"></td></tr>
+      <tr><td>Eyes-closed moves under 3 s (out of 10)</td><td><input type="text" id="r-reidx"></td></tr>
+      <tr><td>"How much does the weight pull or lean the helmet?" (0–10, pass ≤ 3)</td><td><input type="text" id="r-lean"></td></tr>
+      <tr><td>"How much would moving it by hand between bouts bother you?" (0–10, pass ≤ 3)</td><td><input type="text" id="r-nuis"></td></tr>
+    </tbody></table></div>
+  </section>
+
+  <section class="sess" id="v1">
+    <h2>5 · Build the V1 bench</h2>
+    <p class="meta">about 4 hours · a still "deck" on three legs, a "block" carrying three spring-loaded nails that rides in dish-shaped pockets under the deck, and a handle that steers it along grooves</p>
+    <div class="box note"><strong>Screw holes:</strong> small "pilot" holes (2.6 mm) let an M3 screw cut its own thread: turn slowly and stop when snug. If one strips, put a drop of superglue in it, wait 10 minutes, and screw again.</div>
+    <ol class="steps">
+      <li><input type="checkbox" id="b-1"><label for="b-1"><b>Clean the prints.</b> Remove supports; pick strings out of the three pockets under the deck. Each plunger must slide in its block bore under its own weight; each nail must slide through the nose plate. Sand bores lightly round a pencil if they stick.<span class="good">Nail tips: drag each firmly across the back of your hand. It must feel blunt and leave no scratch line. If not, sand the tip rim with 400 grit while rolling the nail.</span></label></li>
+      <li><input type="checkbox" id="b-2"><label for="b-2"><b>Balls.</b> One small drop of superglue in each of the three sockets on top of the block's posts; press a Delrin ball in. Wipe off any glue: none may stay on the top half.<span class="good">Good: each ball sticks up about 3.6 mm and won't turn.</span></label></li>
+      <li><input type="checkbox" id="b-3"><label for="b-3"><b>Magnets.</b> Glasses on. One at a time: a pin-head drop of glue in the pocket on the flat end of a plunger, drop in a magnet, press flush. Do 4. Seal the magnet bag.</label></li>
+      <li><input type="checkbox" id="b-4"><label for="b-4"><b>Steel nail tops.</b> Cut 5 mm bits of steel paper clip, one per nail. Glue each into the hole in the ringed top of a nail, then sand flush on sandpaper laid flat.<span class="good">Good: a magnet sticks to the top of every nail.</span></label></li>
+      <li><input type="checkbox" id="b-5"><label for="b-5"><b>Springs.</b> Pick 3 identical springs about 12 mm long that fit inside a plunger's cup. Cut to length with side cutters.</label></li>
+      <li><input type="checkbox" id="b-6"><label for="b-6"><b>Nail stacks.</b> Block upside down. Into each bore: a seat disc, a spring, then a plunger cup-first. Screw the nose plate on with 3 × M3 × 12, snug. Turn the block over and screw an M3 × 4 set screw into each top hole until flush with the top (never sticking up). Push an <b>N30</b> nail up into each guide until it clicks onto its magnet.<span class="good">Good: nails hang straight, push up about 6 mm smoothly against the spring, spring back, and pop off with a firm tug.</span></label></li>
+      <li><input type="checkbox" id="b-7"><label for="b-7"><b>Smooth the pockets.</b> Sand the three pocket floors under the deck lightly with 400 grit, then rub candle wax in and buff.<span class="good">Good: the block slides around inside the upside-down deck with no grabbing or clicking.</span></label></li>
+      <li><input type="checkbox" id="b-8"><label for="b-8"><b>Lift band and assemble on the ball.</b> Ball in its cradle, masking tape over the top, a small cross at the very top. Push a 25 mm piece of paper clip across the block's centre well and tie a rubber band or elastic to it. Set the block on the ball, nails down, over the cross. Thread the elastic up through the deck's centre hole, lower the deck over the block (feet on the ball, balls up in the pockets), stretch the elastic gently and tie it round a bit of toothpick on top.<span class="good">Good: the block hangs up in the dish by itself, nails resting on the ball. Pushed sideways, it rolls and its nails lift off at the ends.</span></label></li>
+      <li><input type="checkbox" id="b-9"><label for="b-9"><b>Penny test (the hair-safety breakaway).</b> Take the block out and hold it nose-down. Tie thread round one nail just above the tip, hang a paper cup, add pennies one at a time until the nail drops off. Weigh cup + pennies + thread. Repeat 10 times per nail.<span class="good">Pass: every pull 12–25 g.</span><span class="fix">Over 25 g: one layer of clear tape over that magnet. Under 12 g: sand that nail's steel top flat again.</span></label></li>
+      <li><input type="checkbox" id="b-10"><label for="b-10"><b>Coin test (how hard each nail presses).</b> Block nose up. Mark each nail where it leaves the nose plate. Balance a bottle cap with Blu-Tack on a tip and add coins until the mark sinks 2 mm.<span class="good">Target: 25–35 g at 2 mm, all three within 5 g. Never above 45 g.</span><span class="fix">Too light: turn that nail's top set screw half a turn clockwise.</span></label></li>
+      <li><input type="checkbox" id="b-11"><label for="b-11"><b>Template and handle.</b> Screw template T1 onto the deck top (2 × M3 × 8). Slide the C-arm in from the side, its foot against the block's flat ear, and fix with 2 × M3 × 12 using an L-shaped hex key. Drop two M3 × 25 screws, thread first, through the top bar into the template grooves as guide pins.<span class="good">Good: pushing only the round grip at the bottom of the arm, both pins run along the grooves and the nails lift off the tape at each end.</span></label></li>
+      <li><input type="checkbox" id="b-12"><label for="b-12"><b>Dry run.</b> Push slowly along each groove 5 times. No squeaks or clicks.<span class="fix">If the block drops away from the dish at the ends, tie the elastic 3 mm shorter. If it's heavy to push, re-wax.</span></label></li>
+    </ol>
+  </section>
+
+  <section class="sess" id="v2">
+    <h2>6 · Build the V2 bench and the hand rake</h2>
+    <p class="meta">about 2.5 hours · V2 is bigger, its block travels twice as far and tilts at the ends: that's designed</p>
+    <ol class="steps">
+      <li><input type="checkbox" id="v-1"><label for="v-1">Clean the V2 prints as in step 5.1. Glue three balls into the posts on the V2 block's ribs (5.2).</label></li>
+      <li><input type="checkbox" id="v-2"><label for="v-2">Build three nail stacks into the V2 block as in 5.3–5.6, with <b>N35</b> nails for the ball. Run the penny test and coin test on them.</label></li>
+      <li><input type="checkbox" id="v-3"><label for="v-3">Sand and wax the three big pockets under the V2 deck.</label></li>
+      <li><input type="checkbox" id="v-4"><label for="v-4">Bolt the C-arm to the block first: block upside down, the arm's foot on the rib with two pilot holes, 2 × M3 × 20.</label></li>
+      <li><input type="checkbox" id="v-5"><label for="v-5">Stand the block on the ball. Slide the deck in sideways from the side opposite the arm, between the arm's top and bottom bars, and lower it so its feet land on the ball and the balls go up into the pockets. Screw template D24 on top.</label></li>
+      <li><input type="checkbox" id="v-6"><label for="v-6">Drop an M3 × 60 screw (or a 60 mm bamboo skewer, blunt end down) through the arm's top bar into the groove. Hook a rubber band over its head and down into the two notches at the ends of the bar.<span class="good">Good: the block is pulled up into the dish; pushing the round grip, it rolls and the nails lift at the ends.</span><span class="fix">If the block clunks down at the ends, double the band.</span></label></li>
+      <li><input type="checkbox" id="v-7"><label for="v-7"><b>Hand rake:</b> build three nail stacks into the second V1 block (no balls needed), run the penny and coin tests, fit the skid ring under the nose plate (3 × M3 × 16) and bolt on the handle (2 × M3 × 12).<span class="good">Good: resting on the ball by its skids, each nail is pushed up about 2 mm.</span></label></li>
+    </ol>
+  </section>
+
+  <section class="sess" id="ball">
+    <h2>7 · Test both benches on the ball</h2>
+    <p class="meta">about 2.5 hours · V1 is expected to give short strokes; that confirms the problem V2 fixes and is not a failure</p>
+    <ol class="steps">
+      <li><input type="checkbox" id="t-1"><label for="t-1"><b>Stroke length.</b> Colour each nail tip with washable marker. Push along the template's 0° groove, end to end, 3 times. Measure the three marks on the tape. Turn the bench 45° on the ball and repeat, for 4 directions.<span class="good">Expected: V1 about 10 mm. V2 about 18.5 mm (pass ≥ 17).</span></label></li>
+      <li><input type="checkbox" id="t-2"><label for="t-2"><b>Lift at the ends.</b> Hold the arm at the end of a groove and slide the stepped lift gauge under each nail.<span class="good">Pass: at least 5 mm clear on both benches.</span></label></li>
+      <li><input type="checkbox" id="t-3"><label for="t-3"><b>Hair slip test.</b> Tie a loose loop of a long hair round a nail halfway up, hold the other end, lift the block 10 mm.<span class="good">Pass: the loop slides off the tip 10 out of 10 times, without the nail popping off first.</span></label></li>
+      <li><input type="checkbox" id="t-4"><label for="t-4"><b>Noise.</b> 20 brisk strokes, ear 30 cm away.<span class="good">Pass: no squeak, click or buzz. Re-wax if there is.</span></label></li>
+      <li><input type="checkbox" id="t-5"><label for="t-5"><b>Optional: landing angle.</b> Film a stroke in slow motion from the side and step through the last 2 mm before the tip touches.<span class="good">Expected: V1 about 50°, V2 about 30°.</span></label></li>
+    </ol>
+    <div class="tw"><table>
+      <thead><tr><th></th><th>V1</th><th>V2</th><th>Pass line</th></tr></thead>
+      <tbody>
+        <tr><td>Penny test, lowest / highest (g)</td><td><input type="text" id="r-pen1"></td><td><input type="text" id="r-pen2"></td><td>12–25 g</td></tr>
+        <tr><td>Coin test at 2 mm, three nails (g)</td><td><input type="text" id="r-coin1"></td><td><input type="text" id="r-coin2"></td><td>25–35 g</td></tr>
+        <tr><td>Stroke length, 4 directions (mm)</td><td><input type="text" id="r-rake1"></td><td><input type="text" id="r-rake2"></td><td>V2 ≥ 17</td></tr>
+        <tr><td>Lift at the ends, smallest (mm)</td><td><input type="text" id="r-lift1"></td><td><input type="text" id="r-lift2"></td><td>≥ 5</td></tr>
+        <tr><td>Hair slip test (out of 10)</td><td><input type="text" id="r-slip"></td><td>—</td><td>10/10</td></tr>
+        <tr><td>Noise</td><td><input type="text" id="r-noise1"></td><td><input type="text" id="r-noise2"></td><td>none</td></tr>
+        <tr><td>Landing angle (optional, °)</td><td><input type="text" id="r-ang1"></td><td><input type="text" id="r-ang2"></td><td>V2 ≤ 35</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <section class="sess" id="head">
+    <h2>8 · The head session</h2>
+    <p class="meta">about 30 minutes · you sit with eyes closed and rate; your helper runs it from this page · 8 bouts of 30 seconds</p>
+    <ol class="steps">
+      <li><input type="checkbox" id="s-1"><label for="s-1"><b>Same day, before starting (helper):</b> penny test and coin test on all 9 nails; fingernail test on every tip; 3 nails on each device.<span class="fix">If any nail fails the penny test, no session today.</span></label></li>
+      <li><input type="checkbox" id="s-2"><label for="s-2"><b>Pick nails for your head.</b> Rest each bench gently on the crown. All three tips should touch, each pushed up a little. If a nail hangs free, use the next longer one. Usually N30/N35 on V1 and N45/N55 on V2.<span class="fix">If even N55 won't reach on V2, note it and run V2 on the ball only.</span></label></li>
+      <li><input type="checkbox" id="s-3"><label for="s-3"><b>Roll a die</b> for the order card: 1–2 card 1, 3–4 card 2, 5–6 card 3. You never see it.</label></li>
+    </ol>
+    <div class="tw"><table>
+      <thead><tr><th>Bout</th><th>Card 1</th><th>Card 2</th><th>Card 3</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>V2</td><td>Fingers</td><td>Rake</td></tr><tr><td>2</td><td>Rake</td><td>V1</td><td>V2</td></tr>
+        <tr><td>3</td><td>V1</td><td>V2</td><td>Fingers</td></tr><tr><td>4</td><td>Fingers</td><td>Rake</td><td>V1</td></tr>
+        <tr><td>5</td><td>V1</td><td>V2</td><td>Fingers</td></tr><tr><td>6</td><td>V2</td><td>Fingers</td><td>V1</td></tr>
+        <tr><td>7</td><td>Fingers</td><td>Rake</td><td>V2</td></tr><tr><td>8</td><td>Rake</td><td>V1</td><td>Rake</td></tr>
+      </tbody>
+    </table></div>
+    <h3>Helper: how to run each bout</h3>
+    <p class="script">"Eight short bouts, thirty seconds each, short rests between. Keep your eyes closed. After each one I'll ask seven quick questions. Say stop or lift your hand any time and I'll lift it straight off."</p>
+    <ul>
+      <li><strong>V1 or V2 bench:</strong> rest it on the crown by its own weight, steady it with one hand on the post on top, never pressing. With the other hand push the round grip along the grooves at about one stroke per second: 8 strokes on one line, then move to the next line, through all four.</li>
+      <li><strong>Rake:</strong> hold the handle, skids on the crown. Stroke about 2.5 cm back and forth, one per second, lifting about 5 mm at each end. Turn 45° every 8 strokes. Never press.</li>
+      <li><strong>Fingers:</strong> a normal friendly scratch with short clean nails, same pace, same patch.</li>
+      <li>At 30 seconds, lift straight off, ask the seven questions, count the nails, rest 30–60 seconds.</li>
+    </ul>
+    <div class="q"><b>Q1</b><span>"How satisfying was that, as a good scratch? Zero to ten."</span><b>Q2</b><span>"Scratch or brush?"</span><b>Q3</b><span>"Crisp in both directions?"</span><b>Q4</b><span>"Pressure: too light, about right, or too hard?"</span><b>Q5</b><span>"Any tug, pull, catch or sting?" If yes: stop.</span><b>Q6</b><span>"Machine or person?"</span><b>Q7</b><span>"One word for it?"</span></div>
+    <div class="tw"><table>
+      <thead><tr><th>Bout</th><th>Device</th><th>Q1 0–10</th><th>Q2</th><th>Q3</th><th>Q4</th><th>Q5</th><th>Q6</th><th>Q7</th></tr></thead>
+      <tbody id="bouts"></tbody>
+    </table></div>
+    <div class="tw"><table><tbody>
+      <tr><td>Card used</td><td><input type="text" id="r-card"></td><td>Nails used on head (V1 / V2)</td><td><input type="text" id="r-nails"></td></tr>
+      <tr><td>Best overall / worst</td><td colspan="3"><input type="text" id="r-best"></td></tr>
+      <tr><td>Redness after 10 minutes</td><td colspan="3"><input type="text" id="r-red"></td></tr>
+    </tbody></table></div>
+  </section>
+
+  <section class="sess" id="decide">
+    <h2>9 · Decide</h2>
+    <div class="tw"><table>
+      <thead><tr><th>If…</th><th>Then</th></tr></thead>
+      <tbody>
+        <tr><td><strong>V2 averages 6 or more</strong>, called "scratch" and "crisp both ways" both times, no tugs</td><td><strong>GO.</strong> Send me your results; I'll lock the corrected shape into the real pad and send part 2 with the next shopping list.</td></tr>
+        <tr><td>V1 scores 6 or more and at least as well as V2, no tugs</td><td><strong>GO</strong> with the smaller original pad.</td></tr>
+        <tr><td>Both benches under 6, but the hand rake 6 or more</td><td><strong>GO on the nails, rethink the dish.</strong> Send me your results before buying more.</td></tr>
+        <tr><td>Everything under 6, or mostly "brush", or any tug</td><td><strong>Stop here.</strong> Buy nothing else. We work on the nail tip, force and pattern first, using your answers.</td></tr>
+        <tr><td>A bench test failed (breakaway out of range, nails sticking, block falling out of the dish)</td><td>Fix that bench and retest. It's not a verdict on the idea.</td></tr>
+      </tbody>
+    </table></div>
+    <p class="meta">The fingers are the yardstick: how close the devices come to them tells us a lot.</p>
+  </section>
+
+  <section class="sess" id="send">
+    <h2>10 · Send me your results</h2>
+    <p>Everything you typed into this page stays in this browser. Press the button and paste the result into our chat.</p>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:10px">
+      <button type="button" class="btn" id="copy">Copy my results</button>
+      <button type="button" class="btn ghost" id="reset">Clear everything</button>
+    </div>
+    <textarea id="out" readonly aria-label="Results text" hidden></textarea>
+    <p class="meta" id="copied" role="status"></p>
+  </section>
+</div>
+
+<script>
+(function(){
+  const KEY = 'scratch-build-part1-v1';
+  const bouts = document.getElementById('bouts');
+  for (let i = 1; i <= 8; i++) {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td>${i}</td>` +
+      `<td><select id="b${i}-dev"><option></option><option>V1</option><option>V2</option><option>Rake</option><option>Fingers</option></select></td>` +
+      `<td><input type="text" id="b${i}-q1" inputmode="numeric"></td>` +
+      `<td><select id="b${i}-q2"><option></option><option>Scratch</option><option>Brush</option><option>Unsure</option></select></td>` +
+      `<td><select id="b${i}-q3"><option></option><option>Yes</option><option>No</option></select></td>` +
+      `<td><select id="b${i}-q4"><option></option><option>Light</option><option>Right</option><option>Hard</option></select></td>` +
+      `<td><select id="b${i}-q5"><option></option><option>No</option><option>Yes</option></select></td>` +
+      `<td><select id="b${i}-q6"><option></option><option>Machine</option><option>Person</option><option>Can't tell</option></select></td>` +
+      `<td><input type="text" id="b${i}-q7"></td>`;
+    bouts.appendChild(tr);
+  }
+  let state = {};
+  try { state = JSON.parse(localStorage.getItem(KEY) || '{}') || {}; } catch (e) { state = {}; }
+  const save = () => { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {} };
+  const fields = document.querySelectorAll('input[type=checkbox], input[type=text], select');
+  fields.forEach(el => {
+    if (!el.id) return;
+    if (el.type === 'checkbox') { el.checked = !!state[el.id]; }
+    else if (state[el.id] != null) { el.value = state[el.id]; }
+    el.addEventListener(el.type === 'checkbox' || el.tagName === 'SELECT' ? 'change' : 'input', () => {
+      state[el.id] = el.type === 'checkbox' ? el.checked : el.value; save(); progress();
+    });
+  });
+  function progress(){
+    const boxes = [...document.querySelectorAll('input[type=checkbox]')];
+    const done = boxes.filter(b => b.checked).length;
+    document.getElementById('fill').style.width = (boxes.length ? done / boxes.length * 100 : 0) + '%';
+    document.getElementById('count').textContent = `${done} of ${boxes.length} done`;
+    document.querySelectorAll('.steps li').forEach(li => { const c = li.querySelector('input[type=checkbox]'); li.classList.toggle('done', !!(c && c.checked)); });
+  }
+  progress();
+  function text(){
+    const v = id => (document.getElementById(id) || {}).value || '';
+    const lines = ['Scratch Build Part 1 results', '',
+      `Head: circumference ${v('r-circ')} mm, ear-to-ear ${v('r-ear')}, front-back ${v('r-fb')}, hairline-swirl ${v('r-hs')}, hair length ${v('r-hl')}, hair thickness ${v('r-hp')}, lies toward ${v('r-hdir')}`,
+      `Helmet: creep 0/45/90 ${v('r-creep')}; eyes-closed under 3 s ${v('r-reidx')}/10; lean ${v('r-lean')}/10; moving-it bother ${v('r-nuis')}/10`,
+      `Bench V1: penny ${v('r-pen1')}; coin ${v('r-coin1')}; stroke ${v('r-rake1')}; lift ${v('r-lift1')}; slip ${v('r-slip')}; noise ${v('r-noise1')}; angle ${v('r-ang1')}`,
+      `Bench V2: penny ${v('r-pen2')}; coin ${v('r-coin2')}; stroke ${v('r-rake2')}; lift ${v('r-lift2')}; noise ${v('r-noise2')}; angle ${v('r-ang2')}`,
+      `Session: card ${v('r-card')}; nails ${v('r-nails')}`];
+    for (let i = 1; i <= 8; i++) lines.push(`Bout ${i}: ${v(`b${i}-dev`)} | satisfying ${v(`b${i}-q1`)} | ${v(`b${i}-q2`)} | crisp ${v(`b${i}-q3`)} | pressure ${v(`b${i}-q4`)} | tug ${v(`b${i}-q5`)} | ${v(`b${i}-q6`)} | "${v(`b${i}-q7`)}"`);
+    lines.push(`Best/worst: ${v('r-best')}`, `Redness after 10 min: ${v('r-red')}`);
+    return lines.join('\n');
+  }
+  const out = document.getElementById('out'), msg = document.getElementById('copied');
+  document.getElementById('copy').addEventListener('click', () => {
+    const t = text(); out.value = t; out.hidden = false;
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(t).then(() => { msg.textContent = 'Copied. Paste it into our chat.'; }, () => { out.select(); msg.textContent = 'Select the text above and copy it.'; });
+    } else { out.select(); msg.textContent = 'Select the text above and copy it.'; }
+  });
+  let armed = false;
+  document.getElementById('reset').addEventListener('click', e => {
+    if (!armed) { armed = true; e.target.textContent = 'Press again to clear'; setTimeout(() => { armed = false; e.target.textContent = 'Clear everything'; }, 4000); return; }
+    state = {}; save(); fields.forEach(el => { if (el.type === 'checkbox') el.checked = false; else el.value = ''; }); out.hidden = true; progress();
+    armed = false; e.target.textContent = 'Clear everything'; msg.textContent = 'Cleared.';
+  });
+})();
+</script>

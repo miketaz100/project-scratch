@@ -20,29 +20,30 @@
 
 ## 0. What S0 is, in one page
 
-**S0a: does it feel good?** About $100–125 plus printing, one weekend, about 8–10 hours.
-- **The dish bench** answers the deciding question. Three spring-loaded drafted-cone nails ride a printed dish. The dish lets them down in the middle of each stroke and lifts them clear near the ends. You drive it by hand through printed templates:
-  - first on a 7 in ball, to check the geometry;
-  - then a helper holds it on your crown, for the sensation.
-- **The hand rake.** The same three nails, stroked by the helper's hand on moving skids. It is the comparison for one known spec issue.
+**S0a: does it feel good?** About $127 all-in if you print the parts yourself; one long weekend, about 12–14 hours.
+- **Two dish benches** answer the deciding question. In each, three spring-loaded drafted-cone nails ride a printed dish. The dish lets them down in the middle of each stroke and lifts them clear near the ends. You drive each by hand through printed templates: first on a 7 in ball, to check the geometry, then with a helper holding it on your crown, for the sensation.
+  - **The frozen bench (V1, Ø 116 deck)** is built exactly to the spec.
+  - **The corrected bench (V2, Ø 168 deck)** is the Director's fix for the spec problem below.
+- **The hand rake.** The same three nails, stroked about 25 mm by the helper's hand on moving skids.
 - **The helmet fit test.** A $17 bike helmet, two of the real hinges, a stick bail and a bag of coins. It tests whether hand-moving the halo between bouts is acceptable.
 
 **S0b: will the machine work?** About $436, one or two weekends, about 10–14 hours. **Buy it only after S0a is GO.**
 - **The Klipper streaming test.** The real Stage A controller (BTT Manta M8P V2.0 + CB1) streams a precessing line as three cable lengths. An LED stands in for a valve, and a logic analyser times it.
 - **The tendon ink rig.** Three motors with drums pull three cables through 1.6 m housings to a pen on marbles. The pen draws the path on paper, so you can measure how well the cables copy it.
 
-**Before you start S0a, read `CONFLICTS.md` #1.** Built exactly as the spec freezes it, the dish moves the nails on the scalp only about 10 mm per stroke, not the 17–24 mm the spec expects. The nails land at about 50°, not ≤ 35°.
-- The bench is built to the spec on purpose, so that it measures this.
-- The scalp session therefore compares the dish rake with a 25 mm hand rake that uses the same nails.
-- Your ratings decide whether the problem is "the dish geometry" (fixable on paper) or "the nails themselves" (back to tips and force).
+**Before you start S0a, read `CONFLICTS.md` #1 and #1a.**
+- **Built exactly as the spec freezes it (V1),** the dish moves the nails on the scalp only about 10 mm per stroke, not 17–24 mm, and lands them at about 50°, not ≤ 35°.
+- **The corrected dish (V2)** gives about 18.5 mm strokes and 29–33° landings. The cost is a bigger deck, twice the block travel and 13° of tilt.
+- **The scalp session compares four things blind:** V2, V1, the hand rake, and the helper's fingertips.
+- **Your ratings decide** which geometry the real pad uses, or whether the nails themselves need work.
 
 **Order of work:**
 1. §2: buy (cart-S0a) and print (cad/README).
 2. §3: tape fit, 20 min.
 3. §4: helmet test, 1.5 h plus 20 min of TV.
-4. §5: build the bench, about 4 h.
-5. §6: bench tests on the ball, about 2 h.
-6. §7: scalp session, 45 min including setup.
+4. §5: build the frozen bench (V1, about 4 h), the corrected bench (V2, §5.4, about 2 h more), and the hand rake (§5.5, 30 min).
+5. §6: bench tests on the ball, about 2.5 h for both benches.
+6. §7: scalp session, about 30 min including setup.
 7. §8: GO / NO-GO.
 8. If GO: cart-S0b, then §9 Klipper (about 5 h) and §10 ink rig (about 6 h), then §11.
 
@@ -120,34 +121,53 @@ These rules apply at bench stage too. Print this page and keep it on the bench.
 **Buying:** `cart-S0a.md`. One Walmart order, one Amazon order, one Bossard order for the 2 hinges, and Home Depot / Michaels pickups.
 
 **Printing:** `cad/README.md`.
-- **If you own an FDM printer,** print everything there in PLA or PETG. Print the 11 nails too, for the first evening.
-- **Order resin nails before the scalp session.** Their tips come out much cleaner.
+- **If you own an FDM printer,** print everything there in PLA or PETG, about 0.5 kg of filament. Print the nails on it too: sand the tips (D1) and they are fine for the session.
+- **Resin nails are optional.** Their tips come out cleaner without sanding; about $20 more via JLC3DP.
+- **The V2 deck (D21)** is the one big print: 168 × 168 mm, about 12 hours, upside down. It fits a 180 mm bed.
 - **If you have no printer,** upload the STL list in the README to JLC3DP, or see cart-S0a §C.
 
 **The S0a printed parts:**
 
 | Part | What it is |
 |---|---|
-| D01 | deck |
-| D02 | block |
-| D03 | nose plate |
-| D04 | plungers ×4 |
-| D05 | seat discs ×4 |
-| D06 / D07 / D16 | nails |
-| D08 | C-arm |
-| D09–D11 | templates |
-| D12 | skid ring |
+| D01 | frozen (V1) deck |
+| D02 | block ×2: one for the V1 bench, one for the hand rake |
+| D03 | nose plate ×3 |
+| D04 | plungers ×10 |
+| D05 | seat discs ×10 |
+| D06 / D07 / D16 / D17 / D18 | nails: N20 ×4, N30 ×7, N35 ×7, N45 ×4, N55 ×4 |
+| D08 | V1 C-arm |
+| D09–D11 | V1 templates |
+| D12 | skid ring (hand rake) |
 | D13 | ball cradle |
 | D14 | side mock (optional) |
 | D15 | lift gauge |
+| D21 | **corrected (V2) deck** |
+| D22 | V2 block |
+| D23 | V2 C-arm |
+| D24 | V2 template T1 (D25 / D26 optional) |
+| D27 | hand-rake handle |
 | H01 | hinge pads ×2 |
 
 **How the nails are named.** The rings on the top of each nail tell you its length:
 - **N20**, 1 ring: lets the nail drop 2.0 mm below the surface of a true 170 mm (R 85) ball, when free of it.
 - **N30**, 2 rings: 3.0 mm.
 - **N35**, 3 rings: 3.5 mm.
+- **N45**, 4 rings: 4.5 mm.
+- **N55**, 5 rings: 5.5 mm.
 
-That drop is the **reserve**: how far the nail would go further if the scalp were not there. On a 7 in (178 mm) ball, N30 behaves like N20 on a true R 85 ball.
+That drop is the **reserve**: how far the nail would go further if the scalp were not there. Aim for an **effective reserve of about 1.5–2.5 mm** on whatever surface you use.
+
+A flatter surface (bigger radius) lifts the bench's legs more than it lifts the scalp under the nails, so it needs longer nails. The V2 bench needs longer nails still, because its legs stand wider.
+
+| Surface | Frozen bench (V1) | Corrected bench (V2) |
+|---|---|---|
+| 7 in ball (R 89) | **N30** | **N35** |
+| Crown about R 90 | N30 | N45 |
+| Crown about R 95 | N45 | N55 |
+| Crown about R 100 | N55 | none reaches: tell the Director; run V2 only on the ball |
+
+§7.2 shows how to check on the day.
 
 ---
 
@@ -244,7 +264,7 @@ That drop is the **reserve**: how far the nail would go further if the scalp wer
 
 ---
 
-## 5. S0a-3: Build the dish bench, about 4 hours
+## 5. S0a-3: Build the two dish benches and the hand rake, about 6.5 hours
 
 ### 5.1 What it is and what it proves
 
@@ -438,22 +458,99 @@ Fix it with 2 × M3 × 8 screws.
 3. **If the block drops away from the dish at the ends** (the balls leave the pockets): the elastic is too weak. Re-tie it 3 mm shorter.
 4. **If the arm is heavy to push:** re-wax the pockets and check the nails are not too strong (D10).
 
+### 5.4 Build the corrected bench (V2), about 2 hours
+
+**What is different from V1.**
+- **Bigger dish:** three big shallow pockets on a Ø 168 deck, balls at R 44 on ribs.
+- **Twice the travel.** The block tilts about 13° at the ends: that is designed.
+- **No centre elastic.** The template stylus is a **lift rod** that rests on the groove floor. A rubber band from its head to the C-arm pulls the block up into the dish.
+- **The C-arm goes on before the deck**, bolted from below to the block's rib.
+- One stylus only. You hold the yaw with the drive grip.
+
+**Parts**
+- **Printed:** D21 deck, D22 block, D23 C-arm, D24 template.
+- **From the V1 stock:** a nose plate D03, 3 plungers with magnets, 3 seat discs, 3 springs, and 3 nails (**N35** for the 7 in ball).
+- **Bought / household:**
+  - 3 Delrin balls;
+  - 3 × M3 × 12 (nose plate);
+  - 3 × M3 × 4 set screws;
+  - 2 × M3 × 20 (C-arm foot);
+  - 2 × M3 × 8 (template);
+  - **1 × M3 × 60** screw for the lift rod. Or use a 60 mm piece of 3 mm bamboo skewer, blunt end down, with a notch cut 5 mm from its top for the band;
+  - one rubber band (#16 or #33).
+
+**V1. Inspect the prints** as in D1.
+- The V2 pockets are big, shallow dishes: look for blobs.
+- The legs must be straight.
+- The template's groove must take the lift rod along its whole length.
+
+**V2. Balls** into the three posts on the ribs, as in D2.
+
+**V3. Nail stacks** into the V2 block, as in D3–D6. Then run the **penny test (D9)** and the **coin test (D10)** on these three nails too.
+
+**V4. Sand and wax the three pockets,** as in D7.
+
+**V5. C-arm onto the block, first.**
+1. Turn the block upside down.
+2. The rib that has two small pilot holes in its underside is the C-arm rib. Lay the C-arm's foot on it so its two deep counterbored holes line up.
+3. Drive 2 × M3 × 20 from the foot side with a long 2.5 mm hex key. Snug.
+4. Turn the block upright. **Good:** the arm runs out sideways at the bottom, up a tall riser, and back over the block's centre.
+
+**V6. Block on the ball.** Ball in the cradle with tape on top, as in D8 step 4. Stand the block on it, nails down, centred on the cross. The riser stands off to one side.
+
+**V7. Deck on.**
+1. Hold the deck level, legs down, about **5 mm higher** than where it will sit.
+2. Slide it in sideways from the side **opposite the riser**: between the C-arm's top bar and lower bar, until its centre is over the block.
+3. Lower it. The three feet land on the ball; the three balls go up into the three pockets.
+
+**V8. Template.** Slide D24 in under the top bar, flat on the deck top. Its two holes line up with the deck's pilot holes only one way round. Fix it with 2 × M3 × 8.
+
+**V9. Lift rod and band.**
+1. Drop the M3 × 60, head up, through the hole in the top bar's cross-piece. Its tip goes into the template groove and rests on the floor.
+2. Hook the rubber band over the rod head and stretch each side down into the two notches at the ends of the cross-piece.
+3. The band pulls the bar up toward the rod head, and so lifts the block into the dish.
+4. **Good:**
+   - the balls touch the pocket floors;
+   - the nails rest on the ball, pushed up a little;
+   - when you push the **drive grip** (the round knob at the bottom of the riser), the block rolls round under the deck and the nails lift off at the ends.
+5. **If the block drops at the stroke ends** (a clunk, or the balls leave the pockets), double the band.
+
+**V10. Dry run** as in D13. Push **only at the drive grip**, and keep the arm square: the grip should not swing sideways. The tilt at the ends is designed.
+
+### 5.5 Build the hand rake, 30 min
+
+1. **Block.** Take the second V1 block (D02). It needs **no balls**: it never rides a dish.
+2. **Nails.** Build its three nail stacks as in D3–D6, and run the penny and coin tests (D9, D10).
+3. **Skid ring.** Fit the skid ring D12 under the nose plate, using 3 × M3 × 16 through ring and plate.
+4. **Handle.** Bolt the handle D27 to the block's ear with 2 × M3 × 12.
+5. **Good:** set it on the ball by the skids. Each nail is pushed up about 2 mm, and the handle sticks out level.
+
 ---
 
-## 6. S0a-4: Bench tests on the ball (geometry, C1, C2), about 2 hours
+## 6. S0a-4: Bench tests on the ball (geometry, C1, C2), about 2.5 hours
 
 The bench is on the 7 in ball in its cradle, masking tape over the top, with **N30** nails. On a 7 in ball they behave like N20 on the spec's 170 mm ball.
 
-**Predicted results** (`cad/dish_kinematics.py`). These let you tell "the bench works as designed" apart from "the spec has a problem":
+**Run the tests on both benches.**
+- **V1:** run G1–G7, with **N30** nails on the 7 in ball.
+- **V2:** run G1, G2, G3 and G7, with **N35** nails on the 7 in ball. Only the V2 T1 template is needed; its grooves are longer because the travel is twice as long.
 
-| Test | Spec S0 pass line | Predicted for the bench as frozen | Meaning if you get the prediction |
+**Predicted results** (`cad/dish_kinematics.py`). These let you tell "the bench works as designed" apart from "a spec problem":
+
+| Test | Spec S0 pass line | **V1 frozen**, predicted | **V2 corrected**, predicted |
 |---|---|---|---|
-| G1 ink rake length per nail | ≥ 15 mm | **≈ 10–10.5 mm** | the bench is right; the spec dish is short (CONFLICTS #1) |
-| G2 clearance at the stroke ends | ≥ 5 mm | **5.4–5.8 mm** (N30 on the 7 in ball) | pass |
-| G3 landing angle | ≤ 35° | **≈ 48–62°** | the bench is right; the spec dish lands steeply (#1) |
-| G4 landing spread, mixed nails | ≥ 20 ms | ≈ 2 mm of block travel between the first and last nail | pass if ≥ 1.5 mm |
-| G5 breakaway C1 | 0.12–0.25 N | — | must pass |
-| G6 slip loop C2 | sheds 10/10 | — | must pass |
+| G1 ink rake length per nail | ≥ 15 mm (Director: ≥ 17 for V2) | **≈ 10–10.5 mm**: expected FAIL (CONFLICTS #1) | **≈ 18.5–19 mm**: pass |
+| G2 clearance at the stroke ends | ≥ 5 mm | 5.4–5.8 mm | 5.2–6.3 mm |
+| G3 landing angle | ≤ 35° | ≈ 48–62°: expected FAIL | ≈ 29–33°: pass |
+| G4 landing spread, mixed nails (V1 only) | ≥ 20 ms | ≈ 2 mm of travel; pass if ≥ 1.5 mm | — |
+| G5 breakaway C1 | 0.12–0.25 N | must pass | must pass |
+| G6 slip loop C2 (V1 only: same nails) | sheds 10/10 | must pass | — |
+
+**If V2 misses its prediction by more than about 2 mm (G1) or 5° (G3):**
+- check the nails are N35 on the 7 in ball;
+- check the block stays seated at the ends (V9).
+
+Then report it: it matters for the pad design.
 
 **G1 ink rake length (T1 template, 20 min)**
 1. Colour the flat of each nail tip with washable marker. Re-ink every 3 strokes.
@@ -517,79 +614,91 @@ Date: ________  Ball: 7 in / other ______  Nails: N20 / N30 / N35  Template(s): 
 | G6 slip loop, sheds out of 10 | | | | 10/10 | |
 | G7 noise (none / squeak / click, where) | | | | none | |
 | Lift elastic: stretch at home (mm), approx. pull (g) | | | | ≈ 150 g | |
+| **V2** D9 / D10: breakaway min/max (g); F2 (g) | | | | 12–25; 25–35 | |
+| **V2** G1 rake at 0° / 45° / 90° / 135° (mm) | | | | ≥ 17 (predicted ≈ 18.5) | |
+| **V2** G2 clearance at the ends, N35 on the 7 in ball (mm) | | | | ≥ 5 | |
+| **V2** G3 landing angle (°) | | | | ≤ 35 (predicted ≈ 30) | |
+| **V2** G7 noise; block stays seated at the ends? | | | | none; yes | |
 
 ---
 
-## 7. S0a-5: The scalp session, the deciding gate (about 45 min)
+## 7. S0a-5: The scalp session, the deciding gate (about 30 min)
 
-**What it proves.** Whether three blunt drafted nails at about 0.3 N each, moved over your crown, feel like **a good scratch**: crisp, not a brush, not pokey. And whether the dish's short, steep rake costs anything compared with a longer hand rake using the same nails.
+**What it proves.** Whether three blunt drafted nails at about 0.3 N each, moved over your crown, feel like **a good scratch**: crisp, not a brush, not pokey. And which way of moving them feels best. The four modes:
+
+| Mode | What it is |
+|---|---|
+| **A1** | the **frozen** dish (V1): ≈ 10 mm strokes, steep landings |
+| **A2** | the **corrected** dish (V2): ≈ 18.5 mm strokes, ≈ 30° landings |
+| **B** | the **hand rake**: about 25 mm strokes, lifted by hand at each end |
+| **C** | the helper's **fingertips**: the yardstick |
+
+The session is **8 bouts of 30 s** (each mode twice), in a blind random order.
 
 **People.**
 - **Michael** sits, eyes closed, and rates.
-- **The helper** runs everything from the script below, and writes down every rating.
+- **The helper** runs everything from the script below and writes down every rating.
 
-### 7.1 Before the session (the helper, 15 min, the same day)
-1. **Penny test (D9)** on all 3 nails: every pull 12–25 g. **If any nail fails, there is no session today.**
-2. **Coin test (D10):** F2 25–35 g on all 3.
-3. **Fingernail test** on all 3 tips: blunt, no scratch line.
-4. **Nail count:** 3 on the block, and the spares in a labelled cup.
-5. Lay out:
+### 7.1 Before the session (the helper, 20 min, the same day)
+1. **Penny test (D9)** on all 9 nails: the three on each of the three blocks. Every pull 12–25 g. **If any nail fails, there is no session today.**
+2. **Coin test (D10)** on all 9: F2 25–35 g.
+3. **Fingernail test** on all 9 tips: blunt, no scratch line.
+4. **Nail count:** 3 on each assembly, and the spares in a labelled cup.
+5. Lay out, within reach, on a towel:
    - both glasses;
-   - the bench with template **T1** fitted;
-   - templates T2 and T3 nearby;
-   - the hand-rake kit: the **second** block assembly if you printed one, or the skid ring D12 and 3 × M3 × 16 screws;
-   - the order card (§7.4), the results sheet (§7.5), a pen, a timer, a hairbrush.
-6. **Hand-rake setup** (if you only have one block, the helper swaps it during the rests):
-   1. Take the block out of the deck.
-   2. Swap the 3 nose-plate screws for 3 × M3 × 16 screws that also pass through the skid ring D12, ring under the nose plate.
-   3. Keep the C-arm on: the helper holds the block by the C-arm's drive grip.
-   4. The three skid feet now rest on the scalp around the nails.
+   - **bench V1** (template T1 fitted);
+   - **bench V2** (template T1 fitted);
+   - the **hand rake**;
+   - the order card (§7.4), the results sheet (§7.5), a pen, a timer.
 
-   The swap takes about 3 minutes. Do all the hand-rake (B) bouts together, in the middle of the session, as the order cards do.
+   Each bench rests on its own feet; set them down gently.
 
 ### 7.2 Set up on the head (5 min)
 1. Michael sits upright in a straight chair. Hair clean, dry and combed, no product. Glasses on, both people.
-2. **Choose the nails.** The helper rests the bench gently on the crown and looks from the side: are all 3 nail tips touching the scalp, with each rod pushed up a little?
-   - **If a nail hangs free** (crown flatter than the ball): change to **N35** nails.
-   - **If a nail is pushed right up and the block tilts** (crown more curved): use N20.
-   - Most adult crowns want **N30 or N35**.
-3. Michael: "Can you feel all three?" If yes, start.
+2. **Choose the nails for each bench.** Use the §2 table: most crowns want N30 / N35 on V1 and N45 / N55 on V2.
+   - **To check:** the helper rests each bench gently on the crown and looks from the side. All 3 nail tips must touch the scalp, each rod pushed up a little: you can see the plunger move when you lift the bench 1 mm.
+   - **If a nail hangs free,** change to the next longer nail.
+   - **If the block is pushed hard up** (its balls lift off the dish), go one shorter.
+   - Change nails by pulling them off their magnets and pushing the new ones on (D6 step 6). It takes 1 minute per bench.
+3. Hand rake: the same check, resting on its skids.
+4. Michael: "Can you feel all three?" If yes, start.
 
 ### 7.3 The helper's script (read it out word for word)
 
 **Start:**
-> "I'm going to give you ten short bouts, thirty seconds each, with a rest between. Keep your eyes closed. After each bout I'll ask you seven quick questions. Say 'stop' or lift your hand at any time and I'll lift it straight off."
+> "I'm going to give you eight short bouts, thirty seconds each, with a short rest between. Keep your eyes closed. After each one I'll ask you seven quick questions. Say 'stop' or lift your hand at any time and I'll lift it straight off."
 
 **Each bout:**
-1. Read the next line of the order card. Set up that mode quietly: change template, or change to the hand rake.
-2. **For dish modes (A1, A2, A3):**
-   1. Rest the bench on the crown by its own weight. Steady it with one hand on the **grip post** on the deck top, without pressing down.
-   2. With the other hand, push the **drive grip** along the groove at about 1–1.5 strokes per second for 30 seconds:
-      - **A1 (T1 line star):** do 10 strokes on one line, then lift the styli, move to the next line, drop them in, and carry on. All 4 lines, then repeat. This is a slow "precessing line".
-      - **A2 (T2 D-path):** set the deck so the straight chord runs **with the grain** (§3 step 7: the way the hair lies). Go round the D in one direction only: chord with the grain, return round the arc.
-      - **A3 (T3 circle):** go round the circle steadily. Every 5 turns, rotate the whole bench about 30° on the head (lift, turn, set down).
-3. **For hand-rake mode (B):** hold the block by the C-arm grip, skids resting on the crown, nails touching. Stroke about 25 mm back and forth at 1–1.5 strokes per second. **At each end, lift the whole thing about 5 mm**, then set it down again for the return. Change direction by 45° every 10 strokes. Never press: the skids carry the weight.
-4. **For reference mode (C):** scratch the same patch with your own fingertips, nails short and clean, a normal friendly scratch, the same pace and the same 30 seconds.
-5. At 30 s, lift straight off. Say "rate please" and ask, writing each answer:
+1. Read the next line of the order card. Pick up that device quietly.
+2. **Dish modes (A1 = V1 bench, A2 = V2 bench):**
+   1. Rest the bench on the crown by its own weight. Steady it with one hand on the **grip post** on the deck top, **without pressing down**. The V2 bench is heavier, about 300 g: just keep it from tipping.
+   2. With the other hand, push the **drive grip** at the bottom of the C-arm riser along the T1 grooves, at about 1 stroke per second:
+      - do 8 strokes on one line;
+      - then, at the end of a stroke, slide across to the next line of the star;
+      - carry on through all 4 lines.
+   3. That is a slow "precessing line".
+3. **Hand rake (B):** hold it by its handle, skids resting on the crown, nails touching. Stroke about 25 mm back and forth at about 1 stroke per second. **At each end, lift it about 5 mm**, then set it down for the return. Change direction by 45° every 8 strokes. Never press: the skids carry the weight.
+4. **Fingertips (C):** scratch the same patch with your own fingertips, nails short and clean, a normal friendly scratch, at the same pace for the same 30 s.
+5. **At 30 s,** lift straight off. Say "rate please" and ask, writing each answer:
    - **Q1** "How satisfying was that, as a good scratch? Zero to ten."
    - **Q2** "Scratch, or brush?" (S / B / unsure)
-   - **Q3** "Crisp in both directions, back and forth?" (Y / N; for A2 write "n/a")
+   - **Q3** "Crisp in both directions, back and forth?" (Y / N)
    - **Q4** "Pressure: too light, about right, or too hard?" (L / R / H)
    - **Q5** "Any tug, pull, catch or sting?" (Y / N). **If Y: stop, look, and run the stopping rules.**
    - **Q6** "Did it feel like a machine or a person?" (M / P / can't tell)
    - **Q7** "One word for it?"
-6. **Count the nails on the block: 3?** Write ✓. Rest 60 s while you set up the next bout.
+6. **Count the nails on that device: 3?** Write ✓. Rest 30–60 s.
 
 **End:**
 1. "Last one: of everything you felt, which was best and which was worst? Anything to add?"
 2. Look at the scalp: any redness? Note it, and check again after 10 minutes.
 
-**Stopping rules (helper).** Lift the bench straight up and stop the session if any of these happen:
+**Stopping rules (helper).** Lift straight up and stop the session if any of these happen:
 - Michael says stop or raises a hand;
 - Q5 = Y;
 - a nail is missing;
 - anything comes loose;
-- the bench rocks or tilts on the head;
+- a bench rocks or tilts on the head;
 - hair visibly wraps a nail or skid;
 - you are unsure.
 
@@ -600,26 +709,30 @@ Date: ________  Ball: 7 in / other ______  Nails: N20 / N30 / N35  Template(s): 
 
 ### 7.4 Blind order cards (the helper uses one; Michael never sees it)
 
-Each card has 10 bouts: every dish mode twice, the hand rake twice, the fingertips twice. The order is mixed so that Michael cannot guess. B bouts are kept next to each other because the block swap takes a few minutes. Before the day, the helper picks a card by rolling a die: 1–2 = card 1, 3–4 = card 2, 5–6 = card 3.
+Each card has every mode twice, in a mixed order. Before the day, the helper picks a card by rolling a die: 1–2 = card 1, 3–4 = card 2, 5–6 = card 3. **On a second day, use a different card.**
 
 | Bout | Card 1 | Card 2 | Card 3 |
 |---|---|---|---|
-| 1 | A1 | C | A3 |
-| 2 | C | A2 | A1 |
-| 3 | A3 | A1 | C |
-| 4 | A2 | A3 | A2 |
-| 5 | B | B | B |
-| 6 | B | B | B |
-| 7 | A1 | C | A3 |
-| 8 | C | A3 | C |
-| 9 | A2 | A1 | A2 |
-| 10 | A3 | A2 | A1 |
+| 1 | A2 | C | B |
+| 2 | B | A1 | A2 |
+| 3 | A1 | A2 | C |
+| 4 | C | B | A1 |
+| 5 | A1 | A2 | C |
+| 6 | A2 | C | A1 |
+| 7 | C | B | A2 |
+| 8 | B | A1 | B |
 
-On a second day, use a different card. If the pressure answers say "too light" in 4 or more A bouts, give a half turn more preload on all 3 set screws first. Re-run the coin test: F2 must stay ≤ 45 g.
+If 3 or more dish bouts are rated "too light", give a half turn more preload on that bench's 3 set screws before a second day. Re-run the coin test: F2 must stay ≤ 45 g.
+
+**Optional second day,** with the same card rules: the winning dish with its D-path (T2) and circle (T3) templates against the line star. Print D25 / D26 for V2 if V2 won.
 
 ### 7.5 Results sheet S0a-5: scalp session (print this)
 
-Date: ______  Helper: ______  Card no.: __  Nails: N20 / N30 / N35  F2 today (g): __ / __ / __  Penny test passed: Y / N
+Date: ______  Helper: ______  Card no.: __
+
+Nails: V1 ___, V2 ___, rake ___
+
+F2 today (g): V1 __ / __ / __   V2 __ / __ / __   rake __ / __ / __   Penny tests passed: Y / N
 
 | Bout | Mode | Q1 0–10 | Q2 S/B/? | Q3 Y/N | Q4 L/R/H | Q5 tug? | Q6 M/P/? | Q7 word | Nails 3? |
 |---|---|---|---|---|---|---|---|---|---|
@@ -631,17 +744,13 @@ Date: ______  Helper: ______  Card no.: __  Nails: N20 / N30 / N35  F2 today (g)
 | 6 | | | | | | | | | |
 | 7 | | | | | | | | | |
 | 8 | | | | | | | | | |
-| 9 | | | | | | | | | |
-| 10 | | | | | | | | | |
 
 **Summary (fill in after):**
 
 | Mode | Mean Q1 | "Scratch" count | "Crisp both ways" count | Pressure: L / R / H | Tugs |
 |---|---|---|---|---|---|
-| A1 dish, line star | | /2 | /2 | | |
-| A2 dish, D-path | | /2 | n/a | | |
-| A3 dish, circle | | /2 | /2 | | |
-| **A best mode** | | | | | |
+| A1 frozen dish (V1) | | /2 | /2 | | |
+| A2 corrected dish (V2) | | /2 | /2 | | |
 | B hand rake | | /2 | /2 | | |
 | C fingertips (yardstick) | | /2 | /2 | | |
 
@@ -651,18 +760,23 @@ Best overall: ______  Worst: ______  Redness after 10 min: none / some (where): 
 
 ## 8. S0a decision: GO or NO-GO
 
-Use the summary table. "A" means the dish modes; take the **best** dish mode's mean.
+Use the summary table. "Must pass" bench items:
+- D9 and D10 on all three assemblies;
+- G2 on both benches;
+- G6;
+- both benches stay seated in their dish.
 
 | Outcome | Rule | What you do next |
 |---|---|---|
-| **GO: dish as built** | best A mean **≥ 6/10**, "scratch" in **≥ 5 of the 6** A bouts, "crisp both ways" on lines, **zero tugs**, all bench "must pass" items pass (D9, D10, G2 with N30, G6) | Buy **cart-S0b**. Send the results sheets to the Director. The short dish rake was good enough; CONFLICTS #1 can be closed as "accept". |
-| **GO: concept, dish needs rework** | best A mean < 6, but **B ≥ 6/10** with "scratch" in both B bouts, zero tugs | Buy **cart-S0b**: it does not depend on the dish. Send the Director the A-vs-B difference. That is the evidence for re-scaling the dish (CONFLICTS #1, option b or c) **before** any Stage A pad CAD. |
-| **NO-GO** | both A and B < 6/10, **or** "brush" in most bouts, **or** any tug that the C2 nail profile should have prevented | **Do not buy S0b.** Per spec: tip, force and variation work comes first. Use Q4 (pressure), Q7 words and how close C came, to choose between: higher force (F2 40–45 g), a different tip (the 05-engineering tip family), or more variation. Report to the Director. |
-| **Fix the bench first** | a "must pass" bench item fails (breakaway out of range, nails sticking, block falling out of the dish, G2 < 4.5 mm with N30) | Fix it (§5 tips) and repeat §6. Not a decision about the concept. |
+| **GO: corrected dish** | A2 mean **≥ 6/10**, "scratch" in **both** A2 bouts, "crisp both ways" in both, **zero tugs**, bench must-pass items pass | Buy **cart-S0b**. Send the sheets to the Director. The corrected geometry (CONFLICTS #1a) goes to the PAD work package. **If A1 is also ≥ 6 and within 1 point of A2,** say so: the smaller frozen pad may then be preferred. |
+| **GO: frozen dish** | A1 ≥ 6/10 with "scratch" in both A1 bouts and zero tugs, and A1 ≥ A2 | Buy cart-S0b. The Director can keep the frozen dish (the smaller pad). |
+| **GO: concept only** | both dishes < 6, but **B ≥ 6/10** with "scratch" in both B bouts, zero tugs | Buy cart-S0b: it does not depend on the dish. Report to the Director: the dish gating itself costs sensation, and the pad design must be revisited before Stage A. |
+| **NO-GO** | A1, A2 and B all < 6/10, **or** "brush" in most bouts, **or** any tug that the C2 nail profile should have prevented | **Do not buy S0b.** Per spec: tip, force and variation work comes first. Use Q4 (pressure), the Q7 words and how close C came to choose between: higher force (F2 40–45 g), a different tip (the 05-engineering tip family), or more variation. Report to the Director. |
+| **Fix the bench first** | a must-pass bench item fails (breakaway out of range, nails sticking, block falling out of the dish, G2 < 4.5 mm) | Fix it (§5 tips) and repeat §6. Not a decision about the concept. |
 
 **The helmet test (§4) does not block S0b.** It feeds the halo work package. If it failed, tell the Director, because powered travel may come back.
 
-**Expected FAILs.** G1 (rake about 10 mm) and G3 (landing about 50°) are predicted by the spec geometry itself. They are **not** reasons for NO-GO. Report the measured numbers: they settle CONFLICTS #1.
+**Expected FAILs.** V1's G1 rake (about 10 mm) and G3 landing (about 50°) are predicted by the frozen geometry itself. They are **not** reasons for NO-GO. Report the measured numbers for both benches: they settle CONFLICTS #1.
 
 ---
 
@@ -952,7 +1066,7 @@ Each cable is two pieces, joined by a series spring at the box end.
 
 **After S0a:**
 - photos of the four filled results sheets (S0a-1, S0a-2, S0a-4, S0a-5);
-- one photo of the G1 ink traces next to a ruler;
+- one photo of the G1 ink traces from **both** benches next to a ruler;
 - the slow-motion clip from G3, if you made one.
 
 **After S0b:**
@@ -969,7 +1083,8 @@ Each cable is two pieces, joined by a series spring at the box end.
 |---|---|---|
 | Nail does not come back down after being pushed up | Bore or guide too tight, or spring missing | Sand the bore (D1); check the spring is in the cup |
 | Nail falls off by itself | Magnet missing, or the steel tip not flush | D3 / D4 |
-| The block clunks at the stroke ends | Elastic too weak: the balls leave the pockets | Re-tie the elastic shorter (D8) |
+| The block clunks at the stroke ends | Elastic (V1) or band (V2) too weak: the balls leave the pockets | V1: re-tie the elastic shorter (D8). V2: double the band (V9). |
+| V2 grip swings sideways (yaw) | Single stylus: yaw is held by your hand | Keep the grip square to the riser line as you push |
 | Squeak in the dish | Dry spot | Re-wax (D7) |
 | The C-arm is hard to push sideways | Pushing at the top bar, or the styli binding in a rough groove | Push at the low grip only; sand the groove |
 

@@ -3,8 +3,8 @@
 **Project SCRATCH · 14-build/S0 · S0 kit engineer · prices checked 2026-10-02 · ship to Naples, FL 34102**
 
 **What this buys.** Everything for:
-- the dish bench, with three spring-loaded drafted-cone nails, on a 7 in ball and then on Michael's crown;
-- the hand-rake comparison;
+- **two** dish benches (the frozen V1 and the corrected V2, Director ruling 2026-10-02), each with three spring-loaded drafted-cone nails, on a 7 in ball and then on Michael's crown;
+- the hand-rake comparison (a third nail block);
 - the helmet, hinge and coin-bag fit test.
 
 Printed parts are listed separately at the end, because what they cost depends on whether Michael owns a printer.
@@ -20,37 +20,37 @@ Amazon product pages could not be fetched today. Several Amazon prices are there
 
 ## Totals
 
-| Block | Lean (household substitutes used) | Full |
-|---|---|---|
-| A. Dish bench parts | **$62** | $85 |
-| B. Helmet / hinge / coin-bag test | **$38** | $38 + Bossard shipping |
-| **Parts total** | **≈ $100** | **≈ $123** |
-| Florida sales tax (6 %) | ≈ $6 | ≈ $7 |
-| C. Printing, if Michael **owns** an FDM printer | ≈ $4 of PLA, plus the resin parts below | |
-| C. Printing, if he has **no** printer | ≈ $55–85 service [est], **or** buy a printer (see C) | |
+| Block | $ |
+|---|---|
+| A. Dish bench parts (both benches + hand rake) | **≈ $72 lean** (candle wax, rubber bands, household glue, spring kit bought) / $85 full |
+| B. Helmet / hinge / coin-bag test | **≈ $38** + Bossard shipping |
+| **Parts total** | **≈ $110 lean** / ≈ $123 full |
+| Florida sales tax (6 %) | ≈ $7 |
+| C. Printing on **his own printer**: about 0.5 kg PLA / PETG (both benches; nails printed on the FDM and sanded) | ≈ $10 [est] |
+| **S0a all-in with his own printer** | **≈ $127** |
+| Optional: resin nails and plungers via JLC3DP (26 nails, 10 plungers) | + ≈ $20 [est] |
+| C. If he has **no** printer | a print service for the V2 deck alone (168 × 168 mm) is about $40–70 [est]: see route 5 |
 
-On the **lean** route Michael already has, or skips:
-- pen springs, from two old click pens, instead of the spring kit;
+**On the lean route Michael already has:**
 - a rubber band instead of elastic cord;
 - candle wax instead of the PTFE spray;
 - household superglue.
 
-**Verdict against the $120 target.**
-- **With his own printer:** S0a is about **$110 all-in** (lean parts + tax + ≈ $4 of PLA, nails printed on the FDM and sanded). It is about **$125** if the nails are re-ordered in resin before the scalp session (recommended).
-- **Without a printer:** the parts are still about $110, and printing adds about $55–85 at a service.
-- **The honest cheaper path if he will continue past S0:** buy the printer now.
-  - SYSTEM-SPEC-v3 §13 already assumes a home printer for Stage A–B iteration ("+ a printer if none").
-  - A Bambu Lab A1 mini is **$219** on sale [cited, Bambu US store snippet 2026-10-02].
-  - That replaces every later print-service order except the SLA nails and drums.
+**The spring kit (A4) is now needed.** Nine nail springs, for three blocks, is more than old pens can supply.
+
+**Verdict against the Director's ≈ $130 ceiling.**
+- **About $127 all-in with his own printer**, with FDM nails sanded per guide D1.
+- Resin nails are optional (+ ≈ $20). Michael's call after the first evening.
+- **Without a printer, the honest answer is to buy one.** Bambu Lab A1 mini **$219** on sale [cited]. The V2 deck alone is a 12-hour, 168 mm print, and the spec plans home FDM iteration for Stages A–B anyway.
 
 ## A. Dish bench
 
 | # | Item | Vendor and listing | Qty | Price | Tag | Carries forward | Substitute |
 |---|---|---|---|---|---|---|---|
-| A1 | Acetal (POM, Delrin) balls, 6 mm, 10 pcs. The three "domes" that ride the dish. | Amazon, elephrun 6 mm POM balls, [B08F3Z75X3](https://www.amazon.com/dp/B08F3Z75X3) | 1 pack | ≈ $7 | [est] (same listing $3.65 + ship on eBay [cited]) | **CF Stage A**: pad domes, spec §4.2 | USA Sealing 1/4 in acetal balls, 100 pcs, **$5.90** [cited], xoindustrial.com. 1/4 in (6.35 mm) works: the dish is 0.18 mm higher, ignore. |
+| A1 | Acetal (POM, Delrin) balls, 6 mm, 10 pcs. The "domes" that ride the dish: **6 needed** (3 per bench). | Amazon, elephrun 6 mm POM balls, [B08F3Z75X3](https://www.amazon.com/dp/B08F3Z75X3) | 1 pack | ≈ $7 | [est] (same listing $3.65 + ship on eBay [cited]) | **CF Stage A**: pad domes, spec §4.2 | USA Sealing 1/4 in acetal balls, 100 pcs, **$5.90** [cited], xoindustrial.com. 1/4 in (6.35 mm) works: the dish is 0.18 mm higher, ignore. |
 | A2 | Dry PTFE lubricant spray, for the dish pockets. The spec's PTFE **film** does not lie flat in the bench's small curved pockets, so the film moves to the Stage A cart. | Walmart / Home Depot, "WD-40 Specialist Dry Lube with PTFE" or similar | 1 | ≈ $7 | [est] | bench (the rest of the can is used on the Stage A drums and carriage) | **Lean: $0.** Rub plain paraffin or an unscented candle into the sanded pockets, then buff. |
 | A3 | 7 in (178 mm) rubber playground ball: the crown stand-in | Walmart, Cannon Sports 7 in playground ball, [548592900](https://www.walmart.com/ip/548592900) | 1 | **$10.95** | [cited] | bench only | Voit 7 in, $13.64 [cited]. A 6 in craft foam ball is too small (the nails bottom). |
-| A4 | Small compression spring assortment: 0.3 / 0.4 / 0.5 mm wire, 4–6 mm OD, 10–30 mm long. The nail springs. | Amazon, spring kit [B0CMPQ2PQR](https://www.amazon.com/dp/B0CMPQ2PQR) | 1 | ≈ $10 | [est] | bench only | **Lean: $0.** Use springs from 3 old click pens for the first evening. Or uxcell 0.3 × 4 × 25 mm, 20 pcs, [B076LZ9YLH](https://www.amazon.com/dp/B076LZ9YLH), ≈ $7 [est]. |
+| A4 | Small compression spring assortment: 0.3 / 0.4 / 0.5 mm wire, 4–6 mm OD, 10–30 mm long. The nail springs: **9 needed**. | Amazon, spring kit [B0CMPQ2PQR](https://www.amazon.com/dp/B0CMPQ2PQR) | 1 | ≈ $10 | [est] | bench only | uxcell 0.3 × 4 × 25 mm, 20 pcs, [B076LZ9YLH](https://www.amazon.com/dp/B076LZ9YLH), ≈ $7 [est] |
 | A5 | Neodymium discs, 3 × 2 mm, N52, 100 pcs. The nail breakaway (safety ruling C1). | Amazon, [B079P6X998](https://www.amazon.com/dp/B079P6X998) | 1 | ≈ $11 | [est] | **CF Stage A**: one per pin, spec §4.1 C1, plus drum index magnets | Magnet Baron 3 × 2 mm, 100 pcs, $15.99 [cited] |
 | A6 | Pocket scale, 100 g × 0.01 g. Sets nail force; checks the breakaway. | Walmart, American Weigh Scales AWS-100, [658655000](https://www.walmart.com/ip/658655000) | 1 | **$13.99** | [cited] | **CF tool** (A2 force checks, B2 audit) | Amazon [B003STEJ20](https://www.amazon.com/dp/B003STEJ20), price not seen |
 | A7 | M3 socket-head screw and nut kit (M3 × 6…20, nuts, hex keys) | Amazon, e.g. [B0C9SQXQX4](https://www.amazon.com/dp/B0C9SQXQX4) | 1 | ≈ $9 | [cited range $8.99–9.49 for 750-pc kits] | **CF all stages** (spec §5: M3 everywhere) | Any M3 kit that includes **M3 × 12 and M3 × 16** |
@@ -58,8 +58,8 @@ On the **lean** route Michael already has, or skips:
 | A9 | Safety glasses ANSI Z87.1, 2-pack (one for Michael, one for the helper) | Walmart, Hyper Tough 2-pack, [571868188](https://www.walmart.com/ip/571868188) | 1 | **$3.62** | [cited] | **CF Stage B**: glasses are a session rule (spec B6) | |
 | A10 | 1 mm round elastic cord. The lift elastic. | Michaels, 1.0 mm clear elastic | 1 | **$3.19** | [cited] | bench only | **Lean: $0.** A thin rubber band (#16 or #33) |
 | A11 | Superglue (CA), gel | Walmart / dollar store | 1 | ≈ $3 | [est] | CF | Household |
-| — | Household: paper clips (steel), washable markers, printer paper, masking tape, coins (nickels = 5.00 g, pennies = 2.50 g), a small paper cup, scissors, ruler, side cutters, phone with 240 fps slow-motion | — | — | $0 | — | — | — |
-| | **Subtotal A** | | | **≈ $85 full / ≈ $62 lean** | | | |
+| — | Household: paper clips (steel), washable markers, printer paper, masking tape, coins (nickels = 5.00 g, pennies = 2.50 g), a small paper cup, rubber bands, **a 3 mm bamboo skewer (the V2 lift rod)**, scissors, ruler, side cutters, phone with 240 fps slow-motion | — | — | $0 | — | — | — |
+| | **Subtotal A** | | | **≈ $85 full / ≈ $72 lean (spring kit included)** | | | |
 
 ## B. Helmet / hinge / coin-bag test (leap4-E E4 (e))
 
@@ -82,12 +82,18 @@ On the **lean** route Michael already has, or skips:
 
 ## C. Printing (pick one route)
 
-The printed parts for S0a are D01–D16 and H01: about **300 cm³ of model volume**, which is roughly **150 g of PLA** at 15 % infill. Plus **11 tiny resin parts**: the nails and plungers. Full list, materials and settings are in `cad/README.md`.
+**The S0a printed parts:** D01–D18, D21–D24, D27 and H01. That is about **0.5 kg of PLA**, mostly the V2 deck (≈ 150–180 g).
+
+**The nails and plungers:** 26 tiny parts, D04 and D06–D18. Print them in resin, or on the FDM and sand.
+
+**Optional:** D14 side mock; D25 / D26 V2 templates.
+
+Full list, materials and settings: `cad/README.md`.
 
 | Route | What it costs | Notes |
 |---|---|---|
-| **1. Own FDM printer** | ≈ $4 of PLA/PETG + the resin parts via route 2 or 3 (≈ $10–20 delivered) | Print the nails on the FDM too for the first evening (sand the tip). Re-order them in resin for the scalp session. |
-| **2. JLC3DP** (jlc3dp.com) | FDM PLA parts ≈ $25–45; resin nails and plungers ≈ $5–10; **+40 % US duty** collected at checkout (their FAQ, 2026-03-19) [cited]; DHL ≈ $15–25 [est]. **Total ≈ $55–85** [est]. | SLA from $0.30/part, FDM and MJF from $1/part [cited homepage]. Build 2–3 days + DHL 3–7 days [cited]. You only get a firm price by uploading the STLs. |
+| **1. Own FDM printer** | ≈ $10 of PLA/PETG; resin nails optional, + ≈ $20 via route 2 | The V2 deck needs a 168 × 168 mm bed area: an A1 mini (180 mm) fits. |
+| **2. JLC3DP** (jlc3dp.com) | FDM PLA parts ≈ $60–110, with the V2 deck alone ≈ $30–50; resin nails and plungers ≈ $10–15; **+40 % US duty** collected at checkout (their FAQ, 2026-03-19) [cited]; DHL ≈ $15–25 [est]. **Total ≈ $110–190** [est]. | SLA from $0.30/part, FDM and MJF from $1/part [cited homepage]. Build 2–3 days + DHL 3–7 days [cited]. You only get a firm price by uploading the STLs. |
 | **3. Craftcloud** (US marketplace) | ≈ $8–30 per palm-size FDM part [cited 2026 review]. **Total ≈ $90–150** [est]. | Use it only for one or two urgent parts. |
 | **4. Local** | Collier County Public Library offers **no** public 3D printing (in-branch services page lists paper printing only) [cited]. Mission 3D (Naples) quotes on request. FGCU's makerspace is staff/student only. | Phone the Golden Gate branch, (239) 252-4542, to ask about their past "Intro to 3D printing" programme [verify]. |
 | **5. Buy a printer** | Bambu Lab A1 mini **$219** (sale; regular $299), free US shipping [cited snippet] + 1 kg PLA ≈ $15–20 [est] | The spec plans home FDM iteration for Stages A–B anyway. Order the resin nails via route 2. |
