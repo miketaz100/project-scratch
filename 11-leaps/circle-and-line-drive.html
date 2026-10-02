@@ -1,0 +1,171 @@
+<title>Circle-and-Line Drive</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600&family=Source+Sans+3:wght@400;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: one column; a single animation panel with the two rotating cranks, then a short table of settings. */
+:root {
+  --bg:#f6f4ee; --fg:#1f2320; --muted:#5d645e; --rule:#d9d4c7; --panel:#fdfcf8; --soft:#8b918a;
+  --accent:#8a4a1f; --m1:#2f6b8a; --m2:#b5512a; --trace:#5b7a2a; --ground:#efe6da;
+  --display:"Fraunces", Georgia, serif; --body:"Source Sans 3", "Helvetica Neue", Arial, sans-serif; --mono:"IBM Plex Mono", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg:#191b19; --fg:#e8e6df; --muted:#a6aba3; --rule:#3a3e39; --panel:#222522; --soft:#7d837b;
+  --accent:#d99b63; --m1:#7fb6d4; --m2:#e98a5f; --trace:#a8c86e; --ground:#2b2824; color-scheme:dark } }
+:root[data-theme="dark"] {
+  --bg:#191b19; --fg:#e8e6df; --muted:#a6aba3; --rule:#3a3e39; --panel:#222522; --soft:#7d837b;
+  --accent:#d99b63; --m1:#7fb6d4; --m2:#e98a5f; --trace:#a8c86e; --ground:#2b2824; color-scheme:dark }
+body { background:var(--bg); color:var(--fg); font-family:var(--body); font-size:17px; line-height:1.55; }
+.wrap { max-width:900px; margin:0 auto; padding-inline:20px; padding-block:32px 64px; }
+.col { max-width:66ch; }
+h1,h2 { font-family:var(--display); font-weight:600; line-height:1.15; text-wrap:balance; margin:0; }
+h1 { font-size:2.2rem; } h2 { font-size:1.45rem; margin-top:2.4rem; }
+p { margin:.7rem 0 0; }
+.eyebrow { font-family:var(--mono); font-size:.74rem; letter-spacing:.08em; text-transform:uppercase; color:var(--accent); }
+.lede { color:var(--muted); font-size:1.06rem; }
+.sim { margin-top:1.4rem; background:var(--panel); border:1px solid var(--rule); padding:14px; }
+.grid { display:grid; grid-template-columns: 3fr 2fr; gap:16px; align-items:start; }
+@media (max-width:720px) { .grid { grid-template-columns:1fr; } }
+.grid > div { min-width:0; }
+canvas { display:block; width:100%; height:auto; border-radius:4px; }
+.seg { display:flex; flex-direction:column; gap:8px; }
+.seg button, .btn { font:inherit; font-size:.95rem; text-align:left; padding:8px 12px; border:1px solid var(--rule); background:var(--bg); color:var(--fg); border-radius:8px; cursor:pointer; }
+.seg button[aria-pressed="true"] { border-color:var(--accent); box-shadow: inset 3px 0 0 var(--accent); }
+.seg button small { display:block; color:var(--muted); font-size:.82rem; }
+.seg button:focus-visible, .btn:focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
+.row { display:flex; gap:10px; flex-wrap:wrap; margin-top:10px; }
+.btn { text-align:center; }
+.status { font-family:var(--mono); font-size:.82rem; color:var(--muted); margin-top:10px; font-variant-numeric:tabular-nums; }
+.legend { display:flex; gap:16px; flex-wrap:wrap; font-size:.88rem; color:var(--muted); margin-top:8px; }
+.legend span::before { content:""; display:inline-block; width:14px; height:3px; margin-right:6px; vertical-align:middle; background:var(--c); }
+table { border-collapse:collapse; width:100%; font-size:.95rem; }
+.tablewrap { overflow-x:auto; margin-top:1rem; }
+th,td { text-align:left; padding:8px 10px; border-bottom:1px solid var(--rule); vertical-align:top; }
+th { font-family:var(--mono); font-size:.72rem; text-transform:uppercase; letter-spacing:.06em; color:var(--muted); font-weight:500; }
+</style>
+
+<div class="wrap">
+  <span class="eyebrow">Project Scratch · Pad drive</span>
+  <h1>Circle-and-Line Drive</h1>
+  <p class="lede col">Two small motors, each turning a crank with an offset pin, stacked one on top of the other. Neither motor ever reverses. How fast and which way each one turns decides the path the pad traces, so the same hardware scratches in circles or in straight lines, and firmware can switch between them at any moment.</p>
+
+  <div class="sim">
+    <div class="grid">
+      <div>
+        <canvas id="c" width="560" height="560" aria-label="Animation of two stacked cranks and the path traced by the pad"></canvas>
+        <div class="legend">
+          <span style="--c:var(--m1)">Crank 1 (lower motor)</span>
+          <span style="--c:var(--m2)">Crank 2 (upper motor)</span>
+          <span style="--c:var(--trace)">Path of the pad</span>
+        </div>
+      </div>
+      <div>
+        <div class="seg" role="group" aria-label="Drive mode">
+          <button type="button" data-m="circle" aria-pressed="false">Circle<small>Both motors turn the same way</small></button>
+          <button type="button" data-m="line" aria-pressed="true">Straight line<small>Motors turn opposite ways at the same speed</small></button>
+          <button type="button" data-m="precess" aria-pressed="false">Line that slowly turns<small>Opposite ways, upper motor slightly slower</small></button>
+        </div>
+        <div class="row">
+          <button type="button" class="btn" id="jump">Nudge upper motor 60°</button>
+          <button type="button" class="btn" id="size">Change circle size</button>
+          <button type="button" class="btn" id="play">Pause</button>
+        </div>
+        <p class="status" id="status"></p>
+        <p style="font-size:.95rem">The small square is the pad. It slides without rotating, carried by the tip of crank 2. In line mode, the nudge button turns the scratch direction by half the nudge, here 30°. In circle mode, the size button changes the phase between the cranks, which shrinks or grows the circle.</p>
+      </div>
+    </div>
+  </div>
+
+  <h2>Why two cranks can draw either shape</h2>
+  <p class="col">Each crank is a pin spinning on a circle 7.5 mm in radius. The pad sits at the end of the second crank, so its position is the sum of the two spinning pins. When both spin the same way they stay lined up and add into one bigger circle, up to 15 mm in radius. When they spin opposite ways, their sideways movements cancel and their movements along one direction add, so the pad runs back and forth along a straight 30 mm line. The direction of that line is set by where the two cranks meet, so shifting one motor shifts the line.</p>
+
+  <div class="tablewrap"><table>
+    <thead><tr><th>Setting</th><th>Path</th><th>What it feels like</th></tr></thead>
+    <tbody>
+      <tr><td>Same direction, same speed</td><td>circle, 0 to 15 mm radius</td><td>slow circular rubbing, for gentle episodes</td></tr>
+      <tr><td>Opposite directions, same speed</td><td>straight line, 30 mm</td><td>back-and-forth rake</td></tr>
+      <tr><td>Opposite directions, 2.5 % speed difference</td><td>line that rotates about 4.5° per stroke</td><td>raking whose direction drifts continuously</td></tr>
+      <tr><td>One-off nudge to one motor</td><td>line jumps to a new heading</td><td>the hand changes direction</td></tr>
+    </tbody>
+  </table></div>
+  <p class="col">Cost of the flexibility, by the pad agent's estimate: about 20 g and 15 mm of height over a fixed straight-line gear, two small encoder motors, and a printed coupling between the stages. The line stays straight as long as the two crank radii match within about 0.1 mm; a small mismatch just opens it into a very thin ellipse.</p>
+</div>
+
+<script>
+(function(){
+  const cv = document.getElementById('c'), ctx = cv.getContext('2d');
+  const R1 = 7.5, R2 = 7.5, VIEW = 44, W1 = 2 * Math.PI * 0.5; // 0.5 rev/s shown
+  let mode = 'line', phi2 = 0, delta = 0, playing = true, t = 0, last = null;
+  let trail = [];
+  const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+  function w2(){ return mode === 'circle' ? W1 : (mode === 'line' ? -W1 : -W1 * (1 - 0.025)); }
+  function pos(tt){
+    const a1 = W1 * tt; const a2 = w2() * tt + phi2 + (mode === 'circle' ? delta : 0);
+    const p1 = { x: R1 * Math.cos(a1), y: R1 * Math.sin(a1) };
+    return { p1, p: { x: p1.x + R2 * Math.cos(a2), y: p1.y + R2 * Math.sin(a2) }, a1, a2 };
+  }
+  function advance(dt){
+    const n = Math.max(1, Math.ceil(dt / 0.01)); const h = dt / n;
+    for (let i = 0; i < n; i++) { t += h; const s = pos(t); trail.push({ x: s.p.x, y: s.p.y, t }); }
+    const life = mode === 'precess' ? 14 : 4;
+    while (trail.length && trail[0].t < t - life) trail.shift();
+  }
+  function fit(){ const w = cv.clientWidth || 560, d = window.devicePixelRatio || 1; const W = Math.round(w * d); if (cv.width !== W) { cv.width = W; cv.height = W; } return { W, d }; }
+  function arcArrow(cx, cy, r, ccw, col, d){
+    ctx.strokeStyle = col; ctx.fillStyle = col; ctx.lineWidth = 2 * d;
+    const a0 = ccw ? -0.3 : 0.3, a1 = ccw ? -1.3 : 1.3;
+    ctx.beginPath(); ctx.arc(cx, cy, r, a0, a1, ccw); ctx.stroke();
+    const ax = cx + r * Math.cos(a1), ay = cy + r * Math.sin(a1);
+    const tang = a1 + (ccw ? -Math.PI / 2 : Math.PI / 2);
+    ctx.beginPath(); ctx.moveTo(ax, ay);
+    ctx.lineTo(ax - 7 * d * Math.cos(tang - 0.5), ay - 7 * d * Math.sin(tang - 0.5));
+    ctx.lineTo(ax - 7 * d * Math.cos(tang + 0.5), ay - 7 * d * Math.sin(tang + 0.5)); ctx.closePath(); ctx.fill();
+  }
+  function draw(){
+    const { W, d } = fit(); const s = W / VIEW, o = W / 2;
+    const X = x => o + x * s, Y = y => o - y * s;
+    ctx.clearRect(0, 0, W, W); ctx.fillStyle = css('--ground'); ctx.fillRect(0, 0, W, W);
+    ctx.strokeStyle = css('--rule'); ctx.lineWidth = 1 * d;
+    for (let g = -20; g <= 20; g += 5) { ctx.beginPath(); ctx.moveTo(X(g), Y(-22)); ctx.lineTo(X(g), Y(22)); ctx.stroke(); ctx.beginPath(); ctx.moveTo(X(-22), Y(g)); ctx.lineTo(X(22), Y(g)); ctx.stroke(); }
+    const life = mode === 'precess' ? 14 : 4;
+    ctx.strokeStyle = css('--trace'); ctx.lineWidth = 3 * d; ctx.lineCap = 'round';
+    for (let i = 1; i < trail.length; i++) { ctx.globalAlpha = Math.max(0, 1 - (t - trail[i].t) / life); ctx.beginPath(); ctx.moveTo(X(trail[i-1].x), Y(trail[i-1].y)); ctx.lineTo(X(trail[i].x), Y(trail[i].y)); ctx.stroke(); }
+    ctx.globalAlpha = 1;
+    const st = pos(t);
+    ctx.setLineDash([3 * d, 4 * d]); ctx.strokeStyle = css('--soft'); ctx.lineWidth = 1 * d;
+    ctx.beginPath(); ctx.arc(X(0), Y(0), R1 * s, 0, Math.PI * 2); ctx.stroke();
+    ctx.beginPath(); ctx.arc(X(st.p1.x), Y(st.p1.y), R2 * s, 0, Math.PI * 2); ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.lineWidth = 5 * d; ctx.strokeStyle = css('--m1');
+    ctx.beginPath(); ctx.moveTo(X(0), Y(0)); ctx.lineTo(X(st.p1.x), Y(st.p1.y)); ctx.stroke();
+    ctx.strokeStyle = css('--m2');
+    ctx.beginPath(); ctx.moveTo(X(st.p1.x), Y(st.p1.y)); ctx.lineTo(X(st.p.x), Y(st.p.y)); ctx.stroke();
+    ctx.fillStyle = css('--fg');
+    [[0,0],[st.p1.x, st.p1.y]].forEach(([x,y]) => { ctx.beginPath(); ctx.arc(X(x), Y(y), 4 * d, 0, Math.PI * 2); ctx.fill(); });
+    const ps = 2.2;
+    ctx.strokeStyle = css('--fg'); ctx.lineWidth = 2 * d; ctx.fillStyle = css('--panel');
+    ctx.beginPath(); ctx.rect(X(st.p.x - ps), Y(st.p.y + ps), 2 * ps * s, 2 * ps * s); ctx.fill(); ctx.stroke();
+    arcArrow(X(0), Y(0), 18 * d, true, css('--m1'), d);
+    arcArrow(X(st.p1.x), Y(st.p1.y), 14 * d, w2() < 0 ? false : true, css('--m2'), d);
+    ctx.fillStyle = css('--muted'); ctx.font = `${10 * d}px ${css('--mono') || 'monospace'}`;
+    ctx.strokeStyle = css('--fg'); ctx.lineWidth = 2 * d;
+    ctx.beginPath(); ctx.moveTo(X(-20), Y(-20)); ctx.lineTo(X(-10), Y(-20)); ctx.stroke();
+    ctx.fillText('10 mm', X(-20), Y(-20) - 6 * d);
+  }
+  function status(){
+    const el = document.getElementById('status');
+    if (mode === 'circle') el.textContent = `Circle radius ${(15 * Math.abs(Math.cos(delta / 2))).toFixed(1)} mm`;
+    else if (mode === 'line') el.textContent = `Straight line, 30 mm, heading ${((phi2 / 2) * 180 / Math.PI % 180 + 180) % 180 | 0}°`;
+    else el.textContent = 'Line rotating about 4.5° per stroke';
+  }
+  function frame(ts){ if (last === null) last = ts; const dt = Math.min(0.05, (ts - last) / 1000); last = ts; if (playing) advance(dt); draw(); requestAnimationFrame(frame); }
+  document.querySelectorAll('.seg button').forEach(b => b.addEventListener('click', () => {
+    mode = b.dataset.m; document.querySelectorAll('.seg button').forEach(x => x.setAttribute('aria-pressed', String(x === b)));
+    trail = []; t = 0; advance(1.5); status();
+  }));
+  document.getElementById('jump').addEventListener('click', () => { phi2 += Math.PI / 3; status(); });
+  document.getElementById('size').addEventListener('click', () => { delta = (delta + Math.PI / 3) % (Math.PI * 2); if (mode !== 'circle') { mode = 'circle'; document.querySelectorAll('.seg button').forEach(x => x.setAttribute('aria-pressed', String(x.dataset.m === 'circle'))); trail = []; t = 0; advance(1.5); } status(); });
+  const pb = document.getElementById('play'); pb.addEventListener('click', () => { playing = !playing; pb.textContent = playing ? 'Pause' : 'Play'; });
+  if (reduce) { playing = false; pb.textContent = 'Play'; }
+  advance(1.5); status(); requestAnimationFrame(frame);
+})();
+</script>
