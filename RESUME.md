@@ -1,3 +1,24 @@
+# RESUME HERE — Project Scratch (updated 2026-10-02, local session)
+
+Current architecture: SP1 "PUPPET HALO" — see 12-sp1v2/DECISION-2.md. Engineering program v2 started 2026-10-02.
+Process: Michael runs a leap loop (agents propose step changes → Director brings contenders → Michael reviews). Leap rounds 1–3 are in 11-leaps/. Earlier architectures (desk FLOAT-ARM 05–07, crown 08, compact 09, porcupine 10) are reference only.
+
+## Engineering program v2 (in order)
+E1 architect → 12-sp1v2/SYSTEM-SPEC.md (freeze v2)  [launched 2026-10-02]
+E2 red team ×3 on the spec (sensation / mechanical-hair-safety / buildability)
+E3 Director freeze v2.1
+E4 subsystems in parallel: HALO+TRAVEL, PAD, DRIVE BOX, ELECTRONICS+FIRMWARE, TEST PROTOCOLS
+E5 CAD (OpenSCAD + STL; venv: python3 -m venv cadenv && cadenv/bin/pip install trimesh manifold3d numpy) + BOM (incl. second-pad parts, live prices)
+E6 integrated package A–P (07-package or 12-sp1v2/package)
+E7 gates: build review, sensation, safety; fix + re-review
+E8 handoff: order list by vendor, first-weekend plan
+
+## Binding decisions
+See DECISION-2.md. Key: helmet; circle / straight line / precessing line (default) from a desk-box master copied to the pad by sealed lines; air pins (pressure × area), hover-and-bite, omni nail; RCC palm; skeleton halo with occipital dial cradle; travel motors at the ear axis; portable drive box (desk / chair back / couch back); one pad built + second pad's parts bought; squeeze egg; fail-to-free spring lift.
+
+---
+(Older resume notes follow.)
+
 # RESUME HERE — Project Scratch status (2026-10-01, cloud session)
 
 Repo: github.com/miketaz100/project-scratch (branch main). Cloud session working copy: /home/user/project-scratch. CAD venv (trimesh + manifold3d, no scipy, no OpenSCAD binary): /tmp/claude-0/-home-user-ai-social/a9d4d996-bfe2-5b1b-8c54-ae462b273760/scratchpad/cadenv; a fresh session recreates it with `python3 -m venv cadenv && cadenv/bin/pip install trimesh manifold3d numpy`.
