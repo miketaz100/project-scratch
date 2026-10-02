@@ -1,0 +1,16 @@
+# /etc/systemd/system/sp1-scorer.service  (sudo cp, then: sudo systemctl enable --now sp1-scorer)
+[Unit]
+Description=SP1 v3 scorer (state machine, path streaming, console on :7700)
+After=klipper.service sp1-reflexd.service
+Requires=klipper.service
+
+[Service]
+User=biqu
+WorkingDirectory=/home/biqu/sp1v3-src
+# --listen 0.0.0.0 lets scratchctl run on the PC; use 127.0.0.1 to keep the console local
+ExecStart=/usr/bin/python3 -m sp1v3.scorer --klippy /home/biqu/printer_data/comms/klippy.sock --listen 0.0.0.0
+Restart=on-failure
+RestartSec=3
+
+[Install]
+WantedBy=multi-user.target

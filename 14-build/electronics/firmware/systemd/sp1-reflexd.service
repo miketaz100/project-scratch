@@ -1,0 +1,16 @@
+# /etc/systemd/system/sp1-reflexd.service  (sudo cp, then: sudo systemctl enable --now sp1-reflexd)
+[Unit]
+Description=SP1 v3 snag reflex daemon (Pico tension front-end)
+After=klipper.service
+Requires=klipper.service
+
+[Service]
+User=biqu
+WorkingDirectory=/home/biqu/sp1v3-src
+ExecStart=/usr/bin/python3 -m sp1v3.reflexd --port /dev/serial/by-id/REPLACE_WITH_PICO_ID-if00
+Restart=always
+RestartSec=1
+Nice=-10
+
+[Install]
+WantedBy=multi-user.target
