@@ -1,0 +1,487 @@
+<title>Crown Concepts</title>
+<style>
+/* Layout: one column of three concept dossiers, each with its two drawings side by side; a comparison table and a recommendation close the page. */
+:root {
+  --bg:#f6f4ee; --fg:#1f2320; --muted:#5d645e; --rule:#d9d4c7; --panel:#fdfcf8;
+  --accent:#8a4a1f; --accent-ink:#5e3113; --ok:#2f6b3a; --warn:#9a6a12;
+  --display:"Fraunces", Georgia, serif; --body:"Source Sans 3", "Helvetica Neue", Arial, sans-serif; --mono:"IBM Plex Mono", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --bg:#191b19; --fg:#e8e6df; --muted:#a6aba3; --rule:#3a3e39; --panel:#222522; --accent:#d99b63; --accent-ink:#f0c9a3; --ok:#8fcf9a; --warn:#e0b55a; color-scheme:dark } }
+:root[data-theme="dark"] { --bg:#191b19; --fg:#e8e6df; --muted:#a6aba3; --rule:#3a3e39; --panel:#222522; --accent:#d99b63; --accent-ink:#f0c9a3; --ok:#8fcf9a; --warn:#e0b55a; color-scheme:dark }
+body { background:var(--bg); color:var(--fg); font-family:var(--body); font-size:17px; line-height:1.5; }
+.wrap { max-width:1040px; margin:0 auto; padding-inline:20px; padding-block:32px 64px; }
+h1,h2,h3 { font-family:var(--display); font-weight:600; line-height:1.15; text-wrap:balance; margin:0; }
+h1 { font-size:2.4rem; } h2 { font-size:1.7rem; } h3 { font-size:1.2rem; margin-top:1.5rem; }
+.lede { max-width:68ch; color:var(--muted); margin:.6rem 0 0; font-size:1.05rem; }
+.eyebrow { font-family:var(--mono); font-size:.75rem; letter-spacing:.08em; text-transform:uppercase; color:var(--accent); }
+.shared { margin-top:2rem; padding:1rem 1.2rem; background:var(--panel); border-left:3px solid var(--accent); max-width:72ch; }
+.shared ul { margin:.4rem 0 0; padding-left:1.2rem; } .shared li { margin:.2rem 0; }
+.concept { margin-top:3rem; padding-top:2rem; border-top:1px solid var(--rule); }
+.concept-head { display:flex; flex-direction:column; gap:.2rem; }
+.tag { color:var(--muted); margin:0; font-size:1rem; }
+.principle { max-width:70ch; margin:.8rem 0 0; }
+.drawings { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-top:1.2rem; }
+@media (max-width:720px) { .drawings { grid-template-columns:1fr; } }
+figure { margin:0; background:#fff; border:1px solid var(--rule); padding:8px; min-width:0; }
+figure svg { width:100%; height:auto; display:block; }
+figcaption { font-family:var(--mono); font-size:.75rem; color:#5d645e; margin-bottom:4px; }
+.facts { display:grid; grid-template-columns:repeat(auto-fit, minmax(230px, 1fr)); gap:10px 24px; margin:1.2rem 0 0; }
+.facts div { border-top:1px solid var(--rule); padding-top:6px; min-width:0; }
+dt { font-family:var(--mono); font-size:.72rem; text-transform:uppercase; letter-spacing:.06em; color:var(--muted); }
+dd { margin:2px 0 0; font-variant-numeric:tabular-nums; }
+.risk,.stand { max-width:72ch; margin:1rem 0 0; }
+table { border-collapse:collapse; width:100%; font-size:.95rem; font-variant-numeric:tabular-nums; }
+.tablewrap { overflow-x:auto; margin-top:1rem; }
+th,td { text-align:left; padding:8px 10px; border-bottom:1px solid var(--rule); vertical-align:top; }
+th { font-family:var(--mono); font-size:.72rem; text-transform:uppercase; letter-spacing:.06em; color:var(--muted); font-weight:500; }
+td:first-child { color:var(--muted); white-space:nowrap; }
+.rec { margin-top:3rem; padding:1.4rem 1.5rem; background:var(--panel); border:1px solid var(--rule); max-width:76ch; }
+.rec p { margin:.6rem 0 0; } .rec ol { padding-left:1.2rem; margin:.6rem 0 0; } .rec li { margin:.3rem 0; }
+.pick { color:var(--accent-ink); font-weight:600; }
+.note { color:var(--muted); font-size:.95rem; }
+a { color:var(--accent-ink); }
+</style>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600&family=Source+Sans+3:wght@400;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<div class="wrap">
+  <span class="eyebrow">Project Scratch · SP1 mount decision</span>
+  <h1>Crown Concepts</h1>
+  <p class="lede">Three ways to rest the scratching hand on your head instead of hanging it from a desk arm. The hand itself is the same in all three: three nails at 24 mm pitch on spring leaves, one stroke servo on an 80 mm pendulum arm, a vertical float that lets a small dead weight set the force. Pick one; the rest of the package gets re-cut around it.</p>
+
+  <div class="shared">
+    <span class="eyebrow">True of all three</span>
+    <ul>
+      <li>Nail force is the floating dead weight, so the crown's seating slop does not change it. The chin strap only stops the crown sliding or twisting, and it must be elastic or magnetic so the whole thing comes off one-handed.</li>
+      <li>The hand module as currently engineered weighs 305 to 346 g, so every crown lands at 430 to 480 g on the head against a 500 g limit. A lightening pass on the palm (thinner shells, the Feetech servo) is needed whichever you pick.</li>
+      <li>Coverage is the crown and the upper back of the head. None reaches the nape, temples or sides. The back of the head works when you lean forward.</li>
+      <li>Servo noise now has a bone-conduction path through the pads. All three flag it; a soft isolator and the quieter Feetech servo are the mitigations.</li>
+      <li>Cost sits $120 to $155 below the desk stand, and each is roughly a weekend of extra build on top of the hand.</li>
+    </ul>
+  </div>
+
+  
+<section class="concept" id="concept-a">
+  <header class="concept-head">
+    <span class="eyebrow">Concept A</span>
+    <h2>Ring Crown</h2>
+    <p class="tag">Hard-hat suspension, no shell</p>
+  </header>
+  <p class="principle">A thin aluminium hoop with a rear ratchet rests on four padded feet (forehead, two parietal, upper occiput). A carbon-tube portal clamped to the hoop holds the elbow axis 130 mm above the band, with pitch detents and a ±40 mm fore-aft slide. The hand floats inside on its dead weight; the hoop and strap never touch the force path.</p>
+  <div class="drawings">
+    <figure><figcaption>Side view</figcaption><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 340 430" font-family="sans-serif" font-size="7">
+<g transform="translate(170,200) scale(1,-1)" stroke="#333" fill="none" stroke-width="1">
+<!-- head -->
+<path d="M -100,-215 L -98,-70 C -98,-20 -60,4 0,4 C 60,4 98,-20 98,-70 L 106,-118 L 100,-140 L 108,-168 L 92,-200 L 78,-226 L -60,-226 L -100,-215 Z" stroke="#555" stroke-width="1.2"/>
+<circle cx="0" cy="-86" r="90" stroke="#999" stroke-dasharray="3,2"/>
+<circle cx="0" cy="-86" r="120" stroke="#c66" stroke-dasharray="2,3" stroke-width="0.6"/>
+<ellipse cx="90" cy="-118" rx="6" ry="3" stroke="#555"/>
+<!-- hoop band (sides seen edge-on) -->
+<rect x="-107.6" y="-54" width="215.2" height="16" fill="#dde" stroke="#669" opacity="0.8"/>
+<!-- pads F and O -->
+<rect x="96" y="-68" width="10" height="45" fill="#cfc" stroke="#393"/>
+<rect x="-106" y="-68" width="10" height="45" fill="#cfc" stroke="#393"/>
+<!-- portal clamp + foot plug + upright -->
+<rect x="-40" y="-56" width="20" height="30" rx="3" fill="#fde" stroke="#936"/>
+<circle cx="-30" cy="-30" r="5" fill="#fff" stroke="#936"/>
+<rect x="-35" y="-25" width="10" height="125" fill="#eee" stroke="#333"/>
+<rect x="-38" y="96" width="50" height="16" rx="3" fill="#fde" stroke="#936"/>
+<circle cx="-30" cy="105" r="5" fill="#fff" stroke="#333"/>
+<!-- servo (behind yoke) and axis -->
+<rect x="-10" y="74" width="20" height="34" fill="#ffd" stroke="#996"/>
+<line x1="-6" y1="84" x2="6" y2="84"/><line x1="0" y1="78" x2="0" y2="90"/>
+<circle cx="0" cy="84" r="91" stroke="#c66" stroke-dasharray="4,2" stroke-width="0.6"/>
+<!-- yoke cheek, crossbar, mast, rail, carriage -->
+<rect x="-12" y="64" width="69" height="40" rx="4" stroke="#333"/>
+<circle cx="51" cy="88" r="5" fill="#eee"/>
+<rect x="40" y="64" width="5" height="110" fill="#ddd"/>
+<rect x="33.5" y="68" width="6.5" height="100" fill="#bbb"/>
+<rect x="30" y="79" width="10" height="29" fill="#888"/>
+<rect x="0" y="77" width="30" height="4" fill="#888"/>
+<rect x="-22" y="74" width="44" height="5" fill="#aaa"/>
+<rect x="-4" y="79" width="8" height="34" fill="#aaa"/>
+<!-- lift latch on mast -->
+<rect x="45" y="60" width="10" height="10" fill="#fcc" stroke="#933"/>
+<line x1="45" y1="70" x2="30" y2="76" stroke="#933"/>
+<!-- hand: palm, knuckle plate, paddles, tips on scalp -->
+<rect x="-26" y="42" width="52" height="32" rx="2" fill="#eef" stroke="#336"/>
+<path d="M -32,37 Q 0,45 32,37" stroke="#336" stroke-width="1.5"/>
+<path d="M -14,38 L -2,38 L -5,4 L -11,4 Z M -6,40 L 6,40 L 3,4 L -3,4 Z M 2,38 L 14,38 L 11,4 L 5,4 Z" fill="#dde" stroke="#336"/>
+<!-- dimension lines -->
+<line x1="70" y1="4" x2="70" y2="84" stroke="#06c"/><line x1="66" y1="4" x2="74" y2="4" stroke="#06c"/><line x1="66" y1="84" x2="74" y2="84" stroke="#06c"/>
+<line x1="-60" y1="-46" x2="-60" y2="84" stroke="#06c"/><line x1="-64" y1="-46" x2="-56" y2="-46" stroke="#06c"/><line x1="-64" y1="84" x2="-56" y2="84" stroke="#06c"/>
+<line x1="-106" y1="-80" x2="106" y2="-80" stroke="#06c"/><line x1="-106" y1="-84" x2="-106" y2="-76" stroke="#06c"/><line x1="106" y1="-84" x2="106" y2="-76" stroke="#06c"/>
+<line x1="120" y1="-68" x2="120" y2="-118" stroke="#06c"/><line x1="116" y1="-68" x2="124" y2="-68" stroke="#06c"/><line x1="116" y1="-118" x2="124" y2="-118" stroke="#06c"/>
+<line x1="98" y1="-55" x2="112" y2="-55" stroke="#c33" stroke-width="1.5"/>
+</g>
+<g fill="#06c">
+<text x="246" y="158">H = 80</text>
+<text x="80" y="185">130 to axis</text>
+<text x="128" y="276">hoop inner 212 (X)</text>
+<text x="296" y="296">50 ≥ 25</text>
+<text x="176" y="112">elbow axis Z +84</text>
+<text x="100" y="86">cross tube X −30, Z +105</text>
+<text x="118" y="236">pivot Z −30, 10° detents</text>
+<text x="20" y="260">clamp X −30</text>
+<text x="282" y="248">pad F 45×35×12</text>
+<text x="24" y="248">pad O</text>
+<text x="222" y="22">swept R 91 (dashed red)</text>
+<text x="222" y="32">hair zone R 120 (dotted red)</text>
+<text x="92" y="300">scalp sphere R 90, centre Z −86</text>
+<text x="282" y="258" fill="#c33">hairline Z ≈ −55</text>
+<text x="190" y="80">servo Z 74–108 (behind)</text>
+<text x="246" y="58">mast / MGN7 rail</text>
+<text x="190" y="140">latch</text>
+<text x="200" y="174">E6: nails at Z +4</text>
+</g>
+</svg></figure>
+    <figure><figcaption>Front view</figcaption><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 340 430" font-family="sans-serif" font-size="7">
+<g transform="translate(170,200) scale(1,-1)" stroke="#333" fill="none" stroke-width="1">
+<path d="M -80,-200 L -79,-70 C -79,-20 -50,4 0,4 C 50,4 79,-20 79,-70 L 80,-200 C 60,-226 -60,-226 -80,-200 Z" stroke="#555" stroke-width="1.2"/>
+<ellipse cx="-84" cy="-118" rx="9" ry="17" stroke="#555"/><ellipse cx="84" cy="-118" rx="9" ry="17" stroke="#555"/>
+<circle cx="0" cy="-86" r="90" stroke="#999" stroke-dasharray="3,2"/>
+<circle cx="0" cy="-86" r="120" stroke="#c66" stroke-dasharray="2,3" stroke-width="0.6"/>
+<!-- hoop front section, side pads, front pad face-on -->
+<rect x="-87.6" y="-54" width="175.2" height="16" fill="#dde" stroke="#669"/>
+<rect x="-86" y="-68" width="10" height="45" fill="#cfc" stroke="#393"/><rect x="76" y="-68" width="10" height="45" fill="#cfc" stroke="#393"/>
+<rect x="-17.5" y="-68" width="35" height="45" fill="none" stroke="#393" stroke-dasharray="2,2"/>
+<!-- chin strap and fuse -->
+<line x1="-88" y1="-46" x2="-8" y2="-226" stroke="#936" stroke-width="1.5"/><line x1="88" y1="-46" x2="8" y2="-226" stroke="#936" stroke-width="1.5"/>
+<rect x="-9" y="-232" width="18" height="8" fill="#fde" stroke="#936"/>
+<!-- portal -->
+<rect x="-105" y="-25" width="10" height="125" fill="#eee"/><rect x="95" y="-25" width="10" height="125" fill="#eee"/>
+<rect x="-110" y="100" width="220" height="10" rx="3" fill="#eee"/>
+<rect x="-104" y="-56" width="12" height="30" rx="3" fill="#fde" stroke="#936"/><rect x="92" y="-56" width="12" height="30" rx="3" fill="#fde" stroke="#936"/>
+<!-- servo side: back plate, body, horn, disc, cheek A; idler side -->
+<rect x="-124" y="70" width="3" height="42" fill="#fde" stroke="#936"/>
+<rect x="-121" y="74" width="23" height="34" fill="#ffd" stroke="#996"/>
+<rect x="-98" y="76" width="3" height="16" fill="#996"/><rect x="-95" y="72" width="3" height="24" fill="#ccc"/>
+<rect x="-92" y="64" width="4" height="40" fill="#ddd"/><rect x="88" y="64" width="4" height="40" fill="#ddd"/>
+<rect x="95" y="76" width="5" height="16" fill="#ccc" stroke="#333"/><rect x="92" y="96" width="14" height="10" fill="#fde" stroke="#936"/>
+<!-- guard caps -->
+<path d="M -125,74 L -125,62 Q -110,58 -95,62 L -95,74" fill="#eef" stroke="#336"/><path d="M 95,74 L 95,62 Q 103,58 110,62 L 110,74" fill="#eef" stroke="#336"/>
+<!-- yoke crossbar tube, mast, rail, carriage, seat, post -->
+<rect x="-88" y="83" width="176" height="10" rx="5" fill="#eee"/>
+<rect x="-12" y="64" width="24" height="110" fill="#ddd"/><rect x="-4.5" y="68" width="9" height="100" fill="#bbb"/>
+<rect x="-22" y="74" width="44" height="5" fill="#aaa"/><rect x="-4" y="79" width="8" height="34" fill="#aaa"/>
+<!-- hand -->
+<rect x="-88" y="42" width="169" height="32" rx="2" fill="#eef" stroke="#336"/>
+<path d="M -45,37 Q 0,45 45,37" stroke="#336" stroke-width="1.5"/>
+<path d="M -32,37 L -16,37 L -20,1 L -28,1 Z M -8,38 L 8,38 L 4,4 L -4,4 Z M 16,37 L 32,37 L 28,1 L 20,1 Z" fill="#dde" stroke="#336"/>
+<!-- dims -->
+<line x1="-86" y1="-80" x2="86" y2="-80" stroke="#06c"/><line x1="-86" y1="-84" x2="-86" y2="-76" stroke="#06c"/><line x1="86" y1="-84" x2="86" y2="-76" stroke="#06c"/>
+<line x1="-24" y1="-10" x2="24" y2="-10" stroke="#06c"/><line x1="-24" y1="-14" x2="-24" y2="-6" stroke="#06c"/><line x1="24" y1="-14" x2="24" y2="-6" stroke="#06c"/>
+<line x1="130" y1="-68" x2="130" y2="-101" stroke="#06c"/><line x1="126" y1="-68" x2="134" y2="-68" stroke="#06c"/><line x1="126" y1="-101" x2="134" y2="-101" stroke="#06c"/>
+</g>
+<g fill="#06c">
+<text x="124" y="276">hoop inner 172 (Y)</text>
+<text x="138" y="222">pitch 24, nails L C R</text>
+<text x="305" y="286">≥ 33 to ear</text>
+<text x="4" y="112">servo back face Y −121</text>
+<text x="4" y="122">plate C1 (4 × M2, 16 × 30)</text>
+<text x="262" y="112">idler Y +95…+100</text>
+<text x="262" y="122">cheek B Y +88…+92</text>
+<text x="100" y="90">cross tube Y ±110, Z +105</text>
+<text x="4" y="236">clamp C5 / plug C4</text>
+<text x="262" y="236">pads L/R 45×35</text>
+<text x="128" y="250">pad F (face-on, dashed)</text>
+<text x="112" y="404">strap 1.5 N/side, fuse 12 N</text>
+<text x="4" y="150">guard caps G2 / G3</text>
+<text x="222" y="22">palm Y −88…+81</text>
+<text x="222" y="32">uprights Y ±100 (carbon 10×8)</text>
+</g>
+</svg></figure>
+  </div>
+  <dl class="facts"><div><dt>Mass on head</dt><dd>429 g at the lightest weight, up to 489 g</dd></div><div><dt>Pads</dt><dd>4, about 3 kPa each</dd></div><div><dt>Stability margin</dt><dd>2.9× upright, 1.1× at 30° tilt (so a ±30° tilt rule)</dd></div><div><dt>Chin strap</dt><dd>1.5 N per side elastic, magnetic fuse; retention only</dd></div><div><dt>Coverage</dt><dd>crown ±64 mm along the arc, plus upper occiput</dd></div><div><dt>Cost and time</dt><dd>+$77 over the hand alone, about 10 h</dd></div><div><dt>Power-loss state</dt><dd>lifted: a 7 g micro electromagnet on the float drops a spring lift (+13 g)</dd></div></dl>
+  <p class="risk"><strong>Biggest risk.</strong> the hoop creeps on the head under servo reaction and drag at low friction; retired by a 20-minute drag and tilt test on a mannequin (pass: under 2 mm).</p>
+  <p class="stand"><strong>Its team would fall back to the desk stand if</strong> creep exceeds 2 mm, the servo is rated intrusive through bone conduction, the forehead pad is uncomfortable at 20 minutes, or the experiment needs the heaviest weight or the nape.</p>
+</section>
+<section class="concept" id="concept-b">
+  <header class="concept-head">
+    <span class="eyebrow">Concept B</span>
+    <h2>Tripod Cap</h2>
+    <p class="tag">The smallest thing that can hold the hand</p>
+  </header>
+  <p class="principle">Three carbon-tube legs with 45 mm soft pads form a 140 mm triangle around the scratch patch, with the servo cradle and idler bolted to a hub tube behind the elbow. Nothing else. Lift it and reseat it anywhere the scalp faces up, including the upper back of the head when you lean forward.</p>
+  <div class="drawings">
+    <figure><figcaption>Side view</figcaption><svg viewBox="0 0 420 320" xmlns="http://www.w3.org/2000/svg" font-family="sans-serif" font-size="9">
+  <!-- frame: x = X + 190, y = 196 - Z -->
+  <path d="M 70 290 A 90 90 0 0 1 310 290" fill="none" stroke="#999" stroke-width="1.5"/>
+  <text x="300" y="300" fill="#999">scalp R 90 (apex Z +4)</text>
+  <line x1="190" y1="60" x2="190" y2="300" stroke="#ccc" stroke-dasharray="3 3"/>
+  <text x="193" y="70" fill="#999">X 0</text>
+  <!-- elbow axis -->
+  <circle cx="190" cy="112" r="4" fill="none" stroke="#000"/>
+  <text x="197" y="108">elbow axis Z +84</text>
+  <!-- hub tube -->
+  <circle cx="122" cy="112" r="5" fill="#333"/>
+  <text x="60" y="100">hub tube Ø10 CF, X −68</text>
+  <!-- node outline -->
+  <rect x="118" y="100" height="40" fill="none" stroke="#555" stroke-dasharray="2 2"/>
+  <text x="120" y="150" fill="#555">node (cradle flange + tube clamp)</text>
+  <!-- cheek / yoke -->
+  <path d="M 190 92 L 247 92 L 247 132 L 190 132 Z" fill="none" stroke="#06c"/>
+  <!-- crossbar + mast -->
+  <rect x="235" y="100" width="12" height="16" fill="#06c"/>
+  <rect x="230" y="28" width="5" height="90" fill="#06c"/>
+  <text x="238" y="35" fill="#06c">mast + MGN9 rail</text>
+  <!-- palm -->
+  <rect x="164" y="130" width="52" height="28" fill="none" stroke="#06c"/>
+  <text x="166" y="170" fill="#06c">palm</text>
+  <!-- knuckle plate and nails -->
+  <path d="M 158 158 Q 190 152 222 158" fill="none" stroke="#06c" stroke-width="2"/>
+  <line x1="190" y1="158" x2="190" y2="196" stroke="#06c" stroke-width="2"/>
+  <text x="194" y="192" fill="#06c">nail, Z 0</text>
+  <!-- rear leg -->
+  <line x1="118" y1="112" x2="110" y2="241" stroke="#000" stroke-width="3"/>
+  <ellipse cx="110" cy="243" rx="22" ry="6" fill="#c60"/>
+  <text x="40" y="262" fill="#c60">P-R pad (−80, 0), Z −45</text>
+  <!-- side leg (profile, one shown) -->
+  <line x1="210" y1="146" x2="210" y2="196" stroke="#000" stroke-width="3"/>
+  <line x1="210" y1="196" x2="235" y2="248" stroke="#000" stroke-width="3"/>
+  <ellipse cx="235" cy="250" rx="22" ry="6" fill="#c60"/>
+  <text x="248" y="262" fill="#c60">P-S / P-I pads (+45, ±70), Z −52</text>
+  <!-- dimensions -->
+  <line x1="122" y1="60" x2="190" y2="60" stroke="#900"/>
+  <text x="140" y="56" fill="#900">68</text>
+  <line x1="110" y1="275" x2="235" y2="275" stroke="#900"/>
+  <text x="160" y="286" fill="#900">125 (rear pad to front-pad line)</text>
+  <line x1="380" y1="112" x2="380" y2="196" stroke="#900"/>
+  <text x="383" y="158" fill="#900">84</text>
+  <line x1="400" y1="112" x2="400" y2="243" stroke="#900"/>
+  <text x="403" y="200" fill="#900">~130 to pads</text>
+  <!-- strap -->
+  <path d="M 240 252 Q 290 300 300 318" fill="none" stroke="#393" stroke-dasharray="4 2"/>
+  <path d="M 112 246 Q 170 300 300 318" fill="none" stroke="#393" stroke-dasharray="4 2"/>
+  <text x="250" y="312" fill="#393">Y-strap to chin</text>
+</svg></figure>
+    <figure><figcaption>Front view</figcaption><svg viewBox="0 0 420 300" xmlns="http://www.w3.org/2000/svg" font-family="sans-serif" font-size="9">
+  <!-- frame: x = Y + 210, y = 180 - Z -->
+  <path d="M 110 280 A 100 110 0 0 1 310 280" fill="none" stroke="#999" stroke-width="1.5"/>
+  <text x="300" y="292" fill="#999">head (≈150 wide)</text>
+  <!-- hub tube behind -->
+  <line x1="80" y1="96" x2="325" y2="96" stroke="#333" stroke-width="6"/>
+  <text x="300" y="88" fill="#333">hub tube</text>
+  <!-- servo -->
+  <rect x="83" y="72" height="34" fill="#444"/>
+  <text x="40" y="70" fill="#444">XL330 Y −127…−101</text>
+  <!-- idler -->
+  <rect x="311" y="86" width="10" height="20" fill="#444"/>
+  <text x="300" y="120" fill="#444">idler</text>
+  <!-- nodes -->
+  <rect x="78" y="60" width="38" height="60" fill="none" stroke="#555" stroke-dasharray="2 2"/>
+  <rect x="304" y="60" width="30" height="60" fill="none" stroke="#555" stroke-dasharray="2 2"/>
+  <!-- cheeks -->
+  <rect x="112" y="76" width="5" height="40" fill="#06c"/>
+  <rect x="303" y="76" width="5" height="40" fill="#06c"/>
+  <!-- crossbar -->
+  <rect x="112" y="84" width="196" height="16" fill="none" stroke="#06c"/>
+  <!-- palm -->
+  <rect x="122" y="114" width="169" height="28" fill="none" stroke="#06c"/>
+  <text x="180" y="110" fill="#06c">palm Y −88…+81</text>
+  <!-- knuckle plate -->
+  <path d="M 165 146 Q 210 138 255 146" fill="none" stroke="#06c" stroke-width="2"/>
+  <!-- nails -->
+  <line x1="186" y1="146" x2="186" y2="184" stroke="#06c" stroke-width="2"/>
+  <line x1="210" y1="146" x2="210" y2="180" stroke="#06c" stroke-width="2"/>
+  <line x1="234" y1="146" x2="234" y2="184" stroke="#06c" stroke-width="2"/>
+  <text x="170" y="196" fill="#06c">nails Y −24, 0, +24</text>
+  <!-- side legs -->
+  <line x1="102" y1="120" x2="102" y2="180" stroke="#000" stroke-width="3"/>
+  <line x1="102" y1="180" x2="140" y2="232" stroke="#000" stroke-width="3"/>
+  <line x1="318" y1="120" x2="318" y2="180" stroke="#000" stroke-width="3"/>
+  <line x1="318" y1="180" x2="280" y2="232" stroke="#000" stroke-width="3"/>
+  <ellipse cx="140" cy="234" rx="22" ry="7" fill="#c60"/>
+  <ellipse cx="280" cy="234" rx="22" ry="7" fill="#c60"/>
+  <text x="60" y="252" fill="#c60">pads Ø45 at Y ±70, Z −52</text>
+  <!-- rear pad hidden -->
+  <ellipse cx="210" cy="225" rx="22" ry="7" fill="none" stroke="#c60" stroke-dasharray="3 2"/>
+  <text x="222" y="222" fill="#c60">P-R (hidden)</text>
+  <!-- dims -->
+  <line x1="102" y1="40" x2="318" y2="40" stroke="#900"/>
+  <text x="180" y="36" fill="#900">216 (leg verticals, |Y| 108)</text>
+  <line x1="140" y1="262" x2="280" y2="262" stroke="#900"/>
+  <text x="195" y="274" fill="#900">140</text>
+  <line x1="380" y1="96" x2="380" y2="184" stroke="#900"/>
+  <text x="383" y="140" fill="#900">84</text>
+  <!-- ear canal marker -->
+  <circle cx="135" cy="300" r="3" fill="none" stroke="#393"/>
+  <text x="60" y="296" fill="#393">ear canal ≈ Z −120</text>
+  <!-- strap -->
+  <path d="M 140 240 Q 120 290 150 298" fill="none" stroke="#393" stroke-dasharray="4 2"/>
+  <path d="M 280 240 Q 300 290 270 298" fill="none" stroke="#393" stroke-dasharray="4 2"/>
+</svg></figure>
+  </div>
+  <dl class="facts"><div><dt>Mass on head</dt><dd>442 g bare, 478 g with the first weight; a 53 g lightening list brings it to about 395 g</dd></div><div><dt>Pads</dt><dd>3 × 45 mm, 3 to 4 kPa</dd></div><div><dt>Stability margin</dt><dd>0.6× with no strap (rear pad lifts), 1.5× with the strap</dd></div><div><dt>Chin strap</dt><dd>elastic Y-strap at 2.5 N per side, magnetic buckle; required</dd></div><div><dt>Coverage</dt><dd>crown ±40 mm, upper occiput leaning forward; reseat to re-aim</dd></div><div><dt>Cost and time</dt><dd>+$38 over the hand alone, about 6 h</dd></div><div><dt>Power-loss state</dt><dd>hand rests at its dead weight; a +45 g latch is the fallback if the safety gate insists on a lift</dd></div></dl>
+  <p class="risk"><strong>Biggest risk.</strong> the cap rocks or creeps under the stroke reaction, with the rear pad lifting; retired by a drag test with a laser pointer on the hub watching for drift.</p>
+  <p class="stand"><strong>Its team would fall back to the desk stand if</strong> the safety gate rejects the limp state and the latch pushes the mass past 500 g, servo whine through the skull is intrusive, or the pads cannot be made comfortable for 20 minutes.</p>
+</section>
+<section class="concept" id="concept-c">
+  <header class="concept-head">
+    <span class="eyebrow">Concept C</span>
+    <h2>Twin-Rail Arch Halo</h2>
+    <p class="tag">Coverage without reseating</p>
+  </header>
+  <p class="principle">Two printed curved channel rails sit either side of the head on forehead, occiput and temple pads. Carriage shoes ride inside the channels so the whole hand module slides front to back and locks at six detents, from 65 mm ahead of the vertex to 89 mm behind it. The rails are concentric with the skull, so the float stays normal to the scalp at every detent.</p>
+  <div class="drawings">
+    <figure><figcaption>Side view</figcaption><svg viewBox="-200 -230 420 330" xmlns="http://www.w3.org/2000/svg" font-family="sans-serif" font-size="7">
+  <g transform="scale(1,-1)">
+    <!-- scalp sphere R90 about C(0,-86) -->
+    <circle cx="0" cy="-86" r="90" fill="#f3e9dc" stroke="#999" stroke-width="0.8"/>
+    <!-- face / neck hint -->
+    <path d="M 86,-112 L 92,-150 L 70,-200 L 40,-230 L -60,-230 L -80,-176" fill="none" stroke="#bbb" stroke-width="0.6"/>
+    <!-- ear canal marker -->
+    <circle cx="-10" cy="-86" r="3" fill="none" stroke="#c66" stroke-width="0.6"/>
+    <!-- rails R120-140, phi -60..+45 -->
+    <path d="M -121.2,-16 A 140,140 0 0 1 99,13 L 85,-1.1 A 120,120 0 0 0 -103.9,-26 Z" fill="#cfe3ff" stroke="#246" stroke-width="0.8"/>
+    <!-- detent holes at 15 deg -->
+    <g fill="#246">
+      <circle cx="65" cy="26.6" r="1.5"/><circle cx="33.6" cy="39.5" r="1.5"/><circle cx="0" cy="44" r="1.5"/>
+      <circle cx="-33.6" cy="39.5" r="1.5"/><circle cx="-65" cy="26.6" r="1.5"/><circle cx="-91.9" cy="5.9" r="1.5"/>
+    </g>
+    <!-- shoe + leg + cradle (carriage, servo side) -->
+    <rect x="-20" y="22" width="40" height="18" fill="#9bc" stroke="#246" stroke-width="0.6"/>
+    <rect x="-28" y="40" width="4" height="68" fill="#9bc" stroke="#246" stroke-width="0.6"/>
+    <rect x="-24" y="74" width="24" height="34" fill="#9bc" stroke="#246" stroke-width="0.6"/>
+    <!-- cross tube at local -24 deg, R146 -->
+    <circle cx="-59.4" cy="47.4" r="4" fill="#ddd" stroke="#246" stroke-width="0.6"/>
+    <!-- elbow axis -->
+    <circle cx="0" cy="84" r="2" fill="#000"/>
+    <!-- yoke cheek, crossbar, mast -->
+    <path d="M 0,64 L 57,64 L 57,104 L 0,104 Z" fill="none" stroke="#555" stroke-width="0.6" stroke-dasharray="2,1"/>
+    <rect x="45" y="80" width="12" height="16" fill="#ccc" stroke="#555" stroke-width="0.6"/>
+    <rect x="40" y="64" width="5" height="111" fill="#ccc" stroke="#555" stroke-width="0.6"/>
+    <!-- float carriage, palm, knuckle plate, nails -->
+    <rect x="30" y="74" width="10" height="29" fill="#aaa" stroke="#555" stroke-width="0.6"/>
+    <rect x="-26" y="38" width="52" height="28" fill="#eee" stroke="#555" stroke-width="0.6"/>
+    <path d="M -32,37.5 Q 0,34 32,37.5" fill="none" stroke="#555" stroke-width="1.2"/>
+    <line x1="0" y1="34" x2="0" y2="0" stroke="#000" stroke-width="1"/>
+    <!-- sweep R91 -->
+    <circle cx="0" cy="84" r="91" fill="none" stroke="#c99" stroke-width="0.4" stroke-dasharray="3,2"/>
+    <!-- pads -->
+    <path d="M 86,-32 A 90,90 0 0 0 65,-22" fill="none" stroke="#e8a" stroke-width="8"/>
+    <path d="M -89,-30 A 90,90 0 0 0 -70,-22" fill="none" stroke="#e8a" stroke-width="8"/>
+    <!-- bridges -->
+    <path d="M 99,13 L 94,-40 M -121.2,-16 L -102,-40" stroke="#246" stroke-width="2" fill="none"/>
+    <!-- chin strap -->
+    <path d="M 25,45 L 70,-180" stroke="#484" stroke-width="1.5" fill="none" stroke-dasharray="4,2"/>
+    <!-- dimensions -->
+    <line x1="0" y1="-86" x2="0" y2="-200" stroke="#000" stroke-width="0.3" stroke-dasharray="1,1"/>
+    <line x1="-150" y1="84" x2="-30" y2="84" stroke="#000" stroke-width="0.3"/>
+    <line x1="-150" y1="4" x2="-30" y2="4" stroke="#000" stroke-width="0.3"/>
+    <line x1="-150" y1="-86" x2="-30" y2="-86" stroke="#000" stroke-width="0.3"/>
+    <line x1="-145" y1="84" x2="-145" y2="4" stroke="#000" stroke-width="0.4"/>
+    <line x1="-150" y1="4" x2="-150" y2="-86" stroke="#000" stroke-width="0.4"/>
+    <line x1="120" y1="-86" x2="120" y2="44" stroke="#000" stroke-width="0.4"/>
+    <line x1="140" y1="-86" x2="140" y2="84" stroke="#000" stroke-width="0.4"/>
+  </g>
+  <g>
+    <text x="-190" y="-40" font-size="7">H = 80 (axis to apex)</text>
+    <text x="-190" y="40" font-size="7">R = 90 (apex to C)</text>
+    <text x="100" y="-20" font-size="7">rail R 120–140</text>
+    <text x="145" y="-5" font-size="7">axis R 170</text>
+    <text x="-70" y="-55" font-size="7">cross-tube Ø8 at R146, −24°</text>
+    <text x="60" y="35" font-size="7">forehead pad φ+68°</text>
+    <text x="-190" y="35" font-size="7">occiput pad φ−65°</text>
+    <text x="-100" y="140" font-size="7">+X forward →   rails: φ −60° … +45°, detents every 15° from −45° to +30°</text>
+    <text x="30" y="110" font-size="7" fill="#484">chin strap (elastic, magnetic)</text>
+    <text x="-20" y="95" font-size="7" fill="#c66">ear canal</text>
+    <text x="-5" y="-115" font-size="7">R91 sweep</text>
+  </g>
+</svg></figure>
+    <figure><figcaption>Front view</figcaption><svg viewBox="-200 -200 400 300" xmlns="http://www.w3.org/2000/svg" font-family="sans-serif" font-size="7">
+  <g transform="scale(1,-1)">
+    <!-- head: sphere R90 about C -->
+    <circle cx="0" cy="-86" r="90" fill="#f3e9dc" stroke="#999" stroke-width="0.8"/>
+    <!-- ears -->
+    <ellipse cx="-88" cy="-86" rx="6" ry="18" fill="none" stroke="#c66" stroke-width="0.6"/>
+    <ellipse cx="88" cy="-86" rx="6" ry="18" fill="none" stroke="#c66" stroke-width="0.6"/>
+    <!-- rails (channels) at |Y| 108-124, R120-140 -> Z 34-54 -->
+    <rect x="-124" y="34" width="16" height="20" fill="#cfe3ff" stroke="#246" stroke-width="0.8"/>
+    <rect x="108" y="34" width="16" height="20" fill="#cfe3ff" stroke="#246" stroke-width="0.8"/>
+    <!-- top slots -->
+    <rect x="-122" y="52" width="12" height="2" fill="#fff" stroke="none"/>
+    <rect x="110" y="52" width="12" height="2" fill="#fff" stroke="none"/>
+    <!-- legs (4 mm plates, behind servo) -->
+    <rect x="-118" y="40" width="4" height="68" fill="#9bc" stroke="#246" stroke-width="0.6"/>
+    <rect x="114" y="40" width="4" height="68" fill="#9bc" stroke="#246" stroke-width="0.6"/>
+    <!-- servo cradle and body Y -101..-127, Z 74..108 -->
+    <rect x="-127" y="74" width="26" height="34" fill="#9bc" stroke="#246" stroke-width="0.6"/>
+    <!-- idler housing +101..+111 -->
+    <rect x="101" y="70" width="10" height="28" fill="#9bc" stroke="#246" stroke-width="0.6"/>
+    <!-- cross tube projected (behind) -->
+    <rect x="-124" y="43" width="248" height="8" fill="none" stroke="#246" stroke-width="0.5" stroke-dasharray="2,1"/>
+    <!-- yoke cheeks |Y| 93-98 -->
+    <rect x="-98" y="64" width="5" height="40" fill="#ccc" stroke="#555" stroke-width="0.6"/>
+    <rect x="93" y="64" width="5" height="40" fill="#ccc" stroke="#555" stroke-width="0.6"/>
+    <!-- crossbar Y -98..98, Z 80-96 -->
+    <rect x="-98" y="80" width="196" height="16" fill="#ddd" stroke="#555" stroke-width="0.6"/>
+    <!-- mast + rail -->
+    <rect x="-12" y="64" width="24" height="111" fill="#ccc" stroke="#555" stroke-width="0.6"/>
+    <!-- palm Y -88..81, Z 38..66 -->
+    <rect x="-88" y="38" width="169" height="28" fill="#eee" stroke="#555" stroke-width="0.6"/>
+    <!-- knuckle plate and nails at Y -24,0,24 -->
+    <path d="M -45,33.9 Q 0,37.5 45,33.9" fill="none" stroke="#555" stroke-width="1.2"/>
+    <line x1="-24" y1="34" x2="-24" y2="-3.6" stroke="#000" stroke-width="1"/>
+    <line x1="0" y1="34" x2="0" y2="0" stroke="#000" stroke-width="1"/>
+    <line x1="24" y1="34" x2="24" y2="-3.6" stroke="#000" stroke-width="1"/>
+    <!-- elbow axis line -->
+    <line x1="-130" y1="84" x2="130" y2="84" stroke="#000" stroke-width="0.3" stroke-dasharray="1,1"/>
+    <!-- temple pads at Y ±78, Z -30, on sprung arms from the rails -->
+    <path d="M -108,40 L -92,-20" stroke="#246" stroke-width="2" fill="none"/>
+    <path d="M 108,40 L 92,-20" stroke="#246" stroke-width="2" fill="none"/>
+    <rect x="-86" y="-45" width="8" height="30" fill="#e8a" stroke="none"/>
+    <rect x="78" y="-45" width="8" height="30" fill="#e8a" stroke="none"/>
+    <!-- chin strap -->
+    <path d="M -116,34 L -40,-190 L 40,-190 L 116,34" stroke="#484" stroke-width="1.5" fill="none" stroke-dasharray="4,2"/>
+    <!-- dims -->
+    <line x1="-124" y1="140" x2="124" y2="140" stroke="#000" stroke-width="0.4"/>
+    <line x1="-90" y1="-110" x2="90" y2="-110" stroke="#000" stroke-width="0.4"/>
+  </g>
+  <g>
+    <text x="-30" y="-150" font-size="7">halo width 248</text>
+    <text x="-50" y="118" font-size="7">head 180 (sphere); real ≈ 150–160</text>
+    <text x="-190" y="-70" font-size="7">servo Y −101…−127</text>
+    <text x="125" y="-70" font-size="7">idler +101…+111</text>
+    <text x="-190" y="-40" font-size="7">rail channel |Y| 108–124</text>
+    <text x="-190" y="40" font-size="7">temple pad Y ±78, Z −30</text>
+    <text x="-190" y="92" font-size="7" fill="#c66">ears |Y| 82–94, Z −68…−104</text>
+    <text x="40" y="100" font-size="7" fill="#484">strap ≥ 35 mm ahead of the tragus</text>
+  </g>
+</svg></figure>
+  </div>
+  <dl class="facts"><div><dt>Mass on head</dt><dd>446 g at the lightest weight, up to 506 g (the heaviest setting uses a trim cord instead of a slug)</dd></div><div><dt>Pads</dt><dd>4: forehead 70×40, occiput 70×40, two temple 45×30; 2 to 3.4 kPa</dd></div><div><dt>Stability margin</dt><dd>1.3× at peak servo torque, with the strap</dd></div><div><dt>Chin strap</dt><dd>elastic magnetic, 2.5 N per side; required</dd></div><div><dt>Coverage</dt><dd>6 detents over a 154 mm front-to-back arc; occiput at full force leaning forward</dd></div><div><dt>Cost and time</dt><dd>+$27 over the hand alone; most of the cost is print time for the curved rails</dd></div><div><dt>Power-loss state</dt><dd>hand rests at its dead weight; manual lift; a park-bias elastic offered as an option</dd></div></dl>
+  <p class="risk"><strong>Biggest risk.</strong> mass sits right at the 500 g line, then halo slip at the rear detents and bone-conducted servo noise.</p>
+  <p class="stand"><strong>Its team would fall back to the desk stand if</strong> the experiment needs 1.5 N routinely and the halo comes in over 440 g, the safety gate rejects the limp state, servo hum through the forehead is intrusive, or your head profile shifts the engagement more than the ±6 mm the detents can trim.</p>
+</section>
+
+  <h2 style="margin-top:3rem">Side by side</h2>
+  <div class="tablewrap"><table>
+    <thead><tr><th></th><th>A · Ring Crown</th><th>B · Tripod Cap</th><th>C · Twin-Rail Arch</th></tr></thead>
+    <tbody>
+      <tr><td>Mass on head</td><td>429 to 489 g</td><td>442 to 478 g (395 g after lightening)</td><td>446 to 506 g</td></tr>
+      <tr><td>Stability margin</td><td>2.9× upright, 1.1× at 30° tilt</td><td>1.5× with strap (0.6× without)</td><td>1.3× with strap</td></tr>
+      <tr><td>Pads</td><td>4</td><td>3</td><td>4</td></tr>
+      <tr><td>Re-aim</td><td>pitch detents, ±40 mm slide, reseat for 45°</td><td>lift and reseat anywhere facing up</td><td>slide to 6 detents without reseating</td></tr>
+      <tr><td>Coverage front to back</td><td>±64 mm plus upper occiput</td><td>±40 mm plus upper occiput leaning forward</td><td>154 mm arc, 6 detents</td></tr>
+      <tr><td>Power-loss state</td><td>lifted (micro electromagnet)</td><td>rests at dead weight</td><td>rests at dead weight</td></tr>
+      <tr><td>Extra cost over the hand</td><td>$77</td><td>$38</td><td>$27</td></tr>
+      <tr><td>Extra build</td><td>about 10 h, includes forming a hoop</td><td>about 6 h</td><td>long curved prints at tight tolerance</td></tr>
+      <tr><td>Fits a bought hard-hat suspension?</td><td>yes, as the hoop</td><td>no</td><td>no</td></tr>
+    </tbody>
+  </table></div>
+
+  <div class="rec">
+    <span class="eyebrow">Director's recommendation</span>
+    <p><span class="pick">Build A, the Ring Crown,</span> and use a bought hard-hat ratchet suspension as the hoop instead of forming aluminium. It has the largest stability margin by a wide factor, which matters because a crown that creeps turns the constant force into a wandering one and defeats the reason for the float. It is also the only concept whose power-loss state lifts the nails, which the safety review asked for, and its four-point adjustable band is a comfort pattern proven on construction sites for eight-hour shifts.</p>
+    <p><strong>B is the fallback if speed wins.</strong> It is the least to build and the easiest to re-aim, but its 1.5× margin leaves little room, and it stands up only with the strap on. If the first bench test shows the ring also creeps, B will not do better.</p>
+    <p><strong>C only if region wander proves decisive.</strong> It gives the most coverage without reseating, but it is the heaviest, the printed curved rails are the riskiest parts in any of the three, and its margin is the slimmest.</p>
+    <p class="note">Whichever you pick, the first thing built is the crown on a mannequin head with the servo running for 20 minutes, before the hand is finished. That test, not this page, confirms the choice.</p>
+  </div>
+
+  <h3>What happens after you pick</h3>
+  <ol class="note" style="padding-left:1.2rem;max-width:72ch">
+    <li>The hand gets a lightening pass and the Feetech STS3032 servo, with the stroke rate capped at 2.5 per second for inertia.</li>
+    <li>The package is re-cut around the crown: parts list, prints, assembly, and a protocol whose first stage is the hand resting on your head with the motor off.</li>
+    <li>Build, sensation and safety reviews run on the crown build. The desk stand stays in the repo as an appendix.</li>
+  </ol>
+  <p class="note">Full dossiers: <code>08-crown/concept-A.md</code>, <code>concept-B.md</code>, <code>concept-C.md</code> in the project repo.</p>
+</div>
