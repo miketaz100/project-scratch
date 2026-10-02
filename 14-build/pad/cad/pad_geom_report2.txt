@@ -1,0 +1,15 @@
+
+=== 4. DOME POCKETS (ZD = 91.5 mm ball centre, RD 38.0, ball 0 6.35) ===
+ max dome travel 27.96 mm (cage |d| 18.0); pocket radius incl. ball 31.13; half spacing 32.91; spare 1.77 mm
+ steepest ceiling slope on any dome path 48.1 deg -> rim reaction <= 1.11 x vertical dome load
+ ceiling z range 92.96 .. 105.30 (home ball top 94.67)
+ min block-feature-to-ceiling gap +1.87 mm at pose (-16.7, 3.0, 1) (target >= 1.5)
+
+=== 5. C8 SWEEP (yaw -5/0/+5 deg, |d| to the cage) ===
+ nail-to-skid-foot clearance >= 15.0 mm (C8 >= 8) | block underside >= 34.4 mm on R85, 27.8 on R65 (C8 >= 30) | nail reach radius 41.3 mm (fence) | block-to-skirt ring gap >= 1.3 mm
+
+=== 6. LIFT SPRINGS (3 x, block side to skirt ring) ===
+ lift (z) 0.632 .. 0.812 N ; horizontal pull 0.467 N max ; at home 0.800 N
+
+=== 7. YAW ===
+ tendon pendulum yaw stiffness at 2.0 N pretension: 70.9 N.mm/rad = 1.24 N.mm/deg

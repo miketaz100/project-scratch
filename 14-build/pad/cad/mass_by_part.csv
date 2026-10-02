@@ -1,0 +1,18 @@
+part,material,qty,vol_cm3,mass_g_each,mass_g_total,description
+PD01_deck,SLA,1,29.016,33.37,33.37,"deck with three pocket ceilings, HALO seats"
+PD02_skirt_frame,MJF,1,12.395,12.52,12.52,"skirt frame: rings, struts, stop arms, skid bosses, lift hooks"
+PD05_floor_plate,SLA,1,8.502,9.78,9.78,"floor plate: lower bushes, sockets, lift eyelets"
+PD06_cartridge,SLA,6,1.548,1.78,10.68,pin cartridge (x6 + 2 spares)
+PD07_gallery_plate,SLA,1,12.731,14.64,14.64,"gallery plate: galleries, columns, barbs, dome lugs"
+PD08_skirt_plate,MJF,1,4.054,4.09,4.09,wiper skirt plate (snaps on)
+PD09_piston,SLA,6,0.103,0.12,0.71,piston (x6 + 2 spares)
+PD10_yoke,SLA,1,1.659,1.91,1.91,tendon yoke
+PD11_stop_block,PETG,3,0.586,0.74,2.23,tendon stop block (x3)
+PD12_skid_stem,PETG,3,1.122,1.43,4.28,skid stem (x3)
+PD13_skid_foot,SLA,3,1.676,1.93,5.78,skid foot R15 (x3)
+PD14_skid_knob,PETG,3,0.538,0.68,2.05,skid adjuster knob (x3)
+PD15_nail_reference,POM,6,0.714,1.01,6.04,"nail - CNC turned, reference only"
+PD16_hang_cup,PETG,1,1.386,1.76,1.76,C1 hang-test cup
+PD17_shadow_card,PETG,1,2.356,2.99,2.99,nail shadowgraph card
+PD18_skid_gauge,PETG,1,6.84,8.69,8.69,skid height gauge
+PD19_s0_pocket,SLA,1,22.751,26.16,26.16,S0 single-pocket dish bench (not head-borne)

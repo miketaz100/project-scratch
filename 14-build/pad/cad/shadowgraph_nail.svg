@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="260mm" height="150mm" viewBox="0 0 260 150">
+<rect width="100%" height="100%" fill="white"/>
+<text x="5" y="8" font-size="4" font-family="Helvetica">SP1 v3 nail shadowgraph template - print at 100 % (check the 50 mm bar), PAD pad.md 6.4</text>
+<line x1="5" y1="14" x2="55" y2="14" stroke="black" stroke-width="0.3"/><text x="57" y="15" font-size="3">50 mm check bar</text>
+<polygon points="20.000,86.500 20.000,73.500 24.000,69.500 29.600,59.900 619.000,59.900 619.000,100.100 29.600,100.100 24.000,90.500" fill="none" stroke="red" stroke-width="0.3"/>
+<polygon points="20.000,86.500 20.000,73.500 24.000,69.500 29.600,59.900 619.000,59.900 619.000,100.100 29.600,100.100 24.000,90.500" fill="none" stroke="blue" stroke-width="0.3"/>
+<text x="20" y="112" font-size="3.5">10:1 tip: the shadow edge must lie between RED (max) and BLUE (min) everywhere; flat 0 2.0, rim R0.4, 90 deg cone to 0 3.92; NO narrowing anywhere going up</text>
+<polygon points="20.000,135.650 20.000,134.350 20.400,133.950 20.960,132.990 79.900,132.990 79.900,137.010 20.960,137.010 20.400,136.050" fill="none" stroke="black" stroke-width="0.2"/>
+<text x="20" y="145" font-size="3.5">1:1 whole nail (59.9 mm). Top end R0.5, steel insert flush.</text></svg>

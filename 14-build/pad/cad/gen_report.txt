@@ -1,0 +1,18 @@
+PD01_deck              SLA  x1  bbox [-66.  -71.1  79.5] .. [ 66.   59.2 112.5]  size [132.1 130.4  33. ]  vol  29.016 cm3  mass  33.37 g (x1 =  33.37)  watertight True
+PD02_skirt_frame       MJF  x1  bbox [-64.5 -58.5  36. ] .. [59.3 66.  82. ]  size [123.8 124.5  46. ]  vol  12.395 cm3  mass  12.52 g (x1 =  12.52)  watertight True
+PD05_floor_plate       SLA  x1  bbox [-30.3 -27.2  34. ] .. [26.9 27.2 39.5]  size [57.2 54.5  5.5]  vol   8.502 cm3  mass   9.78 g (x1 =   9.78)  watertight True
+PD06_cartridge         SLA  x6  bbox [13.3 -4.7 38. ] .. [22.7  4.7 80. ]  size [ 9.4  9.4 42. ]  vol   1.548 cm3  mass   1.78 g (x6 =  10.68)  watertight True
+PD07_gallery_plate     SLA  x1  bbox [-36.7 -41.8  39. ] .. [36.7 28.9 91.9]  size [73.3 70.7 52.9]  vol  12.731 cm3  mass  14.64 g (x1 =  14.64)  watertight True
+PD08_skirt_plate       MJF  x1  bbox [-27.1 -28.5  32. ] .. [27. 27. 36.]  size [54.1 55.5  4. ]  vol   4.054 cm3  mass   4.09 g (x1 =   4.09)  watertight True
+PD09_piston            SLA  x6  bbox [15.1 -2.9 59.9] .. [20.9  2.9 64.4]  size [5.8 5.8 4.5]  vol   0.103 cm3  mass   0.12 g (x6 =   0.71)  watertight True
+PD10_yoke              SLA  x1  bbox [-14.  -14.   83.5] .. [14. 14. 87.]  size [28.  28.   3.5]  vol   1.659 cm3  mass   1.91 g (x1 =   1.91)  watertight True
+PD11_stop_block        PETG x3  bbox [-4. 59. 82.] .. [ 4.  73.  89.5]  size [ 8.  14.   7.5]  vol   0.586 cm3  mass   0.74 g (x3 =   2.23)  watertight True
+PD12_skid_stem         PETG x3  bbox [27. 49.  9.] .. [33. 55. 76.]  size [ 6.  6. 67.]  vol   1.122 cm3  mass   1.43 g (x3 =   4.28)  watertight True
+PD13_skid_foot         SLA  x3  bbox [ 25.5  47.5 -19. ] .. [38.1 62.9 11. ]  size [12.6 15.4 30. ]  vol   1.676 cm3  mass   1.93 g (x3 =   5.78)  watertight True
+PD14_skid_knob         PETG x3  bbox [24.  46.  79.7] .. [36.  58.  85.5]  size [12.  12.   5.8]  vol   0.538 cm3  mass   0.68 g (x3 =   2.05)  watertight True
+PD15_nail_reference    POM  x6  bbox [16. -2.  0.] .. [20.   2.  59.9]  size [ 3.9  3.9 59.9]  vol   0.714 cm3  mass   1.01 g (x6 =   6.04)  watertight True
+PD16_hang_cup          PETG x1  bbox [139. -11.   0.] .. [161.  11.  18.]  size [22. 22. 18.]  vol   1.386 cm3  mass   1.76 g (x1 =   1.76)  watertight True
+PD17_shadow_card       PETG x1  bbox [150.  40.   0.] .. [230.   70.    1.2]  size [80.  30.   1.2]  vol   2.356 cm3  mass   2.99 g (x1 =   2.99)  watertight True
+PD18_skid_gauge        PETG x1  bbox [150.  80.   0.] .. [226.  92.  12.]  size [76. 12. 12.]  vol   6.840 cm3  mass   8.69 g (x1 =   8.69)  watertight True
+PD19_s0_pocket         SLA  x1  bbox [-40. 160.  93.] .. [ 40. 240. 108.]  size [80. 80. 15.]  vol  22.751 cm3  mass  26.16 g (x1 =  26.16)  watertight True
+ALL WATERTIGHT
