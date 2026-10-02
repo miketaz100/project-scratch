@@ -1,0 +1,117 @@
+<title>Build It or Hire It</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600&family=Source+Sans+3:wght@400;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: answer first, then the one comparison table, the decision rule, what an engineer adds, and the open questions. */
+:root {
+  --bg:#f6f4ee; --fg:#1f2320; --muted:#5d645e; --rule:#d9d4c7; --panel:#fdfcf8; --accent:#8a4a1f; --pick:#efe4d6; --ok:#2f6b3a; --warn:#9a6a12;
+  --display:"Fraunces", Georgia, serif; --body:"Source Sans 3", "Helvetica Neue", Arial, sans-serif; --mono:"IBM Plex Mono", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --bg:#191b19; --fg:#e8e6df; --muted:#a6aba3; --rule:#3a3e39; --panel:#222522; --accent:#d99b63; --pick:#33291f; --ok:#8fcf9a; --warn:#e0b55a; color-scheme:dark } }
+:root[data-theme="dark"] { --bg:#191b19; --fg:#e8e6df; --muted:#a6aba3; --rule:#3a3e39; --panel:#222522; --accent:#d99b63; --pick:#33291f; --ok:#8fcf9a; --warn:#e0b55a; color-scheme:dark }
+body { background:var(--bg); color:var(--fg); font-family:var(--body); font-size:17px; line-height:1.55; }
+.wrap { max-width:1000px; margin:0 auto; padding-inline:20px; padding-block:32px 72px; }
+.col { max-width:68ch; }
+h1,h2 { font-family:var(--display); font-weight:600; line-height:1.15; text-wrap:balance; margin:0; }
+h1 { font-size:2.3rem; } h2 { font-size:1.45rem; margin-top:2.6rem; }
+p { margin:.7rem 0 0; }
+.eyebrow { font-family:var(--mono); font-size:.74rem; letter-spacing:.08em; text-transform:uppercase; color:var(--accent); }
+.lede { color:var(--muted); font-size:1.06rem; }
+.answer { margin-top:1.4rem; padding:1.1rem 1.3rem; background:var(--panel); border:1px solid var(--rule); max-width:74ch; }
+.answer ul { margin:.5rem 0 0; padding-left:1.2rem; } .answer li { margin:.35rem 0; }
+table { border-collapse:collapse; width:100%; font-size:.94rem; font-variant-numeric:tabular-nums; }
+.tablewrap { overflow-x:auto; margin-top:1rem; }
+th,td { text-align:left; padding:9px 10px; border-bottom:1px solid var(--rule); vertical-align:top; }
+th { font-family:var(--mono); font-size:.7rem; text-transform:uppercase; letter-spacing:.06em; color:var(--muted); font-weight:500; }
+tr.pick td { background:var(--pick); }
+td.opt { font-weight:600; min-width:13rem; }
+td.opt small { display:block; font-weight:400; color:var(--muted); }
+.tag { font-family:var(--mono); font-size:.68rem; letter-spacing:.06em; text-transform:uppercase; color:var(--accent); }
+.grid2 { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-top:1rem; }
+@media (max-width:760px) { .grid2 { grid-template-columns:1fr; } }
+.box { background:var(--panel); border:1px solid var(--rule); padding:14px 16px; min-width:0; }
+.box h3 { font-family:var(--display); font-size:1.1rem; margin:0; font-weight:600; }
+.box ul { margin:.5rem 0 0; padding-left:1.15rem; font-size:.96rem; } .box li { margin:.35rem 0; }
+.box.yes { border-top:3px solid var(--ok); } .box.no { border-top:3px solid var(--warn); }
+ol.q { padding-left:1.3rem; } ol.q li { margin:.4rem 0; }
+.note { color:var(--muted); font-size:.9rem; margin-top:1rem; }
+</style>
+
+<div class="wrap">
+  <span class="eyebrow">Project Scratch · SP1 Puppet Halo, Lean</span>
+  <h1>Build It or Hire It</h1>
+  <p class="lede col">Seven ways to get the lean design onto your head, compared on cash, your own hours, time to the first session, and the chance of a good session. Costs are for the lean design you approved on 2 October: dish-gate pad, cable drive, hand-moved stations, one pad.</p>
+
+  <div class="answer">
+    <span class="eyebrow">The answer first</span>
+    <ul>
+      <li><strong>Every route has roughly the same chance of a good session within six months, about 20 to 32 %.</strong> Two things cap it. First, whether the design feels good on your scalp is about 40 % whoever builds it. Second, hiring does not shorten the calendar.</li>
+      <li><strong>What money buys</strong> is your time back (about $190 to $250 per hour saved), a better chance of finishing within a year, an independent safety check, and professional CAD you own for a later version or product. It does not buy a better feel or a faster first session.</li>
+      <li><strong>The estimator's default:</strong> pay an engineer for a design review only, build it yourself, and pay for a short safety check before the first session on your head. About $3,000 to $5,500 all-in.</li>
+      <li><strong>Before paying anyone for design work,</strong> spend $100 to $200 and a weekend or two on the bench tests. They check whether the dish-gate nail actually feels like a scratch through your hair.</li>
+    </ul>
+  </div>
+
+  <h2>The comparison</h2>
+  <div class="tablewrap"><table>
+    <thead><tr><th>Option</th><th>Cash</th><th>Your hours</th><th>First session</th><th>Good session by 6 / 12 months</th><th>What you own at the end</th></tr></thead>
+    <tbody>
+      <tr><td class="opt">Build it yourself<small>first-timer</small></td><td>$1,300–1,900</td><td>120–180</td><td>4–5.5 months</td><td>25 % / 30 %</td><td>the prototype, design files from this project</td></tr>
+      <tr><td class="opt">Build it yourself<small>experienced maker</small></td><td>$1,150–1,600</td><td>85–125</td><td>3–4 months</td><td>32 % / 35 %</td><td>same</td></tr>
+      <tr class="pick"><td class="opt"><span class="tag">Default</span><br>Paid design review, then you build<small>plus a short safety check before first use</small></td><td>$2,300–4,400, about $3,000–5,500 with the safety check</td><td>125–185</td><td>4–6 months</td><td>27 % / 33 %</td><td>the prototype, plus an expert's written review</td></tr>
+      <tr><td class="opt">Engineer designs and signs off safety, you build</td><td>$9,000–28,000, about $16,000 typical</td><td>105–170</td><td>4.5–6.5 months</td><td>25 % / 36 %</td><td>professional CAD, drawings and firmware you own</td></tr>
+      <tr><td class="opt">Remote engineer plus a local builder</td><td>$9,000–30,000, about $17,000</td><td>50–90</td><td>5–6.5 months</td><td>20 % / 32 %</td><td>prototype plus professional CAD</td></tr>
+      <tr><td class="opt">Engineer who also builds</td><td>$15,000–50,000, about $27,000</td><td>35–60</td><td>4.5–6 months</td><td>25 % / 38 %</td><td>prototype plus professional CAD</td></tr>
+      <tr><td class="opt">Product studio<small>123 Design, Sarasota, if they take it</small></td><td>$30,000–60,000, about $40,000</td><td>45–75</td><td>3.5–5 months</td><td>29 % / 37 %</td><td>the most complete documentation</td></tr>
+    </tbody>
+  </table></div>
+  <p class="note">All figures are estimates from the project's cost analysis. Your hours include testing and sessions, which you do on every route. A home 3D printer is still worth having: outsourced printing suits finished parts, but without your own printer each design change adds weeks.</p>
+
+  <h2>A simple way to decide</h2>
+  <div class="tablewrap"><table>
+    <thead><tr><th>If your situation is…</th><th>Then</th></tr></thead>
+    <tbody>
+      <tr><td>Budget under $5,000 and you enjoy building or are willing to learn</td><td>Design review, then build it yourself, with the safety check before first use</td></tr>
+      <tr><td>Budget under $5,000 and you don't want to build</td><td>Hiring isn't affordable at this scope; build with a review anyway, or wait</td></tr>
+      <tr><td>$5,000–15,000, you'll build, and you want real CAD or a product option</td><td>A remote engineer does the detailed design and safety sign-off; you build</td></tr>
+      <tr><td>$15,000–35,000 and short of time or not keen on building</td><td>A local engineer who also builds; fall back to a remote engineer plus local builder</td></tr>
+      <tr><td>$40,000 or more and you want it turnkey</td><td>Ask 123 Design for a quote</td></tr>
+      <tr><td>Any chance you'd want to sell it someday</td><td>At least the engineer-designs route, with native CAD, a signed IP assignment, and nothing shared publicly yet</td></tr>
+    </tbody>
+  </table></div>
+
+  <h2>What an engineer adds</h2>
+  <div class="grid2">
+    <div class="box yes">
+      <h3>Worth paying for</h3>
+      <ul>
+        <li><strong>A hands-on safety review</strong> of a device worn on your head, checked on real hardware. This is the one thing building it yourself can't supply. About $1,500–4,000 on its own.</li>
+        <li><strong>Catching what this AI program can't see:</strong> parts as they actually print, sticky sliding surfaces, creaking cables, cracked joints, awkward handling. A good engineer finds this kind of problem in the first hour of review.</li>
+        <li><strong>Real CAD and toleranced drawings,</strong> which every later quote and supplier depends on.</li>
+        <li><strong>Reliability,</strong> so the prototype survives 50 sessions rather than 5.</li>
+        <li><strong>A path to a product:</strong> automatic drift and the second pad in the next version (roughly $10,000–30,000 of design), then a manufacturable version, typically $50,000–250,000 or more over one to two years.</li>
+        <li><strong>IP know-how and suppliers</strong> when parts stall or you need 500 of something.</li>
+      </ul>
+    </div>
+    <div class="box no">
+      <h3>Not worth paying for</h3>
+      <ul>
+        <li><strong>Before the bench tests pass.</strong> Whether the nail feels like a good scratch through your hair costs about $30–45 and a weekend to learn. Spending $10,000 on design first could perfect something that fails on contact.</li>
+        <li><strong>To make it feel better.</strong> No engineer moves the chance it feels good much above about 40 %; only testing on your head does.</li>
+        <li><strong>To get there sooner,</strong> or for studio-grade process on a one-off you'll never sell.</li>
+      </ul>
+    </div>
+  </div>
+  <p class="col"><strong>A note if you might ever sell it:</strong> sharing the design publicly, for example in a build log online, starts the clock on patent rights. Keep it private until you decide, and have anyone you hire sign an IP assignment. A patent attorney consult typically costs a few hundred dollars.</p>
+
+  <h2>What I need from you to narrow this down</h2>
+  <ol class="q col">
+    <li>Your budget ceiling for this first build, and separately for a later version or product.</li>
+    <li>Your target date for a first session, and whether six months is a hard line.</li>
+    <li>Your experience with soldering, 3D printing, Linux and air fittings, and whether you enjoy building.</li>
+    <li>Whether you own a 3D printer with a bed of at least 22 cm.</li>
+    <li>Whether you'd ever want to sell it: yes, maybe or never.</li>
+    <li>How far you'd drive to a builder, and whether a builder could work in your apartment.</li>
+    <li>Whether you want an independent safety sign-off before the first session even if you build it yourself. I recommend yes.</li>
+  </ol>
+  <p class="note">Full analysis in the project repo: 13-outsourcing/diy-vs-hire.md and 13-outsourcing/outsourcing-options.md (including a ready-to-post job description and interview questions).</p>
+</div>

@@ -4,13 +4,13 @@ Builds on DECISION-2.md (+ its NORTH STAR AMENDMENT: an on-par scratching sensat
 
 ## Michael's decisions (leap round 4 review, 2026-10-02)
 1. DISH GATE pins, two pin lines (11-leaps/round-4/leap4-A.md §4, variant L3-2). "Worth the simplicity." Pending: safety ruling 12-sp1v2/safety-ruling-dish-gate.md (snag pull).
-2. XY BELT MASTER (path in firmware; needed by the dish gate for off-centre chords and one-way D-paths). Implied by 1; flagged to Michael.
+2. PATH MASTER = the three stepper-driven drums of the tendon puppet (item 3), path computed in firmware; NO separate XY belt stage (Director ruling 2026-10-02: the drums already give every path the dish gate needs).
 3. CABLE DRIVE LINES instead of the sealed air synchro: three-drum tendon puppet, drums on steppers in the box (11-leaps/round-4/leap4-D.md L1; converges with leap4-F L3).
 4. HAND-MOVED STATIONS for the first build: passive halo with friction hinges/detents, no travel motors on the head (leap4-E E4, leap4-F L4). Automatic drift (box-driven cable travel, leap4-C C2) is a later upgrade.
 5. LIGHTER CARBON FRAME: straight carbon tubes in printed nodes, carbon front band, no balancers (leap4-C C3).
 6. STOCK 3D-PRINTER CONTROLLER BOARD running Klipper (leap4-E E1), with the hardware safety loop kept independent of it. Director judges it at least as capable now that per-pin valve timing is gone; Klipper has cable-winch kinematics.
 7. OUTSOURCED PRINTING of precision parts (leap4-E E3).
-8. ONE PAD for the first build. Second pad deferred: its parts are NOT bought now; the halo keeps cheap mounting provisions (Director's assumption, flagged to Michael).
+8. ONE PAD for the first build. Second pad deferred: its parts are NOT bought now; the halo KEEPS the pad-2 mounting provisions (confirmed by Michael).
 9. NO squeeze egg and NO head scan in this build. Controls: hold-to-run, NC e-stop, speed and intensity knobs (+ PC serial for experiments). Advanced pattern language (κ-grammar, fatigue ledger) deferred; simple anti-habituation variation (stroke length/chord, heading, timing jitter, pauses) required.
 10. NOT adopted: skyhook (rejected); scratch-quality leaps of leap4-B (parked).
 
